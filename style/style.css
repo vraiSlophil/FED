@@ -1,0 +1,485 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--font-color);
+    font-family: 'Poppins', sans-serif;
+    transition: 0.1s;
+}
+
+body {
+    background-color: var(--background-color);
+    min-height: 100vh;
+    position: relative;
+}
+
+input,
+button {
+    font-size: 16px;
+    border: unset;
+    box-shadow: unset;
+    background: unset;
+    border-radius: unset;
+}
+
+img {
+    height: 1.5em;
+    filter: invert(var(--image-white));
+}
+
+#header {
+    background-color: var(--light-background-color);
+    box-shadow: 0 0 0.2em black;
+    padding: 1em;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+#headercontent {
+    width: calc(100%/3);
+}
+
+#title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#title > img {
+    margin-right: 1em;
+    height: 2em;
+    filter: invert(0);
+}
+
+#main, #connectform {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 1em 0;
+}
+
+input:focus {
+    outline: none;
+}
+
+#main > #form {
+    background-color: var(--light-background-color);
+    border-radius: 0.5em;
+    width: 40%;
+    height: 3em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 0.2em black;
+    overflow: hidden;
+}
+
+#main > #form > #button {
+    width: max-content;
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 2px solid var(--border-color);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#main > #form > #button,
+#connectform > #form > #button,
+#parameters > #logout,
+#nicknameedit > form > input,
+#nicknameedit > form > #cancel,
+#emailedit > form > #cancel,
+#emailedit > form > input,
+#passwordedit > form > input,
+#passwordedit > form > #cancel {
+    background-color: var(--font-button-color);
+    color: black;
+}
+
+#main > #form > #button:hover,
+#connectform > #form > #button:hover,
+#parameters > #logout:hover,
+#nicknameedit > form > input:hover,
+#nicknameedit > form > #cancel:hover,
+#emailedit > form > #cancel:hover,
+#emailedit > form > input:hover,
+#passwordedit > form > input:hover,
+#passwordedit > form > #cancel:hover {
+    background-color: var(--light-font-button-color);
+}
+
+#main > #form > #button:active,
+#connectform > #form > #button:active,
+#parameters > #logout:active,
+#nicknameedit > form > input:active,
+#nicknameedit > form > #cancel:active,
+#emailedit > form > #cancel:active,
+#emailedit > form > input:active,
+#passwordedit > form > input:active,
+#passwordedit > form > #cancel:active {
+    background-color: var(--dark-font-button-color);
+}
+
+#main > #form > #task {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0 1em;
+}
+
+
+#tasks {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 40%;
+    border-radius: 0.5em;
+    overflow: hidden;
+    margin: 0 auto;
+    box-shadow: 0 0 0.2em black;
+    animation: spawntask 0.5s;
+    transform-origin: top;
+}
+
+#tasks > #newtask {
+    min-height: 3em;
+    height: max-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--light-background-color);
+    width: 100%;
+}
+
+#tasks > #newtask > #task {
+    min-height: 100%;
+    padding: 0 1em;
+    margin: 1em 0;
+    width: 90%;
+    border-right: 2px solid var(--border-color);
+}
+
+#tasks > #newtask > form {
+    min-height: 100%;
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#tasks > #newtask > form > #deletebutton {
+    height: 1.5em;
+    cursor: pointer;
+}
+
+#tasks > #newtask > form > #deletebutton:hover {
+    transform: scale(1.1);
+}
+
+#tasks > #newtask > form > #deletebutton:active {
+    transform: scale(0.9);
+}
+
+#connectform > #form > div > input,
+#connectform > #form > #button {
+    padding: 1em;
+    height: max-content;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#connectform > #form {
+    background-color: var(--light-background-color);
+    border-radius: 0.5em;
+    width: 40%;
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 0.2em black;
+    overflow: hidden;
+}
+
+#connectform > #form > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+}
+
+#connectform > #form > div > img {
+    padding: 0 0 0 1em;
+}
+
+#connectform > #form > #button {
+    border-top: 2px solid var(--border-color);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#connectform > #form > #password,
+#connectform > #form > #email {
+    border-top: 2px solid var(--border-color);
+}
+
+#logout {
+    padding: 1em;
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#logout > p {
+    margin-right: 1em;
+}
+
+#logout > form > #image:hover {
+    transform: scale(1.1) rotateZ(120deg);
+}
+
+#logout > form > #image:active {
+    transform: scale(0.9) rotateZ(240deg);
+}
+
+#logout > form > #image {
+    height: 1.25em;
+    filter: invert(var(--image-white));
+}
+
+#theme {
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+}
+
+#theme > form > #themebutton:hover {
+    transform: scale(1.1);
+}
+
+#theme > form > #themebutton:active {
+    transform: scale(0.9);
+}
+
+#theme > form > #themebutton {
+    height: 1.25em;
+    filter: invert(var(--image-white));
+}
+
+#main > p, #connectform > p {
+    color: red;
+    height: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--light-background-color);
+    border-radius: 0.5em;
+    width: 40%;
+    box-shadow: 0 0 0.2em black;
+    margin-bottom: 1em;
+}
+
+#leave > a > img:hover {
+    transform: scale(1.1);
+}
+
+#leave > a > img:active {
+    transform: scale(0.9);
+}
+
+#parameters {
+    background-color: var(--light-background-color);
+    border-radius: 0.5em;
+    width: 40%;
+    box-shadow: 0 0 0.2em black;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#parameters > #pseudo,
+#parameters > #password,
+#parameters > #email,
+#parameters > #logout {
+    padding: 1em;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+#parameters > #pseudo > p,
+#parameters > #email > p,
+#parameters > #password > p {
+    background-color: var(--background-color);
+    border-radius: 0.25em;
+    padding: 0.125em 0.5em;
+}
+
+#parameters > #password,
+#parameters > #email,
+#parameters > #logout {
+    border-top: 2px solid var(--border-color);
+    position: relative;
+}
+
+#parameters > #pseudo > img:hover,
+#parameters > #email > img:hover,
+#parameters > #password > img:hover {
+    transform: scale(1.1);
+}
+
+#parameters > #pseudo > img:active,
+#parameters > #email > img:active,
+#parameters > #password > img:active {
+    transform: scale(0.9);
+}
+
+#parameters > #logout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#parameters > #logout {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#nicknameedit.hide,
+#emailedit.hide,
+#passwordedit.hide {
+    display: none;
+}
+
+#nicknameedit.show, 
+#emailedit.show, 
+#passwordedit.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    background-color: #000000AA;
+    z-index: 500;
+}
+
+#nicknameedit.show > form, 
+#emailedit.show > form, 
+#passwordedit.show > form {
+    animation: spawnmenu 0.15s forwards cubic-bezier(0,0,.66,1.59);
+}
+
+
+#nicknameedit > form,
+#emailedit > form,
+#passwordedit > form {
+    background-color: var(--light-background-color);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5em;
+    width: 40%;
+    box-shadow: 0 0 0.2em black;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#nicknameedit > form > div > input,
+#emailedit > form > div > input,
+#passwordedit > form > div > input {
+    width: 100%;
+    padding-left: 1em;
+}
+
+#nicknameedit > form > input,
+#nicknameedit > form > div,
+#emailedit > form > input,
+#emailedit > form > div,
+#passwordedit > form > input,
+#passwordedit > form > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3em;
+    width: 100%;
+}
+
+#nicknameedit > form > div > img,
+#emailedit > form > div > img,
+#passwordedit > form > div > img {
+    padding-left: 1em;
+}
+
+#nicknameedit > form > #newnickname,
+#nicknameedit > form > input,
+#nicknameedit > form > #cancel,
+#emailedit > form > #newemail,
+#emailedit > form > input,
+#emailedit > form > #cancel,
+#passwordedit > form > #newpassword,
+#passwordedit > form > #cancel,
+#passwordedit > form > input {
+    border-top: 2px solid var(--border-color);
+    cursor: pointer;
+    font-weight: bold;
+
+}
+
+#register {
+    width: max-content;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#register > a {
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+@keyframes spawntask {
+    0% {
+        transform: rotateX(90deg);
+    }
+
+    100% {
+        transform: rotateX(0);
+    }
+}
+
+@keyframes spawnmenu {
+    0% {
+        transform: scale(0.8);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
