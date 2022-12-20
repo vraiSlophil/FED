@@ -1,24 +1,18 @@
 <html lang="fr">
 <?php
-    session_start();
-    include_once "app/css.php";
-    include_once "app/database.php";
+session_start();
+include_once "app/database.php";
 
-    $filepath = "json/users.json";
-    $nickname = $_SESSION['pseudo'];
+if (!isset($_SESSION["login"])) {
+    header("Location: ../login.php");
+    exit;
+}
 
-    if (file_exists($filepath) && isset($nickname)) {
-        $json = file_get_contents($filepath);
-        $jsonArray = json_decode($json, true);
-    } else {
-        header("Location: login.php");
-        exit;
-    }
+include_once "app/css.php";
 
-    if (!(array_key_exists(getUuid($nickname), $jsonArray))) {
-        header("Location: login.php");
-        exit;
-    }
+$db = new Database();
+$login = $_SESSION["login"];
+$nickname = $db->getName($login);
 ?>
 <head>
     <meta charset="UTF-8">

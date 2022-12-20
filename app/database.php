@@ -1,109 +1,89 @@
 <?php
+
+class Database {
     function dbConnect(){
         include "database_info.php";
 
-        $conn = mysqli_connect($hostname, $username, $password, $database) or die("Database connection failed");
-
-        return $conn;
-    }
-
-    $conn = dbConnect();
-
-    function verifyEmail($email): bool {
-        $conn = dbConnect();
-        $sql = "SELECT email FROM users WHERE email='$email'";
-        $result = mysqli_query($conn, $sql);
-        $count = mysqli_num_rows($result);
-        if ($count > 0) {
-            return true;
+        try { 
+            $sch='mysql:host=localhost;dbname='.$database.';port='.$port;
+            $bdd = new PDO($sch , $username, $password);
         }
-        return false;
-    }
-
-    function verifyNickname($nickname): bool {
-        $conn = dbConnect();
-        $sql = "SELECT nickname FROM users WHERE nickname='$nickname'";
-        $result = mysqli_query($conn, $sql);
-        $count = mysqli_num_rows($result);
-        if ($count > 0) {
-            return true;
+        catch(Exception $e) {
+            die('Erreur : '.$e->getMessage());
         }
-        return false;
+        return $bdd;
     }
 
-    function createUser($email, $password, $nickname, $uuid) {
-        $conn = dbConnect();
-        $sql = "INSERT INTO users (email, password, nickname, uuid) VALUES ('$email', '$password', '$nickname', '$uuid')";
-        $result = mysqli_query($conn, $sql);
-        return $count;
+    public function getName($id) {
+        $database = $this->sql_connect();
+        $sql = "SELECT pseudo FROM `clients` WHERE id=:id;";
+        $statement = $database->prepare($sql);
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll()[0]["pseudo"];
     }
 
-    function checkLogin($nickname, $password): bool {
-        $conn = dbConnect();
-        $sql = "SELECT nickname FROM users WHERE nickname='$nickname' AND password='$password'";
-        $result = mysqli_query($conn, $sql);
-        $count = mysqli_num_rows($result);
-        if ($count > 0) {
-            return true;
+    public function getId($pseudo) {
+        $database = $this->sql_connect();
+        $sql = "SELECT id FROM `clients` WHERE pseudo=:pseudo;";
+        $statement = $database->prepare($sql);
+        $statement->bindValue(':pseudo', $pseudo);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC)[0]["id"];
+    }
+    
+    function getPassword($id) {
+        $database = sql_connect();
+        $sql = "SELECT password FROM `clients` WHERE id=:id;";
+        $statement = $database->prepare($sql);
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC)[0]["password"];
+    }
+    
+    function getId($pseudo) {
+        $database = sql_connect();
+        $sql = "SELECT id FROM `clients` WHERE pseudo=:pseudo;";
+        $statement = $database->prepare($sql);
+        $statement->bindValue(':pseudo', $pseudo);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function createUser($pseudo, $password) {
+        $database = $this->sql_connect();
+        $sql = "INSERT INTO `clients` (pseudo, password, date, permission) VALUES (:pseudo, :password, NOW(), :permission);";
+        $statement = $database->prepare($sql);
+        $statement->bindParam(':pseudo', $pseudo);
+        $md5 = md5($password);
+        $statement->bindParam(':password', $md5);
+        $str = "utilisateur";
+        $statement->bindParam(':permission', $str);
+        try {
+            $statement->execute();
+        } catch (Exception $e) {
+            return 0;
         }
-        return false;
+        return 1;
     }
-
-    function getUuid($nickname){
-        $conn = dbConnect();
-        $sql = "SELECT uuid FROM users WHERE nickname='$nickname'";
-        $result = mysqli_query($conn, $sql);
-        $count = mysqli_num_rows($result);
-        $row = mysqli_fetch_array($result);
-        if ($count > 0) {
-            return $row["uuid"];
+    
+    public function checkLogin($pseudo, $password){
+        $database = $this->sql_connect();
+        $sql = "SELECT password FROM clients WHERE pseudo = :p;";
+        $statement = $database->prepare($sql);
+        $statement->bindParam(":p",$pseudo);
+        $statement->execute();
+        $count = $statement->rowCount();
+        if ($count != 1) {
+            return 0;
         }
-        return false;
-    }
-
-    function getEmail($nickname){
-        $conn = dbConnect();
-        $sql = "SELECT email FROM users WHERE nickname='$nickname'";
-        $result = mysqli_query($conn, $sql);
-        $count = mysqli_num_rows($result);
-        $row = mysqli_fetch_array($result);
-        if ($count > 0) {
-            return $row["email"];
+        $check = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if ($check[0]["password"] == md5($password)){
+            return $this->getId($pseudo);
+        } else {
+            return 0;
         }
-        return false;
     }
+}    
+?>
 
-    function getPassword($nickname) {
-        $conn = dbConnect();
-        $sql = "SELECT password FROM users WHERE nickname='$nickname'";
-        $result = mysqli_query($conn, $sql);
-        $count = mysqli_num_rows($result);
-        $row = mysqli_fetch_array($result);
-        if ($count > 0) {
-            return $row["password"];
-        }
-        return false;
-    }
-
-    function setPassword($nickname, $password) {
-        $pass = md5($password);
-        $conn = dbConnect();
-        $sql = "UPDATE users SET password='$password' WHERE nickname='$nickname'";
-        $result = mysqli_query($conn, $sql);
-        return $count;
-    }
-
-    function setNickname($nickname, $uuid) {
-        $conn = dbConnect();
-        $sql = "UPDATE users SET nickname='$nickname' WHERE uuid='$uuid'";
-        $result = mysqli_query($conn, $sql);
-        return $count;
-    }
-
-    function setEmail($nickname, $email) {
-        $conn = dbConnect();
-        $sql = "UPDATE users SET email='$email' WHERE nickname='$nickname'";
-        $result = mysqli_query($conn, $sql);
-        return $count;
-    }
-?> 
