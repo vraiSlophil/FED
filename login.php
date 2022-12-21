@@ -11,7 +11,7 @@ if (isset($_SESSION["login"])) {
 if (isset($_POST["login_name"]) && isset($_POST["login_password"])) {
     require_once "app/database.php";
     $database = new Database();
-    $log = $database->login($_POST["register_name"], $_POST["register_password"], $_POST["register_email"]);
+    $log = $database->login($_POST["login_name"], $_POST["login_password"]);
 }
 ?>
 
