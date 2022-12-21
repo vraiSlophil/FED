@@ -5,14 +5,14 @@ class Database {
     private function sql_connect() {
         require "database_info.php";
 
-        global $database;
-        global $port;
-        global $username;
-        global $password;
+        global $db;
+        global $pt;
+        global $ue;
+        global $pd;
 
         try {
-            $sch='mysql:host=localhost;dbname='.$database.';port='.$port;
-            $bdd = new PDO($sch , $username, $password);
+            $sch='mysql:host=localhost;dbname='.(string)$db.';port='.(string)$pt;
+            $bdd = new PDO($sch , $ue, $pd);
         }
         catch(Exception $e) {
             die('Erreur : '.$e->getMessage());
