@@ -21,7 +21,7 @@ class Database {
     }
 
     public function createUser($username, $password, $email, $firstName = null, $lastName = null, $profilePictureUrl = null): bool|string {
-        $salt = com_create_guid();
+        $salt = uniqid();
         $hashed_password = hash('sha256', $password . $salt);
         $query = "INSERT INTO users (username, password, salt, email, first_name, last_name, profile_picture_url) VALUES (:username, :password, :salt, :email, :first_name, :last_name, :profile_picture_url)";
         $pdo = $this->sql_connect();
