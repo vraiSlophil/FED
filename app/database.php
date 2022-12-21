@@ -1,7 +1,8 @@
 <?php
+require_once "database_info.php";
+
 class Database {
     private function sql_connect() {
-
         global $db;
         global $pt;
         global $ue;
