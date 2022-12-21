@@ -109,7 +109,7 @@ class Database {
 
     public function getName(int $id) {
         $pdo = $this->sql_connect();
-        $query = "SELECT username, first_name, last_name FROM users WHERE id = :id";
+        $query = "SELECT username, first_name, last_name FROM users WHERE user_id = :id";
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -120,8 +120,5 @@ class Database {
             return $result['username'];
         }
     }
-
-
 }    
 ?>
-
