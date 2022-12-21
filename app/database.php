@@ -72,6 +72,34 @@ class Database {
         }
     }
 
+    public function login($username, $password) {
+        // Connexion à la base de données
+        $pdo = $this->sql_connect();
+
+        // Requête SQL pour récupérer les informations de l'utilisateur avec le nom d'utilisateur spécifié
+        $stmt = $pdo->prepare("SELECT user_id, password, salt FROM users WHERE username = :username");
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        $user = $stmt->fetch();
+
+        // Si aucun utilisateur n'a été trouvé avec ce nom d'utilisateur, retourne faux
+        if (!$user) {
+            return false;
+        }
+
+        // Hash le mot de passe entré par l'utilisateur avec le salt de cet utilisateur
+        $hashed_password = hash('sha256', $password . $user['salt']);
+
+        // Si le mot de passe hashé ne correspond pas au mot de passe enregistré pour cet utilisateur, retourne faux
+        if ($hashed_password != $user['password']) {
+            return false;
+        }
+
+        // Si l'utilisateur a été trouvé et le mot de passe vérifié, retourne l'ID de l'utilisateur
+        return $user['user_id'];
+    }
+
+
 }    
 ?>
 

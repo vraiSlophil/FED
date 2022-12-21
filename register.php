@@ -68,20 +68,20 @@
                 unset($_SESSION["errorMessage"]);
             }
         ?>
-        <form action="tempo/temporegister.php" method="post" id="form">
+        <form action="#" method="post" id="form">
             <div id="pseudo">
                 <img src="images/identifier.png">
-                <input type="text" name="pseudo" placeholder="Pseudo">
+                <input type="text" name="register_name" placeholder="Votre nom d'utilisateur">
             </div>
             <div id="email">
                 <img src="images/email.png">
-                <input type="email" name="email" placeholder="Votre email">
+                <input type="email" name="register_email" placeholder="Votre email">
             </div>
             <div id="password">
                 <img src="images/lock.png">
-                <input type="password" name="mdp" id="mdp" placeholder="Mot de passe">
+                <input type="password" name="register_password" id="mdp" placeholder="Votre mot de passe">
             </div>
-            <input type="submit" value="Créer mon compte" name="submitbutton" id="button">
+            <input type="submit" value="Créer mon compte" id="button">
         </form>
     </section>
     <section id="register">
