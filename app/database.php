@@ -3,7 +3,7 @@
 class Database {
 
     private function sql_connect() {
-        include "database_info.php";
+        require "database_info.php";
 
         global $database;
         global $port;
@@ -21,7 +21,7 @@ class Database {
     }
 
     public function createUser($username, $password, $email, $firstName = null, $lastName = null, $profilePictureUrl = null): bool|string {
-        $salt = uniqid();
+        $salt = com_create_guid();
         $hashed_password = hash('sha256', $password . $salt);
         $query = "INSERT INTO users (username, password, salt, email, first_name, last_name, profile_picture_url) VALUES (:username, :password, :salt, :email, :first_name, :last_name, :profile_picture_url)";
         $pdo = $this->sql_connect();
