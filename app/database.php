@@ -94,7 +94,7 @@ class Database {
         }
 
         // Si l'utilisateur a été trouvé et le mot de passe vérifié, retourne l'ID de l'utilisateur
-        return $user['user_id'];
+        return intval($user['user_id']);
     }
 
 
