@@ -1,9 +1,6 @@
 <?php
-
 class Database {
-
     private function sql_connect() {
-        require "database_info.php";
 
         global $db;
         global $pt;

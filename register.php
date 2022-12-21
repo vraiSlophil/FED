@@ -18,7 +18,6 @@ if (isset($_POST["register_name"]) && isset($_POST["register_email"]) && isset($
     include_once "app/database.php";
     $database = new Database();
     $create = $database->createUser($_POST["register_name"], $_POST["register_password"], $_POST["register_email"]);
-    print_r($create);
 }
 ?>
 
@@ -78,12 +77,11 @@ if (isset($_POST["register_name"]) && isset($_POST["register_email"]) && isset($
         </div>
     </header>
     <section id="connectform">
-        <?php 
-            if(isset($_SESSION["errorMessage"])) {
-                echo "<p>".$_SESSION["errorMessage"]."</p>";
-                unset($_SESSION["errorMessage"]);
-            }
-        ?>
+        <?php if (isset($create)) {
+            if(is_string($create)) { ?>
+        <p><?php echo $create ?></p>
+        <?php }
+        }?>
         <form action="#" method="post" id="form">
             <div id="pseudo">
                 <img src="images/identifier.png">
