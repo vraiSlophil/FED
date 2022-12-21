@@ -8,11 +8,6 @@ if (isset($_SESSION["login"])) {
     unset($_SESSION["login"]);
 }
 
-if (isset($_POST["login_name"]) && isset($_POST["login_password"])) {
-    require_once "app/database.php";
-    $database = new Database();
-    $log = $database->login($_POST["login_name"], $_POST["login_password"]);
-}
 ?>
 
 <head>
@@ -43,12 +38,15 @@ if (isset($_POST["login_name"]) && isset($_POST["login_password"])) {
         </div>
     </header>
     <section id="connectform">
-        <?php if (isset($log)) {
-            if(is_string($log)) { ?>
-                <p><?php echo $log ?></p>
-            <?php }
-        }?>
-        <form action="#" method="post" id="form">
+        <?php if (isset($_SESSION["login_error"])) { ?>
+            <p>
+                <?php
+                echo $_SESSION["login_error"];
+                unset($_SESSION["login_error"]);
+                ?>
+            </p>
+        <?php } ?>
+        <form action="index.php" method="post" id="form">
             <div id="pseudo">
                 <img src="images/identifier.png">
                 <input type="text" name="login_name" placeholder="Votre nom d'utilisateur">

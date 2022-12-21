@@ -244,40 +244,11 @@ input:focus {
 
 }
 
-#logout > p {
+#settings > p {
     margin-right: 1em;
 }
 
-#logout > form > #image:hover {
-    transform: scale(1.1) rotateZ(120deg);
-}
-
-#logout > form > #image:active {
-    transform: scale(0.9) rotateZ(240deg);
-}
-
-#logout > form > #image {
-    height: 1.25em;
-    filter: invert(var(--image-white));
-}
-
-#theme {
-    width: max-content;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    float: right;
-}
-
-#theme > form > #themebutton:hover {
-    transform: scale(1.1);
-}
-
-#theme > form > #themebutton:active {
-    transform: scale(0.9);
-}
-
-#theme > form > #themebutton {
+#settings > a > #image {
     height: 1.25em;
     filter: invert(var(--image-white));
 }

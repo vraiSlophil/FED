@@ -18,7 +18,7 @@ class Database {
         return $bdd;
     }
 
-    public function createUser($username, $password, $email, $firstName = null, $lastName = null, $profilePictureUrl = null): bool|string {
+    public function createUser($username, $password, $email, $firstName = null, $lastName = null, $profilePictureUrl = null): int|string {
         $salt = uniqid();
         $hashed_password = hash('sha256', $password . $salt);
         $query = "INSERT INTO users (username, password, salt, email, first_name, last_name, profile_picture_url) VALUES (:username, :password, :salt, :email, :first_name, :last_name, :profile_picture_url)";
@@ -35,7 +35,7 @@ class Database {
         // Exécuter la requête
         try {
             $stmt->execute();
-            return true;
+            return intval($pdo->lastInsertId());
         } catch (PDOException $e) {
             if ($e->errorInfo[1] == 1062) {
                 // Code d'erreur MySQL 1062: erreur de clé unique
@@ -95,6 +95,30 @@ class Database {
 
         // Si l'utilisateur a été trouvé et le mot de passe vérifié, retourne l'ID de l'utilisateur
         return intval($user['user_id']);
+    }
+
+    public function getProfilePictureUrl(int $id): string {
+        $pdo = $this->sql_connect();
+        $query = "SELECT profile_picture_url FROM users WHERE id = :id";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result['profile_picture_url'];
+    }
+
+    public function getName(int $id) {
+        $pdo = $this->sql_connect();
+        $query = "SELECT username, first_name, last_name FROM users WHERE id = :id";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        if ($result['first_name'] && $result['last_name']) {
+            return $result['first_name'] . ' ' . $result['last_name'];
+        } else {
+            return $result['username'];
+        }
     }
 
 

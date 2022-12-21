@@ -1,18 +1,39 @@
 <html lang="fr">
 <?php
 session_start();
-include_once "app/database.php";
+require_once "app/database.php";
+$database = new Database();
+
+
+if (isset($_POST["register_name"]) && isset($_POST["register_email"]) && isset($_POST["register_password"])) {
+    $create = $database->createUser($_POST["register_name"], $_POST["register_password"], $_POST["register_email"]);
+    if (is_string($create)) {
+        $_SESSION["register_error"] = $create;
+        header("Location: register.php");
+        exit;
+    }
+    $_SESSION["login"] = intval($create);
+
+}
+
+if (isset($_POST["login_name"]) && isset($_POST["login_password"])) {
+    $log = $database->login($_POST["login_name"], $_POST["login_password"]);
+    if (is_string($log)) {
+        $_SESSION["login_error"] = $log;
+        header("Location: login.php");
+        exit;
+    }
+    $_SESSION["login"] = intval($log);
+}
 
 if (!isset($_SESSION["login"])) {
-    header("Location: ../login.php");
+    header("Location: login.php");
     exit;
 }
 
-include_once "app/css.php";
+require_once "app/css.php";
 
-$db = new Database();
 $login = $_SESSION["login"];
-$nickname = $db->getName($login);
 ?>
 <head>
     <meta charset="UTF-8">
@@ -35,71 +56,33 @@ $nickname = $db->getName($login);
 <body>
 <header id="header">
     <div id="headercontent">
-        <div id="logout">
-            <p><?php echo $nickname; ?></p>
-            <form action="tempo/temposettings.php" method="post">
-                <input type="hidden" value="<?php echo $nickname; ?>" name="nickname">
-                <input type="image" src="images/settings.png" alt="settings" id="image">
-            </form>
+        <div id="settings">
+            <p><?php echo $database->getName($login); ?></p>
+            <a href="settings.php">
+                <img src="<?php echo $database->getProfilePictureUrl($login); ?>" alt="profile picture" id="image">
+            </a>
         </div>
     </div>
     <div id="headercontent">
         <div id="title">
-            <img src="images/<?php 
-                 if($theme == "lighttheme"){
-                    echo "fed-logo";
-                } else {
-                    echo "fed-logo-white-background";
-                }
-            ?>.png">
+            <img src="images/fed-logo.png" alt="logo">
             F∃D
-        </div>
-    </div>
-    <div id="headercontent">
-        <div id="theme">
-            <form action="tempo/tempotheme.php" method="post">
-                <input type="hidden" name="sourcePage" value="home">
-                <input type="hidden" name="targetTheme" value="<?php
-                if($theme == "lighttheme"){
-                    echo "darktheme";
-                } else {
-                    echo "lighttheme";
-                }
-                ?>">
-                <input type="image" src="images/<?php
-                if($theme == "lighttheme"){
-                    echo "moon";
-                } else {
-                    echo "sun";
-                }
-                ?>.png" name="themeButton" id="themebutton">
-            </form>
         </div>
     </div>
 </header>
 <main id="main">
-    <?php 
-        if(isset($_SESSION["errorMessage"])) {
-            echo "<p>".$_SESSION["errorMessage"]."</p>";
-            unset($_SESSION["errorMessage"]);
-        }
-    ?>
-    <form action="tempo/tempotask.php" method="post" id="form">
-        <input type="text" value="" name="newtask" placeholder="Votre tâche" id="task">
-        <input type="submit" value="Ajouter la tâche" name="addtaskbutton" id="button">
-    </form>
+    <div id="card">
+        <div id="card_header">
+            <h3>Titre de la carte</h3>
+            <button id="toggle_button">Afficher/masquer</button>
+        </div>
+        <div id="card_content">
+            <p>Contenu de la carte</p>
+            <p>Contenu de la carte</p>
+            <p>Contenu de la carte</p>
+        </div>
+    </div>
 </main>
 
-<section id="tasks">
-<?php foreach($jsonArray[getUuid($nickname)] as $todo){ ?>
-    <div id="newtask">
-        <p id="task"><?php echo $todo;?></p>
-        <form action="tempo/tempodelete.php" method="post">
-            <input type="hidden" name="task" value="<?php echo $todo;?>">
-            <input type="image" src="images/poubelle.png" name="deletebutton" id="deletebutton">
-        </form>
-    </div>
-<?php } ?>
-</section>
 </body>
 </html>

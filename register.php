@@ -8,11 +8,6 @@ if (isset($_SESSION["login"])) {
     unset($_SESSION["login"]);
 }
 
-if (isset($_POST["register_name"]) && isset($_POST["register_email"]) && isset($_POST["register_password"])) {
-    require_once "app/database.php";
-    $database = new Database();
-    $create = $database->createUser($_POST["register_name"], $_POST["register_password"], $_POST["register_email"]);
-}
 ?>
 
 <head>
@@ -43,12 +38,15 @@ if (isset($_POST["register_name"]) && isset($_POST["register_email"]) && isset($
         </div>
     </header>
     <section id="connectform">
-        <?php if (isset($create)) {
-            if(is_string($create)) { ?>
-        <p><?php echo $create ?></p>
-        <?php }
-        }?>
-        <form action="#" method="post" id="form">
+        <?php if (isset($_SESSION["register_error"])) { ?>
+        <p>
+            <?php
+                echo $_SESSION["register_error"];
+                unset($_SESSION["register_error"]);
+            ?>
+        </p>
+        <?php } ?>
+        <form action="index.php" method="post" id="form">
             <div id="pseudo">
                 <img src="images/identifier.png">
                 <input type="text" name="register_name" placeholder="Votre nom d'utilisateur">
