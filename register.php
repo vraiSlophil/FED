@@ -1,9 +1,22 @@
 <html lang="fr">
 
 <?php 
-    session_start();
-    unset($_SESSION["pseudo"]);
-    include "app/css.php";
+session_start();
+unset($_SESSION["pseudo"]);
+include "app/css.php";
+
+$theme = "lighttheme";
+
+if (isset($_SESSION["login"])) {
+    unset($_SESSION["login"]);
+}
+
+if (isset($_POST["register_name"]) && isset($_POST["register_email"]) && isset($_POST["register_password"])) {
+    include_once "app/database.php";
+    $database = new Database();
+    $create = $database->createUser($_POST["register_name"], $_POST["register_password"], $_POST["register_email"]);
+    print_r($create);
+}
 ?>
 
 <head>
