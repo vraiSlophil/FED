@@ -1,21 +1,15 @@
 <html lang="fr">
 
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 session_start();
-unset($_SESSION["pseudo"]);
-include "app/css.php";
-
-$theme = "lighttheme";
+require_once "app/css.php";
 
 if (isset($_SESSION["login"])) {
     unset($_SESSION["login"]);
 }
 
 if (isset($_POST["register_name"]) && isset($_POST["register_email"]) && isset($_POST["register_password"])) {
-    include_once "app/database.php";
+    require_once "app/database.php";
     $database = new Database();
     $create = $database->createUser($_POST["register_name"], $_POST["register_password"], $_POST["register_email"]);
 }
@@ -41,38 +35,10 @@ if (isset($_POST["register_name"]) && isset($_POST["register_email"]) && isset($
 </head>
 <body>
     <header id="header">
-        <div id="headercontent"></div>
         <div id="headercontent">
             <div id="title">
-                <img src="images/<?php 
-                    if($theme == "lighttheme"){
-                        echo "fed-logo";
-                    } else {
-                        echo "fed-logo-white-background";
-                    }
-                ?>.png">
+                <img src="images/fed-logo.png" alt="logo">
                 F∃D
-            </div>
-        </div>
-        <div id="headercontent">
-            <div id="theme">
-                <form action="tempo/tempotheme.php" method="post">
-                    <input type="hidden" name="sourcePage" value="register">
-                    <input type="hidden" name="targetTheme" value="<?php
-                    if($theme == "lighttheme"){
-                        echo "darktheme";
-                    } else {
-                        echo "lighttheme";
-                    }
-                    ?>">
-                    <input type="image" src="images/<?php
-                    if($theme == "lighttheme"){
-                        echo "moon";
-                    } else {
-                        echo "sun";
-                    }
-                    ?>.png" name="themeButton" id="themebutton">
-                </form>
             </div>
         </div>
     </header>

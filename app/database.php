@@ -82,7 +82,7 @@ class Database {
 
         // Si aucun utilisateur n'a été trouvé avec ce nom d'utilisateur, retourne faux
         if (!$user) {
-            return false;
+            return "Ce nom d'utilisateur est introuvable.";
         }
 
         // Hash le mot de passe entré par l'utilisateur avec le salt de cet utilisateur
@@ -90,7 +90,7 @@ class Database {
 
         // Si le mot de passe hashé ne correspond pas au mot de passe enregistré pour cet utilisateur, retourne faux
         if ($hashed_password != $user['password']) {
-            return false;
+            return "Le mot de passe entré n'est pas le bon.";
         }
 
         // Si l'utilisateur a été trouvé et le mot de passe vérifié, retourne l'ID de l'utilisateur
