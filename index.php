@@ -77,16 +77,28 @@ $login = $_SESSION["login"];
 <main id="main">
     <div id="main__card">
         <div id="main__card__header">
-            <h3>Titre de la carte</h3>
+            <h3 id="main__card__header__title">Titre de la carte</h3>
             <button id="main__card__header__add_people_button"><img src="images/add-group.png" alt="add people"></button>
             <button id="main__card__header__edit_button" style="display: none;"><img src="images/edit.png" alt="edit task title"></button>
             <button id="main__card__header__validate_button" style="display: none;"><img src="images/check.png" alt="validate edits"></button>
             <button id="main__card__header__toggle_button">▾</button>
         </div>
         <div id="main__card__content">
-            <p>Contenu de la carte</p>
-            <p>Contenu de la carte</p>
-            <p>Contenu de la carte</p>
+            <div id="main__card__content__tasks">
+                <div id="main__card__content__tasks__task">
+                    <p>Contenu de la carte</p>
+                </div>
+                <div id="main__card__content__tasks__task">
+                    <p>Contenu de la carte</p>
+                </div>
+                <div id="main__card__content__tasks__task">
+                    <p>Contenu de la carte</p>
+                </div>
+            </div>
+            <div id="main__card__content__interactive">
+                <input id="main__card__content__interactive__input" type="text" placeholder="Ajouter une tâche">
+                <button id="main__card__content__interactive__add_task_button">Ajouter</button>
+            </div>
         </div>
     </div>
 </main>

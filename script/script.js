@@ -37,42 +37,47 @@ function toggleVisibilityEmailEdit() {
 }
 
 const cards = document.querySelectorAll('#main__card');
+let OPENED = false;
+let EDITING = false;
+let INVITING = false
 
 cards.forEach((card) => {
-    // Récupère les boutons de modification et de validation, ainsi que le titre de la carte
     const editButton = card.querySelector('#main__card__header__edit_button');
     const validateButton = card.querySelector('#main__card__header__validate_button');
     const addPeopleButton = card.querySelector('#main__card__header__add_people_button');
     const toggleButton = card.querySelector('#main__card__header__toggle_button');
-    const cardTitle = card.querySelector('#main__card__header h3');
+    const cardTitle = card.querySelector('#main__card__header__title');
     const cardContent = card.querySelector('#main__card__content');
-
+    const tasksParent = cardContent.querySelector("#main__card__content__tasks");
+    const interactiveParent = cardContent.querySelector("#main__card__content__interactive");
+    const newTaskInput = interactiveParent.querySelector("#main__card__content__interactive__input");
+    const newTaskButton = interactiveParent.querySelector("#main__card__content__interactive__add_task_button");
+    let cardTitleString = cardTitle.textContent;
     toggleButton.addEventListener('click', () => {
-        if (cardContent.style.display === 'flex') {
+        if (cardContent.style.display === 'flex' && OPENED) {
+            OPENED = false;
             cardContent.style.display = 'none';
-            toggleButton.innerHTML = '▾';
-            // Masque le bouton de validation de l'ajout de personnes et affiche le bouton d'ajout de personnes
-            // si aucun champ d'édition du titre ou d'ajout de personne n'est présent
-            if (cardTitle.querySelector('input[type="text"]') == null) {
-                addPeopleButton.style.display = 'block';
+            toggleButton.textContent = '▾';
+            if (INVITING || EDITING) {
+                return;
             }
+            editButton.style.display = "none";
+            addPeopleButton.style.display = 'flex';
         } else {
+            OPENED = true;
             cardContent.style.display = 'flex';
-            toggleButton.innerHTML = '◂';
-            // Masque le bouton d'ajout de personnes et affiche le bouton de validation de l'ajout de personnes
-            // si aucun champ d'édition du titre ou d'ajout de personne n'est présent
-            if (cardTitle.querySelector('input[type="text"]') == null) {
-                addPeopleButton.style.display = 'none';
+            toggleButton.textContent = '◂';
+            if (INVITING || EDITING) {
+                return;
             }
+            editButton.style.display = "flex";
+            addPeopleButton.style.display = 'none';
         }
     });
-
     editButton.addEventListener('click', () => {
-        // Masque le bouton de modification et affiche le bouton de validation
+        EDITING = true;
         editButton.style.display = 'none';
-        validateButton.style.display = 'block';
-
-        // Remplace le titre par un champ de saisie
+        validateButton.style.display = 'flex';
         const input = document.createElement('input');
         input.type = 'text';
         input.placeholder = 'Nouveau titre';
@@ -81,23 +86,41 @@ cards.forEach((card) => {
         cardTitle.textContent = '';
         cardTitle.appendChild(input);
     });
-
     validateButton.addEventListener('click', () => {
-        // Masque le bouton de validation et affiche le bouton de modification
         validateButton.style.display = 'none';
-        editButton.style.display = 'inline-block';
-
-        // Récupère la valeur du champ de saisie et l'affiche dans le titre
-        const input = cardTitle.querySelector('input');
-        cardTitle.textContent = input.value;
+        if (EDITING) {
+            editButton.style.display = 'flex';
+            const input = cardTitle.querySelector('input');
+            if (input.value.trim()) {
+                cardTitle.textContent = input.value;
+                cardTitleString = cardTitle.textContent;
+            }
+            EDITING = false;
+        } else if (INVITING) {
+            addPeopleButton.style.display = 'flex';
+            const input = cardTitle.querySelector('input');
+            if (input.value.trim()) {
+                const username = input.value;
+                $.ajax({
+                    url: 'add_people.php',
+                    type: 'POST',
+                    data: {username: username},
+                    success: function(response) {
+                        //todo
+                    }
+                });
+            }
+            cardTitle.textContent = cardTitleString;
+            INVITING = false;
+        }
+        if (OPENED) {
+            toggleButton.click();
+        }
     });
-    
     addPeopleButton.addEventListener('click', () => {
-        // Masque le bouton d'ajout de personnes et affiche le bouton de validation de l'ajout de personnes
+        INVITING = true
         addPeopleButton.style.display = 'none';
-        validateButton.style.display = 'inline-block';
-
-        // Remplace le titre par un champ de saisie
+        validateButton.style.display = 'flex';
         const input = document.createElement('input');
         input.type = 'text';
         input.placeholder = 'Nom d\'utilisateur';
@@ -105,29 +128,43 @@ cards.forEach((card) => {
         cardTitle.textContent = '';
         cardTitle.appendChild(input);
     });
-
-    validateButton.addEventListener('click', () => {
-        // Récupère la valeur du champ de saisie
-        const username = input.value;
-
-        // Envoie la valeur du champ de saisie au fichier "add_people.php" en utilisant une requête AJAX
-        $.ajax({
-            url: 'add_people.php',
-            type: 'POST',
-            data: {username: username},
-            success: function(response) {
-                // Supprime le champ de saisie
-                input.parentNode.removeChild(input);
-                // Remplace le bouton de validation de l'ajout de personnes par un bouton d'ajout de personnes
-                const newAddPeopleButton = document.createElement('button');
-                newAddPeopleButton.id = 'main__card__header__add_people_button';
-                newAddPeopleButton.textContent = 'Ajouter des personnes';
-                validateButton.parentNode.replaceChild(newAddPeopleButton, validateButton);
-            }
+    newTaskButton.addEventListener('click', () => {
+        if (newTaskInput.value.trim()) {
+            const p = document.createElement('p');
+            p.textContent = newTaskInput.value;
+            tasksParent.appendChild(p);
+            newTaskInput.value = '';
+        }
+    });
+    tasksParent.querySelectorAll('#main__card__content__tasks__task').forEach((task) => {
+        const taskEditButton = document.createElement('button');
+        taskEditButton.textContent = 'Modifier';
+        task.appendChild(taskEditButton);
+        taskEditButton.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = task.querySelector("p").textContent;
+            task.querySelector("p").textContent = '';
+            task.querySelector("p").appendChild(input);
+            taskEditButton.style.display = 'none';
+            const taskValidateButton = document.createElement('button');
+            taskValidateButton.textContent = 'Valider';
+            task.appendChild(taskValidateButton);
+            taskValidateButton.addEventListener('click', () => {
+                task.querySelector("p").textContent = input.value;
+                $.ajax({
+                    url: 'edit_task.php',
+                    type: 'POST',
+                    data: {username: username},
+                    success: function(response) {
+                        //todo
+                    }
+                });
+                taskValidateButton.style.display = 'none';
+                taskEditButton.style.display = 'block';
+            });
         });
     });
-
-
 });
 
 $(document).ready(function(){
