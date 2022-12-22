@@ -99,7 +99,7 @@ class Database {
 
     public function getProfilePictureUrl(int $id): string {
         $pdo = $this->sql_connect();
-        $query = "SELECT profile_picture_url FROM users WHERE id = :id";
+        $query = "SELECT profile_picture_url FROM users WHERE user_id = :id";
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -120,5 +120,26 @@ class Database {
             return $result['username'];
         }
     }
+
+    function updateTaskName(int $taskId, string $newTaskName) {
+        // Connecter à la base de données
+        $pdo = $this->sql_connect();
+
+        // Préparer la requête SQL pour mettre à jour le nom de la tâche
+        $query = "UPDATE tasks SET task_name = :newTaskName WHERE task_id = :taskId";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':newTaskName', $newTaskName);
+        $stmt->bindValue(':taskId', $taskId);
+
+        // Exécuter la requête
+        try {
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+
 }    
 ?>

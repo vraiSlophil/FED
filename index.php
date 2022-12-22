@@ -1,7 +1,8 @@
+<!doctype html>
 <html lang="fr">
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 session_start();
 require_once "app/database.php";
 $database = new Database();
@@ -54,6 +55,7 @@ $login = $_SESSION["login"];
             --image-white: <?php echo $_SESSION["imageWhite"];?>;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 </head>
 <body>
 <header id="header">
@@ -73,18 +75,21 @@ $login = $_SESSION["login"];
     </div>
 </header>
 <main id="main">
-    <div id="card">
-        <div id="card_header">
+    <div id="main__card">
+        <div id="main__card__header">
             <h3>Titre de la carte</h3>
-            <button id="toggle_button">Afficher/masquer</button>
+            <button id="main__card__header__add_people_button"><img src="images/add-group.png" alt="add people"></button>
+            <button id="main__card__header__edit_button" style="display: none;"><img src="images/edit.png" alt="edit task title"></button>
+            <button id="main__card__header__validate_button" style="display: none;"><img src="images/check.png" alt="validate edits"></button>
+            <button id="main__card__header__toggle_button">▾</button>
         </div>
-        <div id="card_content">
+        <div id="main__card__content">
             <p>Contenu de la carte</p>
             <p>Contenu de la carte</p>
             <p>Contenu de la carte</p>
         </div>
     </div>
 </main>
-
+<script src="script/script.js"></script>
 </body>
 </html>

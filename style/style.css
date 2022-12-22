@@ -434,6 +434,28 @@ input:focus {
     text-decoration: none;
 }
 
+#main__card__content {
+    /*height: 0;*/
+    /*visibility: hidden;*/
+    display: none;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @keyframes spawntask {
     0% {
