@@ -446,6 +446,7 @@ input:focus {
     justify-content: center;
     align-items: start;
     flex-direction: column;
+    transform: scaleY(-1);
 }
 
 @keyframes spawntask {

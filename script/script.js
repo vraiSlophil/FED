@@ -81,7 +81,7 @@ class todoTheme {
         if (this.content.style.display === "flex" && this.OPENED) {
             this.OPENED = false;
             this.content.style.display = "none";
-            this.toggleContentButton.textContent = "▾";
+            this.toggleContentButton.style.transform = "scaleY(-1)";
             if (this.INVITING || this.EDITING) {
                 return;
             }
@@ -90,7 +90,7 @@ class todoTheme {
         } else {
             this.OPENED = true;
             this.content.style.display = "flex";
-            this.toggleContentButton.textContent = "◂";
+            this.toggleContentButton.style.transform = "scaleY(1)";
             if (this.INVITING || this.EDITING) {
                 return;
             }

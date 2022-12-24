@@ -82,7 +82,7 @@ $login = $_SESSION["login"];
             <button id="main__card__header__edit_button" style="display: none;"><img src="images/edit.png" alt="edit task title"></button>
             <button id="main__card__header__validate_button" style="display: none;"><img src="images/check.png" alt="validate edits"></button>
             <button id="main__card__header__delete_button"><img src="images/poubelle.png" alt="delete todo theme"></button>
-            <button id="main__card__header__toggle_content_button">▾</button>
+            <button id="main__card__header__toggle_content_button"><img src="images/show-more.png" alt="⯆"></button>
         </div>
         <div id="main__card__content">
             <div id="main__card__content__tasks">
