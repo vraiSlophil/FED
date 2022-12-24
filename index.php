@@ -81,18 +81,28 @@ $login = $_SESSION["login"];
             <button id="main__card__header__add_people_button"><img src="images/add-group.png" alt="add people"></button>
             <button id="main__card__header__edit_button" style="display: none;"><img src="images/edit.png" alt="edit task title"></button>
             <button id="main__card__header__validate_button" style="display: none;"><img src="images/check.png" alt="validate edits"></button>
-            <button id="main__card__header__toggle_button">▾</button>
+            <button id="main__card__header__delete_button"><img src="images/poubelle.png" alt="delete todo theme"></button>
+            <button id="main__card__header__toggle_content_button">▾</button>
         </div>
         <div id="main__card__content">
             <div id="main__card__content__tasks">
                 <div id="main__card__content__tasks__task">
                     <p>Contenu de la carte</p>
+                    <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
+                    <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
+                    <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
                 </div>
                 <div id="main__card__content__tasks__task">
                     <p>Contenu de la carte</p>
+                    <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
+                    <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
+                    <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
                 </div>
                 <div id="main__card__content__tasks__task">
                     <p>Contenu de la carte</p>
+                    <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
+                    <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
+                    <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
                 </div>
             </div>
             <div id="main__card__content__interactive">
