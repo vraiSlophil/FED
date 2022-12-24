@@ -434,26 +434,19 @@ input:focus {
     text-decoration: none;
 }
 
+#main__card__header {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+}
+
 #main__card__content {
     display: none;
     justify-content: center;
     align-items: start;
     flex-direction: column;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @keyframes spawntask {
     0% {
