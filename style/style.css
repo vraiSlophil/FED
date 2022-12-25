@@ -22,6 +22,7 @@ button {
     box-shadow: unset;
     background: unset;
     border-radius: unset;
+    cursor: pointer;
 }
 
 img {
@@ -434,11 +435,55 @@ input:focus {
     text-decoration: none;
 }
 
-#main__card__header {
+#main__card {
+    width: max-content;
     display: flex;
     justify-content: center;
     align-items: start;
     flex-direction: column;
+}
+
+#main__card__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    background-color: #FAEAB1;
+    padding: 1em;
+}
+
+#main__card__header__title {
+    margin: 0 1em 0 0;
+    width: 100%;
+}
+
+#main__card__header__title > input {
+    width: 100%;
+}
+
+#main__card__header > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+}
+
+#main__card__header > div > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2em;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #FFFFFF80;
+    margin: 0 0.25em;
+
+}
+
+#main__card__header > div > button > img {
+    height: 100%;
+    padding: 0.5em;
 }
 
 #main__card__content {
@@ -446,6 +491,29 @@ input:focus {
     justify-content: center;
     align-items: start;
     flex-direction: column;
+}
+
+#main__card__content__tasks__task {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+#main__card__content__tasks__task__checkbox {
+    appearance: none;
+    transition: 0s;
+    background-color: #EEEEEE;
+    border-radius: 50%;
+    height: 2em;
+    width: 2em;
+}
+
+#main__card__content__tasks__task__checkbox:checked {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1.25em;
+    background-image: url("../images/check.png");
 }
 
 @keyframes spawntask {

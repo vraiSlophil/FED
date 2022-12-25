@@ -8,9 +8,8 @@ function toggleVisibilityNicknameEdit(){
         element.classList.remove("show");
         element.classList.add("hide");
     }
-    
-}
 
+}
 function toggleVisibilityPasswordEdit(){
     const element = document.getElementById("passwordedit");
 
@@ -21,7 +20,7 @@ function toggleVisibilityPasswordEdit(){
         element.classList.remove("show");
         element.classList.add("hide");
     }
-    
+
 }
 
 function toggleVisibilityEmailEdit() {
@@ -35,7 +34,6 @@ function toggleVisibilityEmailEdit() {
         element.classList.add("hide");
     }
 }
-
 class todoTheme {
 
     constructor(theme) {
@@ -74,6 +72,10 @@ class todoTheme {
             tdTask.getTaskDeleteButton.addEventListener("click", () => {
                 tdTask.deleteClick();
             });
+
+            tdTask.getCheckbox.addEventListener("click", () => {
+                tdTask.checkboxClick();
+            })
         });
     }
 
@@ -81,7 +83,7 @@ class todoTheme {
         if (this.content.style.display === "flex" && this.OPENED) {
             this.OPENED = false;
             this.content.style.display = "none";
-            this.toggleContentButton.style.transform = "scaleY(-1)";
+            this.toggleContentButton.querySelector("img").style.transform = "scaleY(1)";
             if (this.INVITING || this.EDITING) {
                 return;
             }
@@ -90,7 +92,7 @@ class todoTheme {
         } else {
             this.OPENED = true;
             this.content.style.display = "flex";
-            this.toggleContentButton.style.transform = "scaleY(1)";
+            this.toggleContentButton.querySelector("img").style.transform = "scaleY(-1)";
             if (this.INVITING || this.EDITING) {
                 return;
             }
@@ -131,7 +133,6 @@ class todoTheme {
         const input = document.createElement("input");
         input.type = "text";
         input.placeholder = "Nouveau titre";
-        input.setAttribute("class", "editTitle");
         input.value = this.title.textContent;
 
         this.title.textContent = "";
@@ -140,19 +141,19 @@ class todoTheme {
 
     validateClick() {
         if (this.EDITING) {
-            this.validateButton.style.display = "none";
-            this.editButton.style.display = "flex";
             const input = this.title.querySelector("input");
             if (input.value.trim()) {
+                this.validateButton.style.display = "none";
+                this.editButton.style.display = "flex";
                 this.title.textContent = input.value;
                 this.titleString = this.title.textContent;
+                this.EDITING = false;
             }
-            this.EDITING = false;
         } else if (this.INVITING) {
-            this.validateButton.style.display = "none";
-            this.addPeopleButton.style.display = "flex";
             const input = this.title.querySelector("input");
             if (input.value.trim()) {
+                this.validateButton.style.display = "none";
+                this.addPeopleButton.style.display = "flex";
                 const username = input.value;
                 $.ajax({
                     url: "add_people.php",
@@ -162,9 +163,9 @@ class todoTheme {
                         //todo
                     }
                 });
+                this.title.textContent = this.titleString;
+                this.INVITING = false;
             }
-            this.title.textContent = this.titleString;
-            this.INVITING = false;
         }
         if (this.OPENED) {
             this.toggleContentClick();
@@ -177,7 +178,7 @@ class todoTheme {
         this.validateButton.style.display = "flex";
         const input = document.createElement("input");
         input.type = "text";
-        input.placeholder = "Nom d\"utilisateur";
+        input.placeholder = "Nom d\'utilisateur";
         input.setAttribute("class", "addPeople");
         this.title.textContent = "";
         this.title.appendChild(input);
@@ -185,9 +186,13 @@ class todoTheme {
 
     newTaskClick() {
         if (this.contentNewTaskInput.value.trim()) {
+            const parent = document.createElement("div");
+
             const div = document.createElement("div");
 
             const p = document.createElement("p");
+
+            const input = document.createElement("input");
 
             const editButton = document.createElement('button');
             editButton.id = 'main__card__content__tasks__task__edit_button';
@@ -202,12 +207,18 @@ class todoTheme {
             deleteButton.id = 'main__card__content__tasks__task__delete_button';
             deleteButton.innerHTML = '<img src="images/poubelle.png" alt="delete task">';
 
-            div.setAttribute("id", "main__card__content__tasks__task");
+            parent.setAttribute("id", "main__card__content__tasks__task");
             p.textContent = this.contentNewTaskInput.value;
-            div.appendChild(p);
+
+            input.type = "checkbox";
+            input.setAttribute("id", "main__card__content__tasks__task__checkbox");
+
+            parent.appendChild(p);
+            div.appendChild(input);
             div.appendChild(editButton);
             div.appendChild(validateButton);
             div.appendChild(deleteButton);
+            parent.appendChild(div);
 
             this.contentTasksParent.appendChild(div);
             this.contentNewTaskInput.value = "";
@@ -258,6 +269,7 @@ class todoTask {
     constructor(task) {
         this.task = task;
 
+        this.checkbox = this.task.querySelector("#main__card__content__tasks__task__checkbox");
         this.taskTitle = this.task.querySelector("p");
         this.taskEditButton = this.task.querySelector("#main__card__content__tasks__task__edit_button");
         this.taskValidateButton = this.task.querySelector("#main__card__content__tasks__task__validate_button");
@@ -310,6 +322,18 @@ class todoTask {
         delete this.OPENED;
         delete this.EDITING;
         delete this;
+    }
+
+    checkboxClick() {
+        if (this.checkbox.checked) {
+            this.taskTitle.style.textDecoration = "line-through";
+        } else {
+            this.taskTitle.style.textDecoration = "none";
+        }
+    }
+
+    get getCheckbox() {
+        return this.checkbox;
     }
 
     get getTaskEditButton() {
