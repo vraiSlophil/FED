@@ -75,7 +75,7 @@ CREATE TABLE `users` (
                          `email` varchar(64) NOT NULL,
                          `first_name` varchar(32) DEFAULT NULL,
                          `last_name` varchar(32) DEFAULT NULL,
-                         `profile_picture_url` text DEFAULT 'images/identifier.png'
+                         `profile_picture_url` text DEFAULT 'images/identifier.png' NOT NULL
 ) ;
 
 --

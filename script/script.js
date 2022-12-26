@@ -187,43 +187,43 @@ class todoTheme {
     newTaskClick() {
         if (this.contentNewTaskInput.value.trim()) {
             const parent = document.createElement("div");
+            parent.id = "main__card__content__tasks__task";
 
-            const div = document.createElement("div");
+            const child = document.createElement("div");
 
             const p = document.createElement("p");
 
-            const input = document.createElement("input");
+            p.textContent = this.contentNewTaskInput.value;
+            parent.appendChild(p);
+            parent.appendChild(child);
 
+            const input = document.createElement("input");
             const editButton = document.createElement('button');
             editButton.id = 'main__card__content__tasks__task__edit_button';
-            editButton.innerHTML = '<img src="images/edit.png" alt="edit task content">';
 
+            editButton.innerHTML = '<img src="images/edit.png" alt="edit task content">';
             const validateButton = document.createElement('button');
             validateButton.id = 'main__card__content__tasks__task__validate_button';
             validateButton.style.display = 'none';
-            validateButton.innerHTML = '<img src="images/check.png" alt="validate task">';
 
+            validateButton.innerHTML = '<img src="images/check.png" alt="validate task">';
             const deleteButton = document.createElement('button');
             deleteButton.id = 'main__card__content__tasks__task__delete_button';
-            deleteButton.innerHTML = '<img src="images/poubelle.png" alt="delete task">';
 
-            parent.setAttribute("id", "main__card__content__tasks__task");
-            p.textContent = this.contentNewTaskInput.value;
+            deleteButton.innerHTML = '<img src="images/poubelle.png" alt="delete task">';
 
             input.type = "checkbox";
             input.setAttribute("id", "main__card__content__tasks__task__checkbox");
 
-            parent.appendChild(p);
-            div.appendChild(input);
-            div.appendChild(editButton);
-            div.appendChild(validateButton);
-            div.appendChild(deleteButton);
-            parent.appendChild(div);
+            child.appendChild(input);
+            child.appendChild(editButton);
+            child.appendChild(validateButton);
+            child.appendChild(deleteButton);
 
-            this.contentTasksParent.appendChild(div);
+            this.contentTasksParent.appendChild(parent);
             this.contentNewTaskInput.value = "";
 
-            const tdTask = new todoTask(div);
+            const tdTask = new todoTask(parent);
 
             tdTask.getTaskEditButton.addEventListener("click", () => {
                 tdTask.editClick();
@@ -235,6 +235,10 @@ class todoTheme {
 
             tdTask.getTaskDeleteButton.addEventListener("click", () => {
                 tdTask.deleteClick();
+            });
+
+            tdTask.getCheckbox.addEventListener("click", () => {
+                tdTask.checkboxClick();
             });
         }
     }
@@ -281,6 +285,7 @@ class todoTask {
 
     editClick() {
         this.taskEditButton.style.display = "none";
+        this.checkbox.style.display = "none";
         this.taskValidateButton.style.display = "flex";
         const input = document.createElement("input");
         input.type = "text";
@@ -304,7 +309,8 @@ class todoTask {
                 }
             });
             this.taskValidateButton.style.display = "none";
-            this.taskEditButton.style.display = "block";
+            this.taskEditButton.style.display = "flex";
+            this.checkbox.style.display = "flex";
             this.EDITING = false;
         }
     }

@@ -7,6 +7,7 @@
     color: var(--font-color);
     font-family: 'Poppins', sans-serif;
     transition: 0.1s;
+    overflow: hidden;
 }
 
 body {
@@ -437,7 +438,7 @@ input:focus {
 
 #main__card {
     width: max-content;
-    display: flex;
+    /*display: flex;*/
     justify-content: center;
     align-items: start;
     flex-direction: column;
@@ -469,7 +470,8 @@ input:focus {
     width: max-content;
 }
 
-#main__card__header > div > button {
+#main__card__header > div > button,
+#main__card__content__tasks__task > div > button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -481,7 +483,12 @@ input:focus {
 
 }
 
-#main__card__header > div > button > img {
+#main__card__content__tasks__task > div > button {
+    background-color: #EEEEEE;
+}
+
+#main__card__header > div > button > img,
+#main__card__content__tasks__task > div > button > img {
     height: 100%;
     padding: 0.5em;
 }
@@ -493,7 +500,29 @@ input:focus {
     flex-direction: column;
 }
 
+#main__card__content__tasks {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 1em;
+}
+
+#main__card__content__tasks__task  > p {
+    height: 100%;
+    border-bottom: 0.15em solid #EEEEEE;
+}
+
 #main__card__content__tasks__task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+}
+
+#main__card__content__tasks__task > div {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -507,12 +536,13 @@ input:focus {
     border-radius: 50%;
     height: 2em;
     width: 2em;
+    margin: 0.25em;
 }
 
 #main__card__content__tasks__task__checkbox:checked {
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 1.25em;
+    background-size: 1em;
     background-image: url("../images/check.png");
 }
 

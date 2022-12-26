@@ -42,6 +42,7 @@ $login = $_SESSION["login"];
     <meta charset="UTF-8">
     <title>FED | To-do list</title>
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/app.css">
     <link rel="icon" href="images/fed-logo-white-background.png">
     <style>
         :root {
@@ -75,54 +76,63 @@ $login = $_SESSION["login"];
     </div>
 </header>
 <main id="main">
-    <div id="main__card">
-        <div id="main__card__header">
-            <h3 id="main__card__header__title">Titre de la carte</h3>
-            <div>
-                <button id="main__card__header__add_people_button"><img src="images/add-group.png" alt="add people"></button>
-                <button id="main__card__header__edit_button" style="display: none;"><img src="images/edit.png" alt="edit task title"></button>
-                <button id="main__card__header__validate_button" style="display: none;"><img src="images/check.png" alt="validate edits"></button>
-                <button id="main__card__header__toggle_content_button"><img src="images/show-more.png" alt="⯆"></button>
-                <button id="main__card__header__delete_button"><img src="images/poubelle.png" alt="delete todo theme"></button>
-            </div>
-        </div>
-        <div id="main__card__content">
-            <div id="main__card__content__tasks">
-                <div id="main__card__content__tasks__task">
-                    <p>Contenu de la carte</p>
+    <div id="context-menu">
+        <div id="new">
+            <p class="context-option">new</p>
+            <div id="main__card">
+                <div id="main__card__header">
+                    <h3 id="main__card__header__title">Titre de la carte</h3>
                     <div>
-                        <input type="checkbox" id="main__card__content__tasks__task__checkbox">
-                        <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
-                        <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
-                        <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
+                        <button id="main__card__header__add_people_button"><img src="images/add-group.png" alt="add people"></button>
+                        <button id="main__card__header__edit_button" style="display: none;"><img src="images/edit.png" alt="edit task title"></button>
+                        <button id="main__card__header__validate_button" style="display: none;"><img src="images/check.png" alt="validate edits"></button>
+                        <button id="main__card__header__toggle_content_button"><img src="images/show-more.png" alt="⯆"></button>
+                        <button id="main__card__header__delete_button"><img src="images/poubelle.png" alt="delete todo theme"></button>
                     </div>
                 </div>
-                <div id="main__card__content__tasks__task">
-                    <p>Contenu de la carte</p>
-                    <div>
-                        <input type="checkbox" id="main__card__content__tasks__task__checkbox">
-                        <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
-                        <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
-                        <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
+                <div id="main__card__content">
+                    <div id="main__card__content__tasks">
+                        <div id="main__card__content__tasks__task">
+                            <p>Contenu de la carte</p>
+                            <div>
+                                <input type="checkbox" id="main__card__content__tasks__task__checkbox">
+                                <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
+                                <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
+                                <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
+                            </div>
+                        </div>
+                        <div id="main__card__content__tasks__task">
+                            <p>Contenu de la carte</p>
+                            <div>
+                                <input type="checkbox" id="main__card__content__tasks__task__checkbox">
+                                <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
+                                <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
+                                <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
+                            </div>
+                        </div>
+                        <div id="main__card__content__tasks__task">
+                            <p>Contenu de la carte</p>
+                            <div>
+                                <input type="checkbox" id="main__card__content__tasks__task__checkbox">
+                                <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
+                                <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
+                                <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="main__card__content__interactive">
+                        <input id="main__card__content__interactive__input" type="text" placeholder="Ajouter une tâche">
+                        <button id="main__card__content__interactive__add_task_button">Ajouter</button>
                     </div>
                 </div>
-                <div id="main__card__content__tasks__task">
-                    <p>Contenu de la carte</p>
-                    <div>
-                        <input type="checkbox" id="main__card__content__tasks__task__checkbox">
-                        <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
-                        <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
-                        <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
-                    </div>
-                </div>
-            </div>
-            <div id="main__card__content__interactive">
-                <input id="main__card__content__interactive__input" type="text" placeholder="Ajouter une tâche">
-                <button id="main__card__content__interactive__add_task_button">Ajouter</button>
             </div>
         </div>
     </div>
+    <div id="root">
+        <canvas id="canvas"></canvas>
+    </div>
 </main>
 <script src="script/script.js"></script>
+<script src="script/app.js"></script>
 </body>
 </html>
