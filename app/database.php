@@ -18,7 +18,7 @@ class Database {
         return $bdd;
     }
 
-    public function createUser($username, $password, $email, $firstName = null, $lastName = null, $profilePictureUrl = "images/indentifier.png"): int|string {
+    public function createUser($username, $password, $email, $firstName = null, $lastName = null, $profilePictureUrl = "images/identifier.png"): int|string {
         $salt = uniqid();
         $hashed_password = hash('sha256', $password . $salt);
         $query = "INSERT INTO users (username, password, salt, email, first_name, last_name, profile_picture_url) VALUES (:username, :password, :salt, :email, :first_name, :last_name, :profile_picture_url)";

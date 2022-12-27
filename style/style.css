@@ -58,7 +58,11 @@ img {
     filter: invert(0);
 }
 
-#main, #connectform {
+#main {
+    position: relative;
+}
+
+#connectform {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -437,7 +441,7 @@ input:focus {
 }
 
 #main__card {
-    width: max-content;
+    width: 50em;
     /*display: flex;*/
     justify-content: center;
     align-items: start;
@@ -456,7 +460,8 @@ input:focus {
 
 #main__card__header__title {
     margin: 0 1em 0 0;
-    width: 100%;
+    min-width: max-content;
+    width: 80%;
 }
 
 #main__card__header__title > input {
@@ -467,7 +472,7 @@ input:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: max-content;
+    width: 10em;
 }
 
 #main__card__header > div > button,
@@ -476,6 +481,7 @@ input:focus {
     justify-content: center;
     align-items: center;
     height: 2em;
+    width: 2em;
     border-radius: 50%;
     overflow: hidden;
     background: #FFFFFF80;
@@ -490,6 +496,7 @@ input:focus {
 #main__card__header > div > button > img,
 #main__card__content__tasks__task > div > button > img {
     height: 100%;
+    width: 100%;
     padding: 0.5em;
 }
 

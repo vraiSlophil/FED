@@ -42,7 +42,7 @@ $login = $_SESSION["login"];
     <meta charset="UTF-8">
     <title>FED | To-do list</title>
     <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/app.css">
+    <link rel="stylesheet" href="style/move.css">
     <link rel="icon" href="images/fed-logo-white-background.png">
     <style>
         :root {
@@ -79,7 +79,7 @@ $login = $_SESSION["login"];
     <div id="context-menu">
         <div id="new">
             <p class="context-option">new</p>
-            <div id="main__card">
+            <div class="block" id="main__card">
                 <div id="main__card__header">
                     <h3 id="main__card__header__title">Titre de la carte</h3>
                     <div>

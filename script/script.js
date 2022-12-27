@@ -75,7 +75,7 @@ class todoTheme {
 
             tdTask.getCheckbox.addEventListener("click", () => {
                 tdTask.checkboxClick();
-            })
+            });
         });
     }
 

@@ -11,6 +11,7 @@
     justify-content: center;
     align-items: center;
     filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
+    width: 10em;
 
 }
 
@@ -49,10 +50,14 @@ p.context-option {
 
 #root {
 
-    width: 100%;
+    width: 100vw;
     height: 100vh;
-    background-color: rgb(50, 50, 65);
-    background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgb(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-color: #FFFFFF;
+    background-image:
+            linear-gradient(rgba(128, 128, 128, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(128, 128, 128, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(128, 128, 128, 0.1) 1px, transparent 1px),
+            linear-gradient(rgba(128, 128, 128, 0.1) 1px, transparent 1px);
     background-size: 20px 20px, 120px 120px;
 
 }
