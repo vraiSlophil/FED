@@ -10,6 +10,10 @@
     overflow: hidden;
 }
 
+*::selection {
+    background-color: transparent;
+}
+
 body {
     background-color: var(--background-color);
     min-height: 100vh;
@@ -441,15 +445,18 @@ input:focus {
 }
 
 #main__card {
-    width: 50em;
-    /*display: flex;*/
+    min-width: 25em;
+    width: max-content;
+    display: flex;
     justify-content: center;
     align-items: start;
     flex-direction: column;
+    border-radius: 0.4em;
 }
 
 #main__card__header {
     width: 100%;
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -461,7 +468,7 @@ input:focus {
 #main__card__header__title {
     margin: 0 1em 0 0;
     min-width: max-content;
-    width: 80%;
+    width: 100%;
 }
 
 #main__card__header__title > input {
@@ -469,14 +476,20 @@ input:focus {
 }
 
 #main__card__header > div {
+    position: absolute;
+    top: 0;
+    right: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 10em;
+    height: 100%;
+    background-color: #FAEAB1;
+    padding: 1em;
 }
 
 #main__card__header > div > button,
-#main__card__content__tasks__task > div > button {
+#main__card__content__tasks__task > div > button,
+#main__card__content__interactive__add_task_button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -489,22 +502,27 @@ input:focus {
 
 }
 
-#main__card__content__tasks__task > div > button {
+#main__card__content__tasks__task > div > button,
+#main__card__content__interactive__add_task_button {
     background-color: #EEEEEE;
 }
 
 #main__card__header > div > button > img,
-#main__card__content__tasks__task > div > button > img {
+#main__card__content__tasks__task > div > button > img,
+#main__card__content__interactive__add_task_button > img {
     height: 100%;
     width: 100%;
     padding: 0.5em;
 }
 
 #main__card__content {
+    width: 100%;
     display: none;
     justify-content: center;
     align-items: start;
     flex-direction: column;
+    padding: 1em;
+    background-color: #FFFFFFAA;
 }
 
 #main__card__content__tasks {
@@ -513,12 +531,11 @@ input:focus {
     align-items: start;
     flex-direction: column;
     width: 100%;
-    padding-left: 1em;
 }
 
-#main__card__content__tasks__task  > p {
+#main__card__content__tasks__task > p {
     height: 100%;
-    border-bottom: 0.15em solid #EEEEEE;
+    padding-left: 0.5em;
 }
 
 #main__card__content__tasks__task {
@@ -527,6 +544,13 @@ input:focus {
     align-items: center;
     flex-direction: row;
     width: 100%;
+    border-radius: 0.4em;
+    margin: 0.2em;
+    padding: 0.2em;
+}
+
+#main__card__content__tasks__task:hover {
+    background-color: #FAFAFA;
 }
 
 #main__card__content__tasks__task > div {
@@ -552,6 +576,21 @@ input:focus {
     background-size: 1em;
     background-image: url("../images/check.png");
 }
+
+#main__card__content__interactive {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+}
+
+#main__card__content__interactive__input {
+    background-color: #FAFAFA;
+    border-radius: 0.4em;
+    padding: 0.4em 0.8em;
+}
+
 
 @keyframes spawntask {
     0% {

@@ -1,18 +1,19 @@
-const root = document.getElementById("root");
-const contextMenu = document.getElementById("context-menu");
-const optionNew = document.getElementById("new");
+const $root = $("#root");
+const $contextMenu = $("#context-menu");
+const $optionNew = $("#new");
+const $headerHeight = $("#header").outerHeight();
 const uuids = [];
 const blocks = {}
 
-const c = document.getElementById("canvas");
-const ctx = c.getContext("2d");
-ctx.canvas.width = root.offsetWidth;
-ctx.canvas.height = root.offsetHeight;
-ctx.strokeStyle = "#fff";
-ctx.lineWidth = 2;
+// const c = $("#canvas");
+// const ctx = c[0].getContext("2d");
+// ctx.canvas.width = $root.offset().width;
+// ctx.canvas.height = $root.offset().height;
+// ctx.strokeStyle = "#fff";
+// ctx.lineWidth = 2;
 
+// let matrix = null;
 let selected = null;
-// let selectedPine = null;
 let selectedX = 0;
 let selectedY = 0;
 
@@ -43,92 +44,98 @@ function generateUuid() {
 
 }
 
-window.addEventListener("contextmenu", (event) => {
+$(window).contextmenu(function(event) {
 
     event.preventDefault();
-    contextMenu.style.display = "flex";
-    contextMenu.style.left = `${event.clientX}px`;
-    contextMenu.style.top = `${event.clientY - document.querySelector("#header").offsetHeight}px`;
+    $contextMenu.css("display", "flex");
+    $contextMenu.css({
+        left: `${event.clientX}px`,
+        top: `${event.clientY - $headerHeight}px`
+    });
 
 });
 
-window.addEventListener("click", (event) => {
+$(window).click(function(event) {
 
-    event.preventDefault();
-    if (event.target !== contextMenu && !Array.from(contextMenu.querySelectorAll("*")).includes(event.target)) {
-        if (contextMenu.style.display === "flex") {
-            contextMenu.style.display = "none";
+    const target = $(event.target).closest("#context-menu");
+
+    if (target.length <= 0) {
+        if ($contextMenu.css("display") === "flex") {
+            $contextMenu.css("display", "none");
         }
     }
 
 });
 
-window.addEventListener("mousedown", (event) => {
+$(window).mousedown(function(event) {
 
-    // event.preventDefault();
+    selected = $(event.target).closest("#main__card");
 
-    const target = event.target;
-    selected = target.closest("#main__card");
+    if (selected.hasClass("block")) {
 
-    if (event.target.classList.contains("block")) {
-
-        let matrix = window.getComputedStyle(selected).transform.match(/matrix.*\((.+)\)/)[1].split(', ');
-        selectedX = event.clientX - matrix[4];
-        selectedY = event.clientY - matrix[5];
+        const $offset = $(selected).offset();
+        selectedX = event.pageX - $offset.left;
+        selectedY = event.pageY - $offset.top;
     }
 
-    // console.log("selected contient pas block");
 })
 
-window.addEventListener("mouseup", (event) => {
-    // event.preventDefault();
+$(window).mouseup(function() {
+
     selected = null;
+
 });
 
-window.addEventListener("mousemove", (event) => {
+$(window).mousemove(function(event) {
 
     if (selected) {
-        let matrix = window.getComputedStyle(selected).transform.match(/matrix.*\((.+)\)/)[1].split(', ');
-
-        let x = (event.clientX - selectedX) - ((event.clientX - selectedX) % 20);
-        let y = (event.clientY - selectedY) - ((event.clientY - selectedY) % 20) - document.querySelector("#header").offsetHeight;
-        if (matrix[4] !== x || matrix[5] !== y) {
-            selected.style.transform = `translate(${x}px, ${y}px)`;
-        }
+        let x = (event.clientX - selectedX - (event.clientX % 20)) + (selectedX % 20);
+        let y = (event.clientY - selectedY - $headerHeight - (event.clientY % 20)) + (selectedY % 20);
+        $(selected).css({
+            transform: `translate(${x}px, ${y}px)`
+        });
     }
+
 });
 
-optionNew.addEventListener("click", (event) => {
+$optionNew.click(function(event) {
 
-    // event.preventDefault();
-    contextMenu.style.display = "none";
+    $contextMenu.css("display", "none");
 
     let uuid = generateUuid();
     let element = (event.target.nodeName === "DIV" ? event.target.lastElementChild.cloneNode(true) : event.target.nextElementSibling.cloneNode(true));
     element.classList.add(uuid);
 
-    const tdTask = new todoTask(element);
+    const tdTheme = new todoTheme(element);
 
-    tdTask.getTaskEditButton.addEventListener("click", () => {
-        tdTask.editClick();
+    tdTheme.getToggleContentButton.addEventListener("click", () => {
+        tdTheme.toggleContentClick();
     });
 
-    tdTask.getTaskValidateButton.addEventListener("click", () => {
-        tdTask.validateClick();
+    tdTheme.getAddPeopleButton.addEventListener("click", () => {
+        tdTheme.invitePeopleClick();
     });
 
-    tdTask.getTaskDeleteButton.addEventListener("click", () => {
-        tdTask.deleteClick();
+    tdTheme.getDeleteButton.addEventListener("click", () => {
+        tdTheme.deleteClick();
     });
 
-    tdTask.getCheckbox.addEventListener("click", () => {
-        tdTask.checkboxClick();
+    tdTheme.getEditButton.addEventListener("click", () => {
+        tdTheme.editClick();
+    });
+
+    tdTheme.getValidateButton.addEventListener("click", () => {
+        tdTheme.validateClick();
+    });
+
+    tdTheme.getContentNewTaskButton.addEventListener("click", () => {
+        tdTheme.newTaskClick();
     });
 
     let x = event.clientX - (event.clientX % 20);
-    let y = event.clientY - (event.clientY % 20);
+    let y = event.clientY - (event.clientY % 20) - $headerHeight;
 
-    element.style.transform = `translate(${x}px, ${y}px)`;
-    root.appendChild(element);
+    $(element).css("transform", `translate(${x}px, ${y}px)`);
+    $root.append(element);
     blocks[uuid] = new Block(uuid);
 });

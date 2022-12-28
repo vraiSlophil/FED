@@ -16,6 +16,8 @@ if (isset($_POST["register_name"]) && isset($_POST["register_email"]) && isset($
         exit;
     }
     $_SESSION["login"] = intval($create);
+    header("Location: index.php");
+    exit;
 
 }
 
@@ -27,6 +29,8 @@ if (isset($_POST["login_name"]) && isset($_POST["login_password"])) {
         exit;
     }
     $_SESSION["login"] = intval($log);
+    header("Location: index.php");
+    exit;
 }
 
 if (!isset($_SESSION["login"])) {
@@ -122,16 +126,17 @@ $login = $_SESSION["login"];
                     </div>
                     <div id="main__card__content__interactive">
                         <input id="main__card__content__interactive__input" type="text" placeholder="Ajouter une tâche">
-                        <button id="main__card__content__interactive__add_task_button">Ajouter</button>
+                        <button id="main__card__content__interactive__add_task_button"><img src="images/add.png" alt="add task"></button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div id="root">
-        <canvas id="canvas"></canvas>
+<!--        <canvas id="canvas"></canvas>-->
     </div>
 </main>
+<script src="script/class.js"></script>
 <script src="script/script.js"></script>
 <script src="script/app.js"></script>
 </body>
