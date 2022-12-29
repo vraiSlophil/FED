@@ -11,7 +11,7 @@
 }
 
 *::selection {
-    background-color: transparent;
+    background: transparent !important;
 }
 
 body {
@@ -37,18 +37,38 @@ img {
 
 #header {
     background-color: var(--light-background-color);
-    box-shadow: 0 0 0.2em black;
     padding: 1em;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: max-content;
+}
+
+#header__profile {
     display: flex;
+    justify-content: center;
     align-items: center;
     flex-direction: row;
+    justify-self: start;
 }
 
-#headercontent {
-    width: calc(100%/3);
+#header__profile > a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin-right: 1em;
+    border-radius: 50%;
+}
+#header__profile > a > img {
+    height: 2em;
+    width: 2em;
 }
 
-#title {
+#header__head {
+    justify-self: center;
+}
+
+#header__head {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,7 +76,7 @@ img {
     font-weight: bold;
 }
 
-#title > img {
+#header__head > img {
     margin-right: 1em;
     height: 2em;
     filter: invert(0);
@@ -138,67 +158,6 @@ input:focus {
     background-color: var(--dark-font-button-color);
 }
 
-#main > #form > #task {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 0 1em;
-}
-
-
-#tasks {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 40%;
-    border-radius: 0.5em;
-    overflow: hidden;
-    margin: 0 auto;
-    box-shadow: 0 0 0.2em black;
-    animation: spawntask 0.5s;
-    transform-origin: top;
-}
-
-#tasks > #newtask {
-    min-height: 3em;
-    height: max-content;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--light-background-color);
-    width: 100%;
-}
-
-#tasks > #newtask > #task {
-    min-height: 100%;
-    padding: 0 1em;
-    margin: 1em 0;
-    width: 90%;
-    border-right: 2px solid var(--border-color);
-}
-
-#tasks > #newtask > form {
-    min-height: 100%;
-    width: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#tasks > #newtask > form > #deletebutton {
-    height: 1.5em;
-    cursor: pointer;
-}
-
-#tasks > #newtask > form > #deletebutton:hover {
-    transform: scale(1.1);
-}
-
-#tasks > #newtask > form > #deletebutton:active {
-    transform: scale(0.9);
-}
 
 #connectform > #form > div > input,
 #connectform > #form > #button {
@@ -254,11 +213,11 @@ input:focus {
 
 }
 
-#settings > p {
+#header__profile > p {
     margin-right: 1em;
 }
 
-#settings > a > #image {
+#header__profile > a > #image {
     height: 1.25em;
     filter: invert(var(--image-white));
 }
@@ -445,7 +404,7 @@ input:focus {
 }
 
 #main__card {
-    min-width: 25em;
+    min-width: 28em;
     width: max-content;
     display: flex;
     justify-content: center;
@@ -468,23 +427,24 @@ input:focus {
 #main__card__header__title {
     margin: 0 1em 0 0;
     min-width: max-content;
-    width: 100%;
+    /*width: 100%;*/
+    font-size: 20px;
 }
 
 #main__card__header__title > input {
-    width: 100%;
+    min-width: 16em;
+    width: max-content;
+    font-size: 1em;
 }
 
 #main__card__header > div {
-    position: absolute;
-    top: 0;
-    right: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+    min-width: max-content;
     background-color: #FAEAB1;
-    padding: 1em;
+    margin-left: 1em;
 }
 
 #main__card__header > div > button,
@@ -536,6 +496,7 @@ input:focus {
 #main__card__content__tasks__task > p {
     height: 100%;
     padding-left: 0.5em;
+    max-width: 30em;
 }
 
 #main__card__content__tasks__task {

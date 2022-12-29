@@ -2,43 +2,36 @@
 
     display: none;
     position: absolute;
-    top: 0;
-    left: 0;
-    padding: 5px 0 0 0;
+    padding: 0.3em;
     z-index: 9999;
-    background-color: rgb(30, 30, 30);
+    background-color: #FAFAFA;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
-    width: 10em;
-
+    filter: drop-shadow(0.3em 0.3em 0.3em #00000030);
+    min-width: 10em;
+    width: max-content;
+    border-radius: 0.3em;
 }
 
 #context-menu > div {
 
     display: flex;
-    position: relative;
-    width: 95%;
-    height: 30px;
-    margin-bottom: 5px;
     align-items: center;
-    transition: all ease-in-out 200ms;
+    position: relative;
+    width: 100%;
+    padding: 0.3em 1em 0.3em 1em;
+    margin: 0.1em 0.15em;
+    transition: all ease-out 0.1s;
     cursor: pointer;
+    color: black;
+    border-radius: 0.2em;
 
 }
 
 #context-menu > div:hover {
 
-    background-color: rgb(40, 40, 40);
-
-}
-
-p.context-option {
-
-    margin-left: 20px;
-    color: white;
-    cursor: pointer;
+    background-color: #FFFFFF;
 
 }
 
@@ -64,8 +57,9 @@ p.context-option {
 
 .block {
 
+    z-index: 10;
     position: absolute;
     cursor: move;
-    transition: transform ease-out 100ms;
+    transition: transform ease-out 0.1s;
 
 }

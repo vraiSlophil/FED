@@ -60,7 +60,7 @@
     </div>
     <div id="headercontent">
         <div id="theme">
-            <form action="tempo/tempotheme.php" method="post">
+            <form action="script_php/tempotheme.php" method="post">
                 <input type="hidden" name="sourcePage" value="settings">
                 <input type="hidden" name="targetTheme" value="<?php
                 if($theme == "lighttheme"){
@@ -107,7 +107,7 @@
 <!-- menus de modification -->
 
 <section class="hide" id="nicknameedit">
-    <form action="tempo/temponicknameedit.php" method="post">
+    <form action="script_php/temponicknameedit.php" method="post">
         <div id="password">
             <img src="images/lock.png">
             <input type="password" name="password" placeholder="Mot de passe">
@@ -122,7 +122,7 @@
 </section>
 
 <section class="hide" id="passwordedit">
-    <form action="tempo/tempopasswordedit.php" method="post">
+    <form action="script_php/tempopasswordedit.php" method="post">
         <div id="lastpassword">
             <img src="images/lock.png">
             <input type="password" name="lastpassword" placeholder="Ancien mot de passe">
@@ -137,7 +137,7 @@
 </section>
 
 <section class="hide" id="emailedit">
-    <form action="tempo/tempoemailedit.php" method="post">
+    <form action="script_php/tempoemailedit.php" method="post">
         <div id="password">
             <img src="images/lock.png">
             <input type="password" name="password" placeholder="Mot de passe">

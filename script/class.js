@@ -1,6 +1,6 @@
 class todoTheme {
 
-    constructor(theme) {
+    constructor(theme, id = null) {
         this.theme = theme;
         this.editButton = this.theme.querySelector("#main__card__header__edit_button");
         this.validateButton = this.theme.querySelector("#main__card__header__validate_button");
@@ -21,6 +21,25 @@ class todoTheme {
         this.EDITING = false;
         this.INVITING = false;
 
+        this.id = id;
+
+        if (this.id == null) {
+            $.ajax({
+                url: "script_php/create_theme.php",
+                success: function(response) {
+                    try {
+                        const data = JSON.parse(response);
+                        try {
+                            this.id = parseInt(data.id);
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            });
+        }
 
         this.contentTasksChildren.forEach((child) => {
             const tdTask = new todoTask(child);
@@ -109,6 +128,18 @@ class todoTheme {
             if (input.value.trim()) {
                 this.validateButton.style.display = "none";
                 this.editButton.style.display = "flex";
+                const newTitle = input.value;
+                $.ajax({
+                    url: "script_php/edit_theme.php",
+                    type: "POST",
+                    data: {
+                        theme_id: this.id,
+                        new_title: newTitle
+                    },
+                    success: function(response) {
+                        //todo
+                    }
+                });
                 this.title.textContent = input.value;
                 this.titleString = this.title.textContent;
                 this.EDITING = false;
@@ -120,9 +151,12 @@ class todoTheme {
                 this.addPeopleButton.style.display = "flex";
                 const username = input.value;
                 $.ajax({
-                    url: "add_people.php",
+                    url: "script_php/add_people.php",
                     type: "POST",
-                    data: {username: username},
+                    data: {
+                        theme_id: this.id,
+                        username: username
+                    },
                     success: function(response) {
                         //todo
                     }
@@ -289,7 +323,6 @@ class todoTask {
         delete this.taskValidateButton;
         delete this.taskDeleteButton;
         delete this.taskTitleString;
-        delete this.OPENED;
         delete this.EDITING;
         delete this;
     }

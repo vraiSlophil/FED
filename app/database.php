@@ -51,16 +51,15 @@ class Database {
         }
     }
 
-    public function createTheme($theme_name, $theme_color): bool|string {
+    public function createTheme($theme_name): bool|string {
         $pdo = $this->sql_connect();
 
-        $stmt = $pdo->prepare("INSERT INTO themes (theme_name, theme_color) VALUES (:theme_name, :theme_color)");
+        $stmt = $pdo->prepare("INSERT INTO themes (theme_name) VALUES (:theme_name)");
         $stmt->bindParam(":theme_name", $theme_name);
-        $stmt->bindParam(":theme_color", $theme_color);
 
         try {
             $stmt->execute();
-            return true;
+            return intval($pdo->lastInsertId());
         } catch (PDOException $e) {
              if ($e->errorInfo[1] == 1452) {
                 return "La couleur spécifiée n'est pas valide.";

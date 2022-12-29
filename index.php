@@ -64,25 +64,21 @@ $login = $_SESSION["login"];
 </head>
 <body>
 <header id="header">
-    <div id="headercontent">
-        <div id="settings">
-            <p><?php echo $database->getName($login); ?></p>
-            <a href="settings.php">
-                <img src="<?php echo $database->getProfilePictureUrl($login); ?>" alt="profile picture" id="image">
-            </a>
-        </div>
+    <div id="header__profile">
+        <a href="settings.php">
+            <img src="<?php echo $database->getProfilePictureUrl($login); ?>" alt="profile picture">
+        </a>
+        <p><?php echo $database->getName($login); ?></p>
     </div>
-    <div id="headercontent">
-        <div id="title">
-            <img src="images/fed-logo.png" alt="logo">
-            F∃D
-        </div>
+    <div id="header__head">
+        <img src="images/fed-logo.png" alt="logo">
+        FED
     </div>
 </header>
 <main id="main">
     <div id="context-menu">
         <div id="new">
-            <p class="context-option">new</p>
+            <p class="context-option">Nouveau thème de ToDo list</p>
             <div class="block" id="main__card">
                 <div id="main__card__header">
                     <h3 id="main__card__header__title">Titre de la carte</h3>
