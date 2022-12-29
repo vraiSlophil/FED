@@ -18,7 +18,7 @@ class Database {
         return $bdd;
     }
 
-    public function createUser($username, $password, $email, $firstName = null, $lastName = null, $profilePictureUrl = "images/identifier.png"): int|string {
+    public function createUser(string $username, string $password, string $email, string $firstName = null, string $lastName = null, string $profilePictureUrl = "images/identifier.png"): int|string {
         $salt = uniqid();
         $hashed_password = hash('sha256', $password . $salt);
         $query = "INSERT INTO users (username, password, salt, email, first_name, last_name, profile_picture_url) VALUES (:username, :password, :salt, :email, :first_name, :last_name, :profile_picture_url)";
@@ -51,11 +51,12 @@ class Database {
         }
     }
 
-    public function createTheme($theme_name): bool|string {
+    public function createTheme(int $authorId, string $themeName): bool|string {
         $pdo = $this->sql_connect();
 
-        $stmt = $pdo->prepare("INSERT INTO themes (theme_name) VALUES (:theme_name)");
-        $stmt->bindParam(":theme_name", $theme_name);
+        $stmt = $pdo->prepare("INSERT INTO themes (author_id, theme_name) VALUES (:author_id, :theme_name)");
+        $stmt->bindParam(":author_id", $authorId);
+        $stmt->bindParam(":theme_name", $themeName);
 
         try {
             $stmt->execute();
@@ -64,12 +65,12 @@ class Database {
              if ($e->errorInfo[1] == 1452) {
                 return "La couleur spécifiée n'est pas valide.";
             } else {
-                return "Une erreur inconnue s'est produite lors de la création du compte. Veuillez contacter un administrateur.";
+                return "Une erreur inconnue s'est produite lors de la création du thème. Veuillez contacter un administrateur. (code d'erreur : " .strval($e->errorInfo[1]). ")";
             }
         }
     }
 
-    public function login($username, $password) {
+    public function login(string $username, string $password) {
         // Connexion à la base de données
         $pdo = $this->sql_connect();
 
@@ -139,6 +140,20 @@ class Database {
         }
     }
 
+    public function getThemeTitle(int $id): string {
+        // Établir la connexion à la base de données
+        $pdo = $this->sql_connect();
 
-}    
-?>
+        // Préparer la requête SQL pour récupérer le titre du thème
+        $query = "SELECT theme_name FROM themes WHERE theme_id = :id";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':id', $id);
+
+        // Exécuter la requête
+        $stmt->execute();
+
+        // Récupérer le résultat de la requête
+        $result = $stmt->fetch();
+        return $result['theme_name'];
+    }
+}

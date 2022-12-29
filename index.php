@@ -78,10 +78,10 @@ $login = $_SESSION["login"];
 <main id="main">
     <div id="context-menu">
         <div id="new">
-            <p class="context-option">Nouveau thème de ToDo list</p>
+            <p class="context-option">Nouveau thème</p>
             <div class="block" id="main__card">
                 <div id="main__card__header">
-                    <h3 id="main__card__header__title">Titre de la carte</h3>
+                    <h3 id="main__card__header__title">Une erreur est survenue.</h3>
                     <div>
                         <button id="main__card__header__add_people_button"><img src="images/add-group.png" alt="add people"></button>
                         <button id="main__card__header__edit_button" style="display: none;"><img src="images/edit.png" alt="edit task title"></button>
@@ -92,33 +92,6 @@ $login = $_SESSION["login"];
                 </div>
                 <div id="main__card__content">
                     <div id="main__card__content__tasks">
-                        <div id="main__card__content__tasks__task">
-                            <p>Contenu de la carte</p>
-                            <div>
-                                <input type="checkbox" id="main__card__content__tasks__task__checkbox">
-                                <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
-                                <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
-                                <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
-                            </div>
-                        </div>
-                        <div id="main__card__content__tasks__task">
-                            <p>Contenu de la carte</p>
-                            <div>
-                                <input type="checkbox" id="main__card__content__tasks__task__checkbox">
-                                <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
-                                <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
-                                <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
-                            </div>
-                        </div>
-                        <div id="main__card__content__tasks__task">
-                            <p>Contenu de la carte</p>
-                            <div>
-                                <input type="checkbox" id="main__card__content__tasks__task__checkbox">
-                                <button id="main__card__content__tasks__task__edit_button"><img src="images/edit.png" alt="edit task content"></button>
-                                <button id="main__card__content__tasks__task__validate_button" style="display: none;"><img src="images/check.png" alt="validate task"></button>
-                                <button id="main__card__content__tasks__task__delete_button"><img src="images/poubelle.png" alt="delete task"></button>
-                            </div>
-                        </div>
                     </div>
                     <div id="main__card__content__interactive">
                         <input id="main__card__content__interactive__input" type="text" placeholder="Ajouter une tâche">
@@ -128,9 +101,7 @@ $login = $_SESSION["login"];
             </div>
         </div>
     </div>
-    <div id="root">
-<!--        <canvas id="canvas"></canvas>-->
-    </div>
+    <div id="root"></div>
 </main>
 <script src="script/class.js"></script>
 <script src="script/script.js"></script>

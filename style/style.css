@@ -36,6 +36,11 @@ img {
 }
 
 #header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 10000;
     background-color: var(--light-background-color);
     padding: 1em;
     display: grid;
@@ -432,8 +437,6 @@ input:focus {
 }
 
 #main__card__header__title > input {
-    min-width: 16em;
-    width: max-content;
     font-size: 1em;
 }
 

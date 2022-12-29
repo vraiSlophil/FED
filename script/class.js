@@ -26,14 +26,11 @@ class todoTheme {
         if (this.id == null) {
             $.ajax({
                 url: "script_php/create_theme.php",
-                success: function(response) {
+                success: (response) => {
                     try {
-                        const data = JSON.parse(response);
-                        try {
-                            this.id = parseInt(data.id);
-                        } catch (error) {
-                            console.error(error);
-                        }
+                        this.id = parseInt(response.id);
+                        this.title.textContent = response.title.toString();
+                        this.titleString = this.title.textContent;
                     } catch (error) {
                         console.error(error);
                     }
@@ -352,33 +349,33 @@ class todoTask {
     }
 }
 
-const todoThemes = document.querySelectorAll("#main__card");
-
-todoThemes.forEach((child) => {
-
-    const tdTheme = new todoTheme(child);
-
-    tdTheme.getToggleContentButton.addEventListener("click", () => {
-        tdTheme.toggleContentClick();
-    });
-
-    tdTheme.getAddPeopleButton.addEventListener("click", () => {
-        tdTheme.invitePeopleClick();
-    });
-
-    tdTheme.getDeleteButton.addEventListener("click", () => {
-        tdTheme.deleteClick();
-    });
-
-    tdTheme.getEditButton.addEventListener("click", () => {
-        tdTheme.editClick();
-    });
-
-    tdTheme.getValidateButton.addEventListener("click", () => {
-        tdTheme.validateClick();
-    });
-
-    tdTheme.getContentNewTaskButton.addEventListener("click", () => {
-        tdTheme.newTaskClick();
-    });
-});
+// const todoThemes = document.querySelectorAll("#main__card");
+//
+// todoThemes.forEach((child) => {
+//
+//     const tdTheme = new todoTheme(child);
+//
+//     tdTheme.getToggleContentButton.addEventListener("click", () => {
+//         tdTheme.toggleContentClick();
+//     });
+//
+//     tdTheme.getAddPeopleButton.addEventListener("click", () => {
+//         tdTheme.invitePeopleClick();
+//     });
+//
+//     tdTheme.getDeleteButton.addEventListener("click", () => {
+//         tdTheme.deleteClick();
+//     });
+//
+//     tdTheme.getEditButton.addEventListener("click", () => {
+//         tdTheme.editClick();
+//     });
+//
+//     tdTheme.getValidateButton.addEventListener("click", () => {
+//         tdTheme.validateClick();
+//     });
+//
+//     tdTheme.getContentNewTaskButton.addEventListener("click", () => {
+//         tdTheme.newTaskClick();
+//     });
+// });

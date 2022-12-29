@@ -103,7 +103,6 @@ ALTER TABLE `tasks`
 --
 ALTER TABLE `themes`
     ADD PRIMARY KEY (`theme_id`),
-    ADD UNIQUE KEY `theme_name` (`theme_name`),
     ADD KEY `author_id` (`author_id`);
 
 --
