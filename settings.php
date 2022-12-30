@@ -1,24 +1,9 @@
 <html lang="fr">
 <?php
     session_start();
-    include "app/css.php";
-    include "app/database.php";
-    $filepath = "json/users.json";
-    $nickname = $_SESSION['pseudo'];
-    $email = getEmail($nickname);
+//    include "app/css.php";
+//    include "app/database.php";
 
-    if (file_exists($filepath) && isset($nickname)) {
-        $json = file_get_contents($filepath);
-        $jsonArray = json_decode($json, true);
-    } else {
-        header("Location: login.php");
-        exit;
-    }
-
-    if (!(array_key_exists(getUuid($nickname), $jsonArray))) {
-        header("Location: login.php");
-        exit;
-    }
 ?>
 <head>
     <meta charset="UTF-8">
@@ -46,38 +31,9 @@
             <a href="home.php"><img src="images/horizontalarrow.png" alt="logout"></a>
         </div>
     </div>
-    <div id="headercontent">
-        <div id="title">
-            <img src="images/<?php 
-                if($theme == "lighttheme"){
-                    echo "fed-logo";
-                } else {
-                    echo "fed-logo-white-background";
-                }
-            ?>.png">
-            F∃D
-        </div>
-    </div>
-    <div id="headercontent">
-        <div id="theme">
-            <form action="script_php/tempotheme.php" method="post">
-                <input type="hidden" name="sourcePage" value="settings">
-                <input type="hidden" name="targetTheme" value="<?php
-                if($theme == "lighttheme"){
-                    echo "darktheme";
-                } else {
-                    echo "lighttheme";
-                }
-                ?>">
-                <input type="image" src="images/<?php
-                if($theme == "lighttheme"){
-                    echo "moon";
-                } else {
-                    echo "sun";
-                }
-                ?>.png" name="themeButton" id="themebutton">
-            </form>
-        </div>
+    <div id="header__head">
+        <img src="images/fed-logo.png" alt="logo">
+        FED
     </div>
 </header>
 <main id="main">

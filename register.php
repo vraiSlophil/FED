@@ -14,6 +14,7 @@ if (isset($_SESSION["login"])) {
     <meta charset="UTF-8">
     <title>FED - Enregistrement</title>
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/header.css">
     <link rel="icon" href="images/fed-logo-white-background.png">
     <style>
         :root {
@@ -30,11 +31,9 @@ if (isset($_SESSION["login"])) {
 </head>
 <body>
     <header id="header">
-        <div id="headercontent">
-            <div id="title">
-                <img src="images/fed-logo.png" alt="logo">
-                F∃D
-            </div>
+        <div id="header__head">
+            <img src="images/fed-logo.png" alt="logo">
+            FED
         </div>
     </header>
     <section id="connectform">
