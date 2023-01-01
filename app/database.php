@@ -121,7 +121,7 @@ class Database {
         }
     }
 
-    function updateTaskName(int $taskId, string $newTaskName) {
+    function editTaskName(int $taskId, string $newTaskName) {
         // Connecter à la base de données
         $pdo = $this->sql_connect();
 
@@ -156,4 +156,48 @@ class Database {
         $result = $stmt->fetch();
         return $result['theme_name'];
     }
+
+    public function getThemeAuthor(int $theme_id): int {
+        $query = "SELECT author_id FROM themes WHERE theme_id = :theme_id";
+        $pdo = $this->sql_connect();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':theme_id', $theme_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
+    public function deleteTheme(int $theme_id): bool {
+        $query = "DELETE FROM themes WHERE theme_id = :theme_id";
+        $pdo = $this->sql_connect();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':theme_id', $theme_id, PDO::PARAM_INT);
+
+        // Exécuter la requête
+        try {
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            // Si une erreur est survenue lors de l'exécution de la requête, retourner false
+            return false;
+        }
+    }
+
+    public function editThemeTitle(int $theme_id, string $new_title): bool {
+        // Préparer la requête pour mettre à jour le titre du thème
+        $query = "UPDATE themes SET title = :new_title WHERE theme_id = :theme_id";
+        $pdo = $this->sql_connect();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':new_title', $new_title);
+        $stmt->bindValue(':theme_id', $theme_id, PDO::PARAM_INT);
+
+        // Exécuter la requête
+        try {
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+
 }

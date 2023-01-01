@@ -1,6 +1,6 @@
-const $root = $("#root");
-const $contextMenu = $("#context-menu");
-const $optionNew = $("#new");
+const root = document.querySelector("#root");
+const contextMenu = document.querySelector("#context-menu");
+const optionNew = document.querySelector("#new");
 const uuids = [];
 const blocks = {}
 
@@ -8,51 +8,51 @@ let selected = null;
 let selectedX = 0;
 let selectedY = 0;
 
-$(window).contextmenu(function(event) {
+window.addEventListener("contextmenu", function(event) {
     event.preventDefault();
-    $contextMenu.css("display", "flex");
-    $contextMenu.css({
-        left: `${event.clientX}px`,
-        top: `${event.clientY}px`
-    });
+    contextMenu.style.display = "flex";
+    contextMenu.style.left = `${event.clientX}px`;
+    contextMenu.style.top = `${event.clientY}px`;
 });
 
-$(window).click(function(event) {
-    const target = $(event.target).closest("#context-menu");
-    if (target.length <= 0) {
-        if ($contextMenu.css("display") === "flex") {
-            $contextMenu.css("display", "none");
+window.addEventListener("click", function(event) {
+    if (event.target.closest("#context-menu" == null)) {
+        if (contextMenu.style.display === "flex") {
+            contextMenu.style.display = "none";
         }
     }
 });
 
-$(window).mousedown(function(event) {
-    selected = $(event.target).closest("#main__card");
-    if (selected.hasClass("block")) {
-        const $offset = $(selected).offset();
-        selectedX = event.pageX - $offset.left;
-        selectedY = event.pageY - $offset.top;
-        $(selected).css("filter", "drop-shadow(0.3em 0.3em 0.3em #00000030)");
+window.addEventListener("mousedown", function(event) {
+    selected = event.target.closest(".main__card");
+    if (selected == null) {
+        return;
+    }
+    if (selected.classList.contains("block")) {
+        const off = offset(selected);
+        selectedX = event.pageX - off.left;
+        selectedY = event.pageY - off.top;
+        selected.style.filter = "drop-shadow(0.3em 0.3em 0.3em #00000030)";
     }
 })
 
-$(window).mouseup(function() {
-    $(selected).css("filter", "unset");
-    selected = null;
-});
-
-$(window).mousemove(function(event) {
-    if (selected) {
-        let x = (event.clientX - selectedX - (event.clientX % 20)) + (selectedX % 20);
-        let y = (event.clientY - selectedY - (event.clientY % 20)) + (selectedY % 20);
-        $(selected).css({
-            transform: `translate(${x}px, ${y}px)`
-        });
+window.addEventListener("mouseup", function() {
+    if (selected != null) {
+        selected.style.filter = "unset";
+        selected = null;
     }
 });
 
-$optionNew.click(function(event) {
-    $contextMenu.css("display", "none");
+window.addEventListener("mousemove", function(event) {
+    if (selected) {
+        let x = (event.clientX - selectedX - (event.clientX % 20)) + (selectedX % 20);
+        let y = (event.clientY - selectedY - (event.clientY % 20)) + (selectedY % 20);
+        selected.style.transform = `translate(${x}px, ${y}px)`;
+    }
+});
+
+optionNew.addEventListener("click", function(event) {
+    contextMenu.style.display = "none";
     const element = (event.target.nodeName === "DIV" ? event.target.lastElementChild.cloneNode(true) : event.target.nextElementSibling.cloneNode(true));
     const tdTheme = new todoTheme(element);
     tdTheme.getToggleContentButton.addEventListener("click", () => {
@@ -75,6 +75,15 @@ $optionNew.click(function(event) {
     });
     const x = event.clientX - (event.clientX % 20);
     const y = event.clientY - (event.clientY % 20);
-    $(element).css("transform", `translate(${x}px, ${y}px)`);
-    $root.append(element);
+    element.style.transform = `translate(${x}px, ${y}px)`;
+    root.append(element);
 });
+
+function offset(el) {
+    const box = el.getBoundingClientRect();
+    const docElem = document.documentElement;
+    return {
+        left: box.left + window.pageXOffset - docElem.clientLeft,
+        top: box.top + window.pageYOffset - docElem.clientTop
+    };
+}

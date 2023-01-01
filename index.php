@@ -60,7 +60,7 @@ $login = $_SESSION["login"];
             --image-white: <?php echo $_SESSION["imageWhite"];?>;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+<!--    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>-->
 </head>
 <body>
 <header id="header">
@@ -79,7 +79,7 @@ $login = $_SESSION["login"];
     <div id="context-menu">
         <div id="new">
             <p class="context-option">Nouveau thème</p>
-            <div class="block" id="main__card">
+            <div class="block main__card">
                 <div id="main__card__header">
                     <h3 id="main__card__header__title">Une erreur est survenue.</h3>
                     <div>

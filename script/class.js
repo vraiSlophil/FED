@@ -1,63 +1,71 @@
 class todoTheme {
 
-    constructor(theme, id = null) {
-        this.theme = theme;
-        this.editButton = this.theme.querySelector("#main__card__header__edit_button");
-        this.validateButton = this.theme.querySelector("#main__card__header__validate_button");
-        this.addPeopleButton = this.theme.querySelector("#main__card__header__add_people_button");
-        this.toggleContentButton = this.theme.querySelector("#main__card__header__toggle_content_button");
-        this.deleteButton = this.theme.querySelector("#main__card__header__delete_button");
-        this.title = this.theme.querySelector("#main__card__header__title");
-        this.content = this.theme.querySelector("#main__card__content");
-        this.contentTasksParent = this.content.querySelector("#main__card__content__tasks");
-        this.contentTasksChildren = this.contentTasksParent.querySelectorAll("#main__card__content__tasks__task");
-        this.contentButtons = this.content.querySelector("#main__card__content__interactive");
-        this.contentNewTaskInput = this.contentButtons.querySelector("#main__card__content__interactive__input");
-        this.contentNewTaskButton = this.contentButtons.querySelector("#main__card__content__interactive__add_task_button");
+     constructor(theme, id = null) {
+         this.theme = theme;
+         this.editButton = this.theme.querySelector("#main__card__header__edit_button");
+         this.validateButton = this.theme.querySelector("#main__card__header__validate_button");
+         this.addPeopleButton = this.theme.querySelector("#main__card__header__add_people_button");
+         this.toggleContentButton = this.theme.querySelector("#main__card__header__toggle_content_button");
+         this.deleteButton = this.theme.querySelector("#main__card__header__delete_button");
+         this.title = this.theme.querySelector("#main__card__header__title");
+         this.content = this.theme.querySelector("#main__card__content");
+         this.contentTasksParent = this.content.querySelector("#main__card__content__tasks");
+         this.contentTasksChildren = this.contentTasksParent.querySelectorAll("#main__card__content__tasks__task");
+         this.contentButtons = this.content.querySelector("#main__card__content__interactive");
+         this.contentNewTaskInput = this.contentButtons.querySelector("#main__card__content__interactive__input");
+         this.contentNewTaskButton = this.contentButtons.querySelector("#main__card__content__interactive__add_task_button");
 
-        this.titleString = this.title.textContent;
+         this.titleString = this.title.textContent;
 
-        this.OPENED = false;
-        this.EDITING = false;
-        this.INVITING = false;
+         this.OPENED = false;
+         this.EDITING = false;
+         this.INVITING = false;
 
-        this.id = id;
+         this.id = id;
 
-        if (this.id == null) {
-            $.ajax({
-                url: "script_php/create_theme.php",
-                success: (response) => {
-                    try {
-                        this.id = parseInt(response.id);
-                        this.title.textContent = response.title.toString();
-                        this.titleString = this.title.textContent;
-                    } catch (error) {
-                        console.error(error);
-                    }
-                }
-            });
-        }
+         if (this.id == null) {
+             fetch('script_php/create_theme.php', {})
+                 .then((response) => {
+                 const contentType = response.headers.get("content-type");
+                 if(contentType && contentType.indexOf("application/json") !== -1) {
+                     return response.json().then((json) =>{
+                         if (response.ok) {
+                             try {
+                                 this.id = parseInt(json.id);
+                                 this.title.textContent = json.title.toString();
+                                 this.titleString = this.title.textContent;
+                                 this.theme.id = this.id;
+                             } catch (error) {
+                                 console.error(error);
+                             }
+                         }
+                     });
+                 } else {
+                     console.error("Missing JSON header.");
+                 }
+             });
+         }
 
-        this.contentTasksChildren.forEach((child) => {
-            const tdTask = new todoTask(child);
+         this.contentTasksChildren.forEach((child) => {
+             const tdTask = new todoTask(child);
 
-            tdTask.getTaskEditButton.addEventListener("click", () => {
-                tdTask.editClick();
-            });
+             tdTask.getTaskEditButton.addEventListener("click", () => {
+                 tdTask.editClick();
+             });
 
-            tdTask.getTaskValidateButton.addEventListener("click", () => {
-                tdTask.validateClick();
-            });
+             tdTask.getTaskValidateButton.addEventListener("click", () => {
+                 tdTask.validateClick();
+             });
 
-            tdTask.getTaskDeleteButton.addEventListener("click", () => {
-                tdTask.deleteClick();
-            });
+             tdTask.getTaskDeleteButton.addEventListener("click", () => {
+                 tdTask.deleteClick();
+             });
 
-            tdTask.getCheckbox.addEventListener("click", () => {
-                tdTask.checkboxClick();
-            });
-        });
-    }
+             tdTask.getCheckbox.addEventListener("click", () => {
+                 tdTask.checkboxClick();
+             });
+         });
+     }
 
     toggleContentClick() {
         if (this.content.style.display === "flex" && this.OPENED) {
@@ -82,6 +90,25 @@ class todoTheme {
     }
 
     deleteClick() {
+
+        fetch('script_php/delete_theme.php', {
+            method: 'POST',
+            body: JSON.stringify({theme_id: this.id})
+        })
+            .then((response) => {
+                const contentType = response.headers.get("content-type");
+                if(contentType && contentType.indexOf("application/json") !== -1) {
+                    return response.json().then((json) =>{
+                        if (response.ok) {
+                            if (!json.done) {
+                                console.error(json.error);
+                            }
+                        }
+                    });
+                } else {
+                    console.error("Missing JSON header.");
+                }
+            });
 
         this.theme.parentNode.removeChild(this.theme);
 
@@ -126,17 +153,17 @@ class todoTheme {
                 this.validateButton.style.display = "none";
                 this.editButton.style.display = "flex";
                 const newTitle = input.value;
-                $.ajax({
-                    url: "script_php/edit_theme.php",
-                    type: "POST",
-                    data: {
-                        theme_id: this.id,
-                        new_title: newTitle
-                    },
-                    success: function(response) {
-                        //todo
-                    }
-                });
+                // $.ajax({
+                //     url: "script_php/edit_theme.php",
+                //     type: "POST",
+                //     data: {
+                //         theme_id: this.id,
+                //         new_title: newTitle
+                //     },
+                //     success: function(response) {
+                //         //todo
+                //     }
+                // });
                 this.title.textContent = input.value;
                 this.titleString = this.title.textContent;
                 this.EDITING = false;
@@ -147,17 +174,17 @@ class todoTheme {
                 this.validateButton.style.display = "none";
                 this.addPeopleButton.style.display = "flex";
                 const username = input.value;
-                $.ajax({
-                    url: "script_php/add_people.php",
-                    type: "POST",
-                    data: {
-                        theme_id: this.id,
-                        username: username
-                    },
-                    success: function(response) {
-                        //todo
-                    }
-                });
+                // $.ajax({
+                //     url: "script_php/add_people.php",
+                //     type: "POST",
+                //     data: {
+                //         theme_id: this.id,
+                //         username: username
+                //     },
+                //     success: function(response) {
+                //         //todo
+                //     }
+                // });
                 this.title.textContent = this.titleString;
                 this.INVITING = false;
             }

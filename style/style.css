@@ -408,7 +408,7 @@ input:focus {
     text-decoration: none;
 }
 
-#main__card {
+.main__card {
     min-width: 28em;
     width: max-content;
     display: flex;
