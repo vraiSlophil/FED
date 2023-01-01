@@ -47,6 +47,8 @@ $login = $_SESSION["login"];
     <title>FED | To-do list</title>
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/move.css">
+    <link rel="stylesheet" href="style/chest.css">
+<!--    <link rel="stylesheet" href="style/header.css">-->
     <link rel="icon" href="images/fed-logo-white-background.png">
     <style>
         :root {
@@ -60,7 +62,6 @@ $login = $_SESSION["login"];
             --image-white: <?php echo $_SESSION["imageWhite"];?>;
         }
     </style>
-<!--    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>-->
 </head>
 <body>
 <header id="header">
@@ -73,6 +74,23 @@ $login = $_SESSION["login"];
     <div id="header__head">
         <img src="images/fed-logo.png" alt="logo">
         FED
+    </div>
+    <div id="header__chest">
+        <div id="header__chest__container">
+            <div id="logo">
+                <div class="box">
+                    <div class="side front"></div>
+                    <div class="side left"></div>
+                    <div class="side back"></div>
+                    <div class="side right"></div>
+                    <div class="side bottom"></div>
+                    <div class="flap front"></div>
+                    <div class="flap back"></div>
+                    <div class="flap left"></div>
+                    <div class="flap right"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </header>
 <main id="main">

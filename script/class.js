@@ -36,7 +36,7 @@ class todoTheme {
                                  this.titleString = this.title.textContent;
                                  this.theme.id = this.id;
                              } catch (error) {
-                                 console.error(error);
+                                 console.error(json.error);
                              }
                          }
                      });
@@ -153,17 +153,24 @@ class todoTheme {
                 this.validateButton.style.display = "none";
                 this.editButton.style.display = "flex";
                 const newTitle = input.value;
-                // $.ajax({
-                //     url: "script_php/edit_theme.php",
-                //     type: "POST",
-                //     data: {
-                //         theme_id: this.id,
-                //         new_title: newTitle
-                //     },
-                //     success: function(response) {
-                //         //todo
-                //     }
-                // });
+                fetch('script_php/delete_theme.php', {
+                    method: 'POST',
+                    body: JSON.stringify({theme_id: this.id})
+                })
+                    .then((response) => {
+                        const contentType = response.headers.get("content-type");
+                        if(contentType && contentType.indexOf("application/json") !== -1) {
+                            return response.json().then((json) =>{
+                                if (response.ok) {
+                                    if (!json.done) {
+                                        console.error(json.error);
+                                    }
+                                }
+                            });
+                        } else {
+                            console.error("Missing JSON header.");
+                        }
+                    });
                 this.title.textContent = input.value;
                 this.titleString = this.title.textContent;
                 this.EDITING = false;
@@ -322,14 +329,14 @@ class todoTask {
             const input = this.taskTitle.querySelector("input");
             this.taskTitle.textContent = input.value;
             this.taskTitleString = input.value;
-            $.ajax({
-                url: "edit_task.php",
-                type: "POST",
-                data: {title: this.taskTitleString},
-                success: function(response) {
-                    //todo
-                }
-            });
+            // $.ajax({
+            //     url: "edit_task.php",
+            //     type: "POST",
+            //     data: {title: this.taskTitleString},
+            //     success: function(response) {
+            //         //todo
+            //     }
+            // });
             this.taskValidateButton.style.display = "none";
             this.taskEditButton.style.display = "flex";
             this.checkbox.style.display = "flex";

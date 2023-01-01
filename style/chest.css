@@ -1,0 +1,128 @@
+:root {
+    --box-light: #f1b074;
+    --box-mid: #a67549;
+    --box-inner-mid: #9a673e;
+    --box-dark: #8f5f37;
+    --box-inner-dark: #7c4b26;
+    --box-inner-darkest: #6b3e1c;
+}
+#header__chest__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    --size: 3em;
+    width: var(--size);
+    height: var(--size);
+    overflow: hidden;
+    background: #eee;
+    border-radius: 50%;
+}
+#header__chest__container > #logo {
+    --size: 2em;
+    width: var(--size);
+    height: var(--size);
+    perspective: 30rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#header__chest__container > #logo > .box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: translateZ(-20rem) rotatex(-15deg) rotatey(45deg);
+    text-align: center;
+    transition: 0.75s;
+}
+#header__chest__container > #logo > .box > * {
+    position: absolute;
+    background: #0008;
+    transition: 0.5s;
+}
+#header__chest__container > #logo > .box > .side.front,
+#header__chest__container > #logo > .box > .side.left,
+#header__chest__container > #logo > .box > .side.back,
+#header__chest__container > #logo > .box > .side.right {
+    width: var(--size);
+    height: calc(var(--size) * 0.75);
+    transform: translateY(calc(var(--size) * 0.25)) rotateY(var(--angle, 0deg)) translateZ(calc(var(--size) * 0.499));
+}
+#header__chest__container > #logo > .box > .side.front {
+    background: var(--box-mid);
+}
+#header__chest__container > #logo > .box > .side.right {
+    --angle: 90deg;
+    background: var(--box-inner-mid);
+}
+#header__chest__container > #logo > .box > .side.back {
+    --angle: 180deg;
+    background: var(--box-inner-dark);
+}
+#header__chest__container > #logo > .box > .side.left {
+    --angle: -90deg;
+    background: var(--box-dark);
+}
+#header__chest__container > #logo > .box > .side.bottom {
+    width: var(--size);
+    height: var(--size);
+    transform: translateY(calc(var(--size) * 0.25)) rotateX(90deg) translateZ(calc(var(--size) * -0.249));
+    background: var(--box-inner-darkest);
+
+}
+#header__chest__container > #logo > .box > .flap {
+    background: var(--box-light);
+}
+#header__chest__container > #logo > .box > .flap.front,
+#header__chest__container > #logo > .box > .flap.back {
+    width: var(--size);
+    height: calc(var(--size) * 0.5);
+}
+#header__chest__container > #logo > .box > .flap.left,
+#header__chest__container > #logo > .box > .flap.right {
+    width: calc(var(--size) * 0.5);
+    height: var(--size);
+}
+#header__chest__container > #logo > .box > .flap.front {
+    transform-origin: 50% 100% calc(var(--size) * 0.5);
+    transform: translateY(calc(var(--size) * -0.25)) rotateX(90deg) translateZ(calc(var(--size) * 0.499));
+}
+#header__chest__container > #logo > .box > .flap.back {
+    transform-origin: 50% 100% calc(var(--size) * -0.5);
+    transform: translateY(calc(var(--size) * -0.25)) rotateX(-90deg) translateZ(calc(var(--size) * -0.499));
+}
+#header__chest__container > #logo > .box > .flap.left {
+    transform-origin: 0 50% 0;
+    transform: translateY(calc(var(--size) * -0.25)) rotateX(90deg) rotateY(0deg);
+}
+#header__chest__container > #logo > .box > .flap.right {
+    transform-origin: 0 50% 0;
+    transform: translateX(var(--size)) translateY(calc(var(--size) * -0.25)) rotateX(90deg) rotateY(180deg);
+}
+#header__chest__container > #logo:not(:hover) > .box > .flap.left,
+#header__chest__container > #logo:not(:hover) > .box > .flap.right {
+    transition-delay: 0.2s;
+}
+#header__chest__container > #logo:hover > .box {
+    transform: translateZ(-30rem) rotatex(-40deg) rotatey(15deg);
+}
+#header__chest__container > #logo:hover > .box > .flap {
+    background: var(--box-inner-mid);
+}
+#header__chest__container > #logo:hover > .box > .flap.front,
+#header__chest__container > #logo:hover > .box > .flap.back {
+    transition-delay: 0.2s;
+}
+#header__chest__container > #logo:hover > .box > .flap.front {
+    transform: translateY(calc(var(--size) * -0.25)) rotateX(-120deg) translateZ(calc(var(--size) * 0.499));
+}
+#header__chest__container > #logo:hover > .box > .flap.back {
+    transform: translateY(calc(var(--size) * -0.25)) rotateX(120deg) translateZ(calc(var(--size) * -0.499));
+}
+#header__chest__container > #logo:hover > .box > .flap.left {
+    transform: translateY(calc(var(--size) * -0.25)) rotateX(90deg) rotateY(-210deg);
+}
+#header__chest__container > #logo:hover > .box > .flap.right {
+    transform: translateX(var(--size)) translateY(calc(var(--size) * -0.25)) rotateX(90deg) rotateY(380deg);
+}
