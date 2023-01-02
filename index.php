@@ -75,7 +75,7 @@ $login = $_SESSION["login"];
         <img src="images/fed-logo.png" alt="logo">
         FED
     </div>
-    <div id="header__chest">
+    <button id="header__chest">
         <div id="header__chest__container">
             <div id="logo">
                 <div class="box">
@@ -91,9 +91,10 @@ $login = $_SESSION["login"];
                 </div>
             </div>
         </div>
-    </div>
+    </button>
 </header>
 <main id="main">
+    <div id="main__theme_list"></div>
     <div id="context-menu">
         <div id="new">
             <p class="context-option">Nouveau thème</p>

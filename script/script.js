@@ -1,3 +1,18 @@
+const chest = document.querySelector("#header__chest");
+
+chest.addEventListener("click", (event) => {
+    const target = document.querySelector("#main__theme_list");
+    console.log(target);
+    console.log(target.style.height);
+    if (target.style.height === "88%") {
+        target.style.visibility = "hidden";
+        target.style.height = "0px";
+    } else {
+        target.style.visibility = "visible";
+        target.style.height = "88%";
+    }
+});
+
 function toggleVisibilityNicknameEdit(){
     const element = document.getElementById("nicknameedit");
 
@@ -34,3 +49,21 @@ function toggleVisibilityEmailEdit() {
         element.classList.add("hide");
     }
 }
+
+(
+    fetch('script_php/get_themes.php', {})
+    .then((response) => {
+        const contentType = response.headers.get("content-type");
+        if(contentType && contentType.indexOf("application/json") !== -1) {
+            return response.json().then((json) => {
+                if (response.ok) {
+                    if (!json.done) {
+                        console.error(json.error);
+                    }
+                }
+            });
+        } else {
+            console.error("Missing JSON header.");
+        }
+    })
+)();

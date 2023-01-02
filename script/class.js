@@ -160,7 +160,7 @@ class todoTheme {
                     .then((response) => {
                         const contentType = response.headers.get("content-type");
                         if(contentType && contentType.indexOf("application/json") !== -1) {
-                            return response.json().then((json) =>{
+                            return response.json().then((json) => {
                                 if (response.ok) {
                                     if (!json.done) {
                                         console.error(json.error);

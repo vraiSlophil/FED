@@ -561,23 +561,19 @@ input:focus {
     padding: 0.4em 0.8em;
 }
 
-
-@keyframes spawntask {
-    0% {
-        transform: rotateX(90deg);
-    }
-
-    100% {
-        transform: rotateX(0);
-    }
-}
-
-@keyframes spawnmenu {
-    0% {
-        transform: scale(0.8);
-    }
-
-    100% {
-        transform: scale(1);
-    }
+#main__theme_list {
+    display: flex;
+    visibility: hidden;
+    position: absolute;
+    top: 10%;
+    right: 1em;
+    height: 0px;
+    width: 20em;
+    border-radius: 1em;
+    border: 0.1em solid #F2F2F2;
+    background-color: #FFFFFF8A;
+    z-index: 10001;
+    overflow: hidden;
+    transition: 0.7s ease-in-out;
+    filter: drop-shadow(0.3em 0.3em 0.3em #00000030);
 }
