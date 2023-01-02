@@ -14,7 +14,7 @@
     width: var(--size);
     height: var(--size);
     overflow: hidden;
-    background: #eee;
+    background: #FFFFFF;
     border-radius: 50%;
 }
 #header__chest__container > #logo {
@@ -41,14 +41,6 @@
     background: #0008;
     transition: 0.5s;
 }
-#header__chest__container > #logo > .box > .side.front,
-#header__chest__container > #logo > .box > .side.left,
-#header__chest__container > #logo > .box > .side.back,
-#header__chest__container > #logo > .box > .side.right {
-    width: var(--size);
-    height: calc(var(--size) * 0.75);
-    transform: translateY(calc(var(--size) * 0.25)) rotateY(var(--angle, 0deg)) translateZ(calc(var(--size) * 0.499));
-}
 #header__chest__container > #logo > .box > .side.front {
     background: var(--box-mid);
 }
@@ -63,6 +55,14 @@
 #header__chest__container > #logo > .box > .side.left {
     --angle: -90deg;
     background: var(--box-dark);
+}
+#header__chest__container > #logo > .box > .side.front,
+#header__chest__container > #logo > .box > .side.left,
+#header__chest__container > #logo > .box > .side.back,
+#header__chest__container > #logo > .box > .side.right {
+    width: var(--size);
+    height: calc(var(--size) * 0.75);
+    transform: translateY(calc(var(--size) * 0.25)) rotateY(var(--angle, 0deg)) translateZ(calc(var(--size) * 0.499));
 }
 #header__chest__container > #logo > .box > .side.bottom {
     width: var(--size);

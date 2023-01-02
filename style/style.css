@@ -7,7 +7,6 @@
     color: var(--font-color);
     font-family: 'Poppins', sans-serif;
     transition: 0.1s;
-    overflow: hidden;
 }
 
 *::selection {
@@ -71,6 +70,10 @@ img {
 
 #header__head {
     justify-self: center;
+}
+
+#header__chest {
+    justify-self: end;
 }
 
 #header__head {
@@ -416,6 +419,7 @@ input:focus {
     align-items: start;
     flex-direction: column;
     border-radius: 0.4em;
+    overflow: hidden;
 }
 
 #main__card__header {
@@ -487,6 +491,7 @@ input:focus {
     background-color: #FFFFFFAA;
     border: 0.1em solid #F2F2F2;
     border-top: unset;
+    border-radius: 0 0 0.4em 0.4em;
 }
 
 #main__card__content__tasks {
