@@ -42,7 +42,6 @@ CREATE TABLE `authorized_themes` (
 CREATE TABLE `tasks` (
                          `task_id` int(11) NOT NULL,
                          `title` varchar(255) NOT NULL,
-                         `description` text DEFAULT NULL,
                          `user_id` int(11) NOT NULL,
                          `theme_id` int(11) NOT NULL,
                          `task_status` tinyint(1) NOT NULL DEFAULT 0
