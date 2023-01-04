@@ -150,6 +150,27 @@ class todoTheme {
                         if (response.ok) {
                             if (!json.done) {
                                 console.error(json.error);
+                            } else {
+                                this.theme.parentNode.removeChild(this.theme);
+
+                                delete this.theme;
+                                delete this.editButton;
+                                delete this.validateButton;
+                                delete this.addPeopleButton;
+                                delete this.toggleContentButton;
+                                delete this.deleteButton;
+                                delete this.title;
+                                delete this.content;
+                                delete this.contentTasksParent;
+                                delete this.contentTasksChildren;
+                                delete this.contentButtons;
+                                delete this.contentNewTaskInput;
+                                delete this.contentNewTaskButton;
+                                delete this.titleString;
+                                delete this.OPENED;
+                                delete this.EDITING;
+                                delete this.INVITING;
+                                delete this;
                             }
                         }
                     });
@@ -157,27 +178,6 @@ class todoTheme {
                     console.error("Missing JSON header.");
                 }
             });
-
-        this.theme.parentNode.removeChild(this.theme);
-
-        delete this.theme;
-        delete this.editButton;
-        delete this.validateButton;
-        delete this.addPeopleButton;
-        delete this.toggleContentButton;
-        delete this.deleteButton;
-        delete this.title;
-        delete this.content;
-        delete this.contentTasksParent;
-        delete this.contentTasksChildren;
-        delete this.contentButtons;
-        delete this.contentNewTaskInput;
-        delete this.contentNewTaskButton;
-        delete this.titleString;
-        delete this.OPENED;
-        delete this.EDITING;
-        delete this.INVITING;
-        delete this;
     }
 
     editClick() {
@@ -201,24 +201,23 @@ class todoTheme {
                 this.validateButton.style.display = "none";
                 this.editButton.style.display = "flex";
                 const newTitle = input.value;
-                fetch('script_php/delete_theme.php', {
+                fetch('script_php/edit_theme.php', {
                     method: 'POST',
                     body: JSON.stringify({theme_id: this.id})
-                })
-                    .then((response) => {
-                        const contentType = response.headers.get("content-type");
-                        if(contentType && contentType.indexOf("application/json") !== -1) {
-                            return response.json().then((json) => {
-                                if (response.ok) {
-                                    if (!json.done) {
-                                        console.error(json.error);
-                                    }
+                }).then((response) => {
+                    const contentType = response.headers.get("content-type");
+                    if(contentType && contentType.indexOf("application/json") !== -1) {
+                        return response.json().then((json) => {
+                            if (response.ok) {
+                                if (!json.done) {
+                                    console.error(json.error);
                                 }
-                            });
-                        } else {
-                            console.error("Missing JSON header.");
-                        }
-                    });
+                            }
+                        });
+                    } else {
+                        console.error("Missing JSON header.");
+                    }
+                });
                 this.title.textContent = input.value;
                 this.titleString = this.title.textContent;
                 this.EDITING = false;
@@ -229,17 +228,26 @@ class todoTheme {
                 this.validateButton.style.display = "none";
                 this.addPeopleButton.style.display = "flex";
                 const username = input.value;
-                // $.ajax({
-                //     url: "script_php/add_people.php",
-                //     type: "POST",
-                //     data: {
-                //         theme_id: this.id,
-                //         username: username
-                //     },
-                //     success: function(response) {
-                //         //todo
-                //     }
-                // });
+                fetch('script_php/add_people.php', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        theme_id: this.id,
+                        username: username
+                    })
+                }).then((response) => {
+                    const contentType = response.headers.get("content-type");
+                    if(contentType && contentType.indexOf("application/json") !== -1) {
+                        return response.json().then((json) => {
+                            if (response.ok) {
+                                if (!json.done) {
+                                    console.error(json.error);
+                                }
+                            }
+                        });
+                    } else {
+                        console.error("Missing JSON header.");
+                    }
+                });
                 this.title.textContent = this.titleString;
                 this.INVITING = false;
             }

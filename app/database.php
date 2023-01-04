@@ -126,7 +126,7 @@ class Database {
         $pdo = $this->sql_connect();
 
         // Préparer la requête SQL pour mettre à jour le nom de la tâche
-        $query = "UPDATE tasks SET task_name = :newTaskName WHERE task_id = :taskId";
+        $query = "UPDATE tasks SET title = :newTaskName WHERE task_id = :taskId";
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':newTaskName', $newTaskName);
         $stmt->bindValue(':taskId', $taskId);
@@ -184,7 +184,7 @@ class Database {
 
     public function editThemeTitle(int $theme_id, string $new_title): bool {
         // Préparer la requête pour mettre à jour le titre du thème
-        $query = "UPDATE themes SET title = :new_title WHERE theme_id = :theme_id";
+        $query = "UPDATE themes SET theme_name = :new_title WHERE theme_id = :theme_id";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':new_title', $new_title);
@@ -223,6 +223,20 @@ class Database {
         try {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function addAuthorizedUser(string $username, int $theme_id): bool {
+        $query = "INSERT INTO authorized_themes (user_id, theme_id) SELECT users.user_id, themes.theme_id FROM users INNER JOIN themes ON users.username = :username AND themes.theme_id = :theme_id;";
+        $pdo = $this->sql_connect();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':username', $username);
+        $stmt->bindValue(':theme_id', $theme_id);
+        try {
+            $stmt->execute();
+            return true;
         } catch (PDOException $e) {
             return false;
         }
