@@ -44,6 +44,29 @@ class todoTheme {
                      console.error("Missing JSON header.");
                  }
              });
+         } else {
+             fetch('script_php/add_theme.php', {
+                 method: 'POST',
+                 body: JSON.stringify({theme_id: this.id})
+             }).then((response) => {
+                 const contentType = response.headers.get("content-type");
+                 if(contentType && contentType.indexOf("application/json") !== -1) {
+                     return response.json().then((json) => {
+                         if (response.ok) {
+                             try {
+                                 json.themes.forEach((theme) => {
+                                    const themeId = theme.id;
+                                    const themeTasks = theme.tasks;
+                                 });
+                             } catch (error) {
+                                 console.error(json.error);
+                             }
+                         }
+                     });
+                 } else {
+                     console.error("Missing JSON header.");
+                 }
+             });
          }
 
          this.contentTasksChildren.forEach((child) => {
@@ -299,7 +322,7 @@ class todoTheme {
 }
 
 class todoTask {
-    constructor(task) {
+    constructor(task, id = null, title = null, done = false) {
         this.task = task;
 
         this.checkbox = this.task.querySelector("#main__card__content__tasks__task__checkbox");

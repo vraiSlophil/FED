@@ -10,14 +10,16 @@ if  (!isset($_SESSION["login"])) {
 require_once "../app/database.php";
 $database = new Database();
 
-$id = $database->createTheme($_SESSION["login"], "Nouveau thème");
+$id = $database->getThemes($_SESSION["login"]);
 
-if ((int) $id > 0) {
-    $id = (int) $id;
-    $response = array(
-        "id" => $id,
-        "title" => $database->getThemeTitle($id)
-    );
+if (count($id) > 0) {
+    $response = [];
+    foreach ($id as $value) {
+        $response[] = array(
+            "id" => $value,
+            "title" => $database->getThemeTitle($value)
+        );
+    }
 } else {
     $response = array(
         "error" => $id
@@ -26,4 +28,4 @@ if ((int) $id > 0) {
 
 header('Content-Type: application/json');
 
-echo json_encode($response);
+echo json_encode(array("themes" => $response));

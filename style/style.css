@@ -40,7 +40,10 @@ img {
     left: 0;
     width: 100vw;
     z-index: 10000;
-    background-color: var(--light-background-color);
+    border: 0.1em solid #F2F2F2;
+    background-color: #FFFFFF8A;
+    filter: drop-shadow(0.3em 0.3em 0.3em #00000030);
+    border-radius: 0 0 1em 1em;
     padding: 1em;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -455,7 +458,8 @@ input:focus {
 
 #main__card__header > div > button,
 #main__card__content__tasks__task > div > button,
-#main__card__content__interactive__add_task_button {
+#main__card__content__interactive__add_task_button,
+#main__theme_list__theme__button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -469,13 +473,15 @@ input:focus {
 }
 
 #main__card__content__tasks__task > div > button,
-#main__card__content__interactive__add_task_button {
+#main__card__content__interactive__add_task_button,
+#main__theme_list__theme__button {
     background-color: #EEEEEE;
 }
 
 #main__card__header > div > button > img,
 #main__card__content__tasks__task > div > button > img,
-#main__card__content__interactive__add_task_button > img {
+#main__card__content__interactive__add_task_button > img,
+#main__theme_list__theme__button > img {
     height: 100%;
     width: 100%;
     padding: 0.5em;
@@ -560,20 +566,34 @@ input:focus {
     border-radius: 0.4em;
     padding: 0.4em 0.8em;
 }
-
 #main__theme_list {
     display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
     visibility: hidden;
     position: absolute;
-    top: 10%;
+    top: calc(50px + 1em);
     right: 1em;
-    height: 0px;
+    height: 0;
     width: 20em;
     border-radius: 1em;
-    border: 0.1em solid #F2F2F2;
-    background-color: #FFFFFF8A;
     z-index: 10001;
     overflow: hidden;
     transition: 0.7s ease-in-out;
+    border: 0.1em solid #F2F2F2;
+    background-color: #FFFFFF8A;
     filter: drop-shadow(0.3em 0.3em 0.3em #00000030);
+}
+
+
+.main__theme_list__theme {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    border: 0.1em solid #F2F2F2;
+    background-color: #FFFFFF8A;
+    width: 100%;
+    padding: 0.6em 1em;
 }

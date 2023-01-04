@@ -199,5 +199,35 @@ class Database {
         }
     }
 
+    public function getThemes(int $id_user): array {
+        $query = "SELECT t.theme_id FROM themes t LEFT JOIN authorized_themes a ON a.theme_id = t.theme_id WHERE t.author_id = :id_user OR a.user_id = :id_user;";
+        $pdo = $this->sql_connect();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':id_user', $id_user, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $themes = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $value){
+            $themes[] = (int) $value['theme_id'];
+//            echo $value["theme_id"];
+        }
+
+        return $themes;
+    }
+
+    public function getTasks(int $theme_id): array|bool {
+        $query = "SELECT id, title, done FROM tasks WHERE theme_id = :theme_id";
+        $pdo = $this->sql_connect();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':theme_id', $theme_id, PDO::PARAM_INT);
+
+        try {
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
 
 }
