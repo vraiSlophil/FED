@@ -42,10 +42,10 @@
 }
 
 #root {
-    /*position: absolute;*/
+    position: absolute;
     /*z-index: -9999;*/
-    /*top: 0;*/
-    /*left: 0;*/
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
     background-color: #FFFFFF;
@@ -54,7 +54,8 @@
             linear-gradient(90deg, rgb(128, 128, 128, 0.1) 1px, transparent 1px),
             linear-gradient(90deg, rgba(128, 128, 128, 0.1) 1px, transparent 1px),
             linear-gradient(rgba(128, 128, 128, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px, 120px 120px;
+    background-size: 20px 20px, 100px 100px;
+    /*background-size: 20px 20px, 120px 120px;*/
 
 }
 

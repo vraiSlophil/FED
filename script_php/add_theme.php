@@ -21,11 +21,7 @@ if (!$theme_author || $_SESSION["login"] != $theme_author) {
 
 $tasks = $database->getTasks($theme_id);
 
-if (gettype($tasks) == "array") {
-    $response = $tasks;
-} else {
-    $response = ["error" => "An unexpected and unknown error has occurred. Please contact an administrator for assistance."];
-}
+$response = (gettype($tasks) == "array") ? $tasks : ["error" => "An unexpected and unknown error has occurred. Please contact an administrator for assistance." .gettype($tasks)];
 
 end:
 header('Content-Type: application/json');

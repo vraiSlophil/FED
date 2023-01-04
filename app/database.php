@@ -209,15 +209,14 @@ class Database {
         $themes = [];
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $value){
             $themes[] = (int) $value['theme_id'];
-//            echo $value["theme_id"];
         }
 
         return $themes;
     }
 
     public function getTasks(int $theme_id): array|bool {
-        $query = "SELECT id, title, done FROM tasks WHERE theme_id = :theme_id";
         $pdo = $this->sql_connect();
+        $query = "SELECT task_id, title, task_status FROM tasks WHERE theme_id = :theme_id";
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':theme_id', $theme_id, PDO::PARAM_INT);
 

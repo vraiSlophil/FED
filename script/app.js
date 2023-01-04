@@ -16,7 +16,7 @@ window.addEventListener("contextmenu", function(event) {
 });
 
 window.addEventListener("click", function(event) {
-    if (event.target.closest("#context-menu" == null)) {
+    if (event.target.closest(".context-menu") == null) {
         if (contextMenu.style.display === "flex") {
             contextMenu.style.display = "none";
         }
@@ -45,8 +45,8 @@ window.addEventListener("mouseup", function() {
 
 window.addEventListener("mousemove", function(event) {
     if (selected) {
-        let x = (event.clientX - selectedX - (event.clientX % 20)) + (selectedX % 20);
-        let y = (event.clientY - selectedY - (event.clientY % 20)) + (selectedY % 20);
+        const x = (event.clientX - selectedX) - ((event.clientX + selectedX) % 20);
+        const y = (event.clientY - selectedY) - ((event.clientY + selectedY) % 20);
         selected.style.transform = `translate(${x}px, ${y}px)`;
     }
 });
@@ -54,25 +54,7 @@ window.addEventListener("mousemove", function(event) {
 optionNew.addEventListener("click", function(event) {
     contextMenu.style.display = "none";
     const element = (event.target.nodeName === "DIV" ? event.target.lastElementChild.cloneNode(true) : event.target.nextElementSibling.cloneNode(true));
-    const tdTheme = new todoTheme(element);
-    tdTheme.getToggleContentButton.addEventListener("click", () => {
-        tdTheme.toggleContentClick();
-    });
-    tdTheme.getAddPeopleButton.addEventListener("click", () => {
-        tdTheme.invitePeopleClick();
-    });
-    tdTheme.getDeleteButton.addEventListener("click", () => {
-        tdTheme.deleteClick();
-    });
-    tdTheme.getEditButton.addEventListener("click", () => {
-        tdTheme.editClick();
-    });
-    tdTheme.getValidateButton.addEventListener("click", () => {
-        tdTheme.validateClick();
-    });
-    tdTheme.getContentNewTaskButton.addEventListener("click", () => {
-        tdTheme.newTaskClick();
-    });
+    const tdTheme = new todoTheme(element, null);
     const x = event.clientX - (event.clientX % 20);
     const y = event.clientY - (event.clientY % 20);
     element.style.transform = `translate(${x}px, ${y}px)`;
@@ -81,9 +63,8 @@ optionNew.addEventListener("click", function(event) {
 
 function offset(el) {
     const box = el.getBoundingClientRect();
-    const docElem = document.documentElement;
     return {
-        left: box.left + window.pageXOffset - docElem.clientLeft,
-        top: box.top + window.pageYOffset - docElem.clientTop
+        left: box.left + window.pageXOffset - document.documentElement.clientLeft,
+        top: box.top + window.pageYOffset - document.documentElement.clientTop
     };
 }

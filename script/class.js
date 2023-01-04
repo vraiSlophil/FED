@@ -1,94 +1,119 @@
 class todoTheme {
 
-     constructor(theme, id = null) {
-         this.theme = theme;
-         this.editButton = this.theme.querySelector("#main__card__header__edit_button");
-         this.validateButton = this.theme.querySelector("#main__card__header__validate_button");
-         this.addPeopleButton = this.theme.querySelector("#main__card__header__add_people_button");
-         this.toggleContentButton = this.theme.querySelector("#main__card__header__toggle_content_button");
-         this.deleteButton = this.theme.querySelector("#main__card__header__delete_button");
-         this.title = this.theme.querySelector("#main__card__header__title");
-         this.content = this.theme.querySelector("#main__card__content");
-         this.contentTasksParent = this.content.querySelector("#main__card__content__tasks");
-         this.contentTasksChildren = this.contentTasksParent.querySelectorAll("#main__card__content__tasks__task");
-         this.contentButtons = this.content.querySelector("#main__card__content__interactive");
-         this.contentNewTaskInput = this.contentButtons.querySelector("#main__card__content__interactive__input");
-         this.contentNewTaskButton = this.contentButtons.querySelector("#main__card__content__interactive__add_task_button");
+    constructor(theme, id = null, title = null) {
+        this.theme = theme;
+        this.editButton = this.theme.querySelector("#main__card__header__edit_button");
+        this.validateButton = this.theme.querySelector("#main__card__header__validate_button");
+        this.addPeopleButton = this.theme.querySelector("#main__card__header__add_people_button");
+        this.toggleContentButton = this.theme.querySelector("#main__card__header__toggle_content_button");
+        this.deleteButton = this.theme.querySelector("#main__card__header__delete_button");
+        this.title = this.theme.querySelector("#main__card__header__title");
+        this.content = this.theme.querySelector("#main__card__content");
+        this.contentTasksParent = this.content.querySelector("#main__card__content__tasks");
+        this.contentTasksChildren = this.contentTasksParent.querySelectorAll("#main__card__content__tasks__task");
+        this.contentButtons = this.content.querySelector("#main__card__content__interactive");
+        this.contentNewTaskInput = this.contentButtons.querySelector("#main__card__content__interactive__input");
+        this.contentNewTaskButton = this.contentButtons.querySelector("#main__card__content__interactive__add_task_button");
 
-         this.titleString = this.title.textContent;
+        this.titleString = this.title.textContent;
 
-         this.OPENED = false;
-         this.EDITING = false;
-         this.INVITING = false;
+        this.OPENED = false;
+        this.EDITING = false;
+        this.INVITING = false;
 
-         this.id = id;
+        this.id = id;
+        if (this.id == null) {
+            fetch('script_php/create_theme.php', {}).then((response) => {
+                const contentType = response.headers.get("content-type");
+                if(contentType && contentType.indexOf("application/json") !== -1) {
+                    return response.json().then((json) =>{
+                        if (response.ok) {
+                            try {
+                                this.id = parseInt(json.id);
+                                this.title.textContent = json.title.toString();
+                                this.titleString = this.title.textContent;
+                                this.theme.id = this.id;
+                            } catch (error) {
+                                console.error(json.error);
+                            }
+                        }
+                    });
+                } else {
+                    console.error("Missing JSON header.");
+                }
+            });
+        } else if (title != null && id != null) {
+            const x = document.querySelector("body").clientWidth / 2 - (document.querySelector("body").clientWidth / 2 % 20);
+            const y = document.querySelector("body").clientHeight / 2 - (document.querySelector("body").clientHeight / 2 % 20);
 
-         if (this.id == null) {
-             fetch('script_php/create_theme.php', {})
-                 .then((response) => {
-                 const contentType = response.headers.get("content-type");
-                 if(contentType && contentType.indexOf("application/json") !== -1) {
-                     return response.json().then((json) =>{
-                         if (response.ok) {
-                             try {
-                                 this.id = parseInt(json.id);
-                                 this.title.textContent = json.title.toString();
-                                 this.titleString = this.title.textContent;
-                                 this.theme.id = this.id;
-                             } catch (error) {
-                                 console.error(json.error);
-                             }
-                         }
-                     });
-                 } else {
-                     console.error("Missing JSON header.");
-                 }
-             });
-         } else {
-             fetch('script_php/add_theme.php', {
-                 method: 'POST',
-                 body: JSON.stringify({theme_id: this.id})
-             }).then((response) => {
-                 const contentType = response.headers.get("content-type");
-                 if(contentType && contentType.indexOf("application/json") !== -1) {
-                     return response.json().then((json) => {
-                         if (response.ok) {
-                             try {
-                                 json.themes.forEach((theme) => {
-                                    const themeId = theme.id;
-                                    const themeTasks = theme.tasks;
-                                 });
-                             } catch (error) {
-                                 console.error(json.error);
-                             }
-                         }
-                     });
-                 } else {
-                     console.error("Missing JSON header.");
-                 }
-             });
-         }
+            this.title.textContent = title;
+            this.titleString = title;
+            this.id = id;
+            this.theme.id = this.id;
+            this.theme.style.transform = `translate(${x}px, ${y}px)`;
 
-         this.contentTasksChildren.forEach((child) => {
-             const tdTask = new todoTask(child);
+            // fetch('script_php/add_theme.php', {
+            //     method: 'POST',
+            //     body: JSON.stringify({theme_id: this.id})
+            //
+            // }).then((response) => {
+            //     const contentType = response.headers.get("content-type");
+            //     if(contentType && contentType.indexOf("application/json") !== -1) {
+            //         return response.json().then((json) => {
+            //             if (response.ok) {
+            //                 try {
+            //                     json.themes.forEach((theme) => {
+            //                         const themeId = theme.id;
+            //                         const themeTasks = theme.tasks;
+            //                     });
+            //                 } catch (error) {
+            //                     console.error(json.error);
+            //                 }
+            //             }
+            //         });
+            //     } else {
+            //         console.error("Missing JSON header.");
+            //     }
+            // });
+        }
+        this.getToggleContentButton.addEventListener("click", () => {
+            this.toggleContentClick();
+        });
+        this.getAddPeopleButton.addEventListener("click", () => {
+            this.invitePeopleClick();
+        });
+        this.getDeleteButton.addEventListener("click", () => {
+            this.deleteClick();
+        });
+        this.getEditButton.addEventListener("click", () => {
+            this.editClick();
+        });
+        this.getValidateButton.addEventListener("click", () => {
+            this.validateClick();
+        });
+        this.getContentNewTaskButton.addEventListener("click", () => {
+            this.newTaskClick();
+        });
+        this.contentTasksChildren.forEach((child) => {
+            const tdTask = new todoTask(child);
 
-             tdTask.getTaskEditButton.addEventListener("click", () => {
-                 tdTask.editClick();
-             });
+            tdTask.getTaskEditButton.addEventListener("click", () => {
+                tdTask.editClick();
+            });
 
-             tdTask.getTaskValidateButton.addEventListener("click", () => {
-                 tdTask.validateClick();
-             });
+            tdTask.getTaskValidateButton.addEventListener("click", () => {
+                tdTask.validateClick();
+            });
 
-             tdTask.getTaskDeleteButton.addEventListener("click", () => {
-                 tdTask.deleteClick();
-             });
+            tdTask.getTaskDeleteButton.addEventListener("click", () => {
+                tdTask.deleteClick();
+            });
 
-             tdTask.getCheckbox.addEventListener("click", () => {
-                 tdTask.checkboxClick();
-             });
-         });
-     }
+            tdTask.getCheckbox.addEventListener("click", () => {
+                tdTask.checkboxClick();
+            });
+        });
+    }
 
     toggleContentClick() {
         if (this.content.style.display === "flex" && this.OPENED) {

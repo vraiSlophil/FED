@@ -1,29 +1,15 @@
 <?php
 session_start();
 
-if  (!isset($_SESSION["login"])) {
-    $response = array(
-        "error" => "You're not logged in. Please log in"
-    );
-}
-
-require_once "../app/database.php";
-$database = new Database();
-
-$id = $database->createTheme($_SESSION["login"], "Nouveau thème");
-
-if ((int) $id > 0) {
-    $id = (int) $id;
-    $response = array(
-        "id" => $id,
-        "title" => $database->getThemeTitle($id)
-    );
+if (!isset($_SESSION["login"])) {
+    $response = ["error" => "You're not logged in. Please log in"];
 } else {
-    $response = array(
-        "error" => $id
-    );
+    require_once "../app/database.php";
+    $database = new Database();
+
+    $id = (int) $database->createTheme($_SESSION["login"], "Nouveau thème");
+    $response = ($id > 0) ? ["id" => $id, "title" => $database->getThemeTitle($id)] : ["error" => $id];
 }
 
 header('Content-Type: application/json');
-
 echo json_encode($response);
