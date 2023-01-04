@@ -1,10 +1,9 @@
 <?php
 session_start();
 
-if  (!isset($_SESSION["login"])) {
-    $response = array(
-        "error" => "You're not logged in. Please log in."
-    );
+if (!isset($_SESSION["login"])) {
+    $response = ["error" => "You're not logged in. Please log in."];
+    goto end;
 }
 
 require_once "../app/database.php";
@@ -16,16 +15,19 @@ $theme_id = intval($data['theme_id']);
 $theme_author = $database->getThemeAuthor($theme_id);
 
 if (!$theme_author || $_SESSION["login"] != $theme_author) {
-    $response = array(
-        "error" => "The specified ID does not match the ID in the database."
-    );
-} else {
-    $tasks = $database->getTasks($theme_id);
-
-    $response = (gettype($tasks) == "array") ? $tasks : ["error" => "An unexpected and unknown error has occurred. Please contact an administrator for assistance."];
-
+    $response = ["error" => "The specified ID does not match the ID in the database."];
+    goto end;
 }
 
+$tasks = $database->getTasks($theme_id);
+
+if (gettype($tasks) == "array") {
+    $response = $tasks;
+} else {
+    $response = ["error" => "An unexpected and unknown error has occurred. Please contact an administrator for assistance."];
+}
+
+end:
 header('Content-Type: application/json');
 
 echo json_encode($response);
