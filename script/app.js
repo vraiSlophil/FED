@@ -45,8 +45,8 @@ window.addEventListener("mouseup", function() {
 
 window.addEventListener("mousemove", function(event) {
     if (selected) {
-        const x = (event.clientX - selectedX) - ((event.clientX + selectedX) % 20);
-        const y = (event.clientY - selectedY) - ((event.clientY + selectedY) % 20);
+        const x = (event.clientX - selectedX);
+        const y = (event.clientY - selectedY);
         selected.style.transform = `translate(${x}px, ${y}px)`;
     }
 });
@@ -55,8 +55,8 @@ optionNew.addEventListener("click", function(event) {
     contextMenu.style.display = "none";
     const element = (event.target.nodeName === "DIV" ? event.target.lastElementChild.cloneNode(true) : event.target.nextElementSibling.cloneNode(true));
     const tdTheme = new todoTheme(element, null);
-    const x = event.clientX - (event.clientX % 20);
-    const y = event.clientY - (event.clientY % 20);
+    const x = event.clientX;
+    const y = event.clientY;
     element.style.transform = `translate(${x}px, ${y}px)`;
     root.append(element);
 });

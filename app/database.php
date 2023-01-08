@@ -21,7 +21,7 @@ class Database {
     public function createUser(string $username, string $password, string $email, string $firstName = null, string $lastName = null, string $profilePictureUrl = "images/identifier.png"): int|string {
         $salt = uniqid();
         $hashed_password = hash('sha256', $password . $salt);
-        $query = "INSERT INTO users (username, password, salt, email, first_name, last_name, profile_picture_url) VALUES (:username, :password, :salt, :email, :first_name, :last_name, :profile_picture_url)";
+        $query = "INSERT INTO users (username, password, salt, email, first_name, last_name, profile_picture_url) VALUES (:username, :password, :salt, :email, :first_name, :last_name, :profile_picture_url);";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':username', $username);
@@ -39,14 +39,14 @@ class Database {
         } catch (PDOException $e) {
             if ($e->errorInfo[1] == 1062) {
                 // Code d'erreur MySQL 1062: erreur de clé unique
-                return "Un compte avec ce nom d'utilisateur ou cet email existe déjà.";
+                return "Error, an other account is using this user name.";
             } else if ($e->errorInfo[1] == 1452) {
                 // Code d'erreur MySQL 1452: erreur de clé étrangère
-                return "Adresse email non valide.";
+                return "Error, your email is invalid";
             } else if ($e->errorInfo[1] == 1406) {
-                return "Votre nom d'utilisateur, votre email, ou votre mot de passe est trop long.";
+                return "Error, a form value is invalid.";
             } else {
-                return "Une erreur inconnue s'est produite lors de la création du compte. Veuillez contacter un administrateur.";
+                return "An unknown error has occurred.";
             }
         }
     }
@@ -54,7 +54,7 @@ class Database {
     public function createTheme(int $authorId, string $themeName): bool|string {
         $pdo = $this->sql_connect();
 
-        $stmt = $pdo->prepare("INSERT INTO themes (author_id, theme_name) VALUES (:author_id, :theme_name)");
+        $stmt = $pdo->prepare("INSERT INTO themes (author_id, theme_name) VALUES (:author_id, :theme_name);");
         $stmt->bindParam(":author_id", $authorId);
         $stmt->bindParam(":theme_name", $themeName);
 
@@ -63,9 +63,9 @@ class Database {
             return intval($pdo->lastInsertId());
         } catch (PDOException $e) {
              if ($e->errorInfo[1] == 1452) {
-                return "La couleur spécifiée n'est pas valide.";
+                return "Error, the specified color is invalid.";
             } else {
-                return "Une erreur inconnue s'est produite lors de la création du thème. Veuillez contacter un administrateur. (code d'erreur : " .strval($e->errorInfo[1]). ")";
+                return "An unknown error has occurred. Please contact an administrator. (Error code : " .strval($e->errorInfo[1]). ")";
             }
         }
     }
@@ -75,14 +75,14 @@ class Database {
         $pdo = $this->sql_connect();
 
         // Requête SQL pour récupérer les informations de l'utilisateur avec le nom d'utilisateur spécifié
-        $stmt = $pdo->prepare("SELECT user_id, password, salt FROM users WHERE username = :username");
+        $stmt = $pdo->prepare("SELECT user_id, password, salt FROM users WHERE username = :username;");
         $stmt->bindParam(':username', $username);
         $stmt->execute();
         $user = $stmt->fetch();
 
         // Si aucun utilisateur n'a été trouvé avec ce nom d'utilisateur, retourne faux
         if (!$user) {
-            return "Ce nom d'utilisateur est introuvable.";
+            return "Error, this username was not found.";
         }
 
         // Hash le mot de passe entré par l'utilisateur avec le salt de cet utilisateur
@@ -90,7 +90,7 @@ class Database {
 
         // Si le mot de passe hashé ne correspond pas au mot de passe enregistré pour cet utilisateur, retourne faux
         if ($hashed_password != $user['password']) {
-            return "Le mot de passe entré n'est pas le bon.";
+            return "Error, it's not the expected password";
         }
 
         // Si l'utilisateur a été trouvé et le mot de passe vérifié, retourne l'ID de l'utilisateur
@@ -99,7 +99,7 @@ class Database {
 
     public function getProfilePictureUrl(int $id): string {
         $pdo = $this->sql_connect();
-        $query = "SELECT profile_picture_url FROM users WHERE user_id = :id";
+        $query = "SELECT profile_picture_url FROM users WHERE user_id = :id;";
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -109,7 +109,7 @@ class Database {
 
     public function getName(int $id) {
         $pdo = $this->sql_connect();
-        $query = "SELECT username, first_name, last_name FROM users WHERE user_id = :id";
+        $query = "SELECT username, first_name, last_name FROM users WHERE user_id = :id;";
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -126,7 +126,7 @@ class Database {
         $pdo = $this->sql_connect();
 
         // Préparer la requête SQL pour mettre à jour le nom de la tâche
-        $query = "UPDATE tasks SET title = :newTaskName WHERE task_id = :taskId";
+        $query = "UPDATE tasks SET title = :newTaskName WHERE task_id = :taskId;";
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':newTaskName', $newTaskName);
         $stmt->bindValue(':taskId', $taskId);
@@ -145,7 +145,7 @@ class Database {
         $pdo = $this->sql_connect();
 
         // Préparer la requête SQL pour récupérer le titre du thème
-        $query = "SELECT theme_name FROM themes WHERE theme_id = :id";
+        $query = "SELECT theme_name FROM themes WHERE theme_id = :id;";
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':id', $id);
 
@@ -158,7 +158,7 @@ class Database {
     }
 
     public function getThemeAuthor(int $theme_id): int {
-        $query = "SELECT author_id FROM themes WHERE theme_id = :theme_id";
+        $query = "SELECT author_id FROM themes WHERE theme_id = :theme_id;";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':theme_id', $theme_id, PDO::PARAM_INT);
@@ -167,7 +167,7 @@ class Database {
     }
 
     public function deleteTheme(int $theme_id): bool {
-        $query = "DELETE FROM themes WHERE theme_id = :theme_id";
+        $query = "DELETE FROM themes WHERE theme_id = :theme_id;";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':theme_id', $theme_id, PDO::PARAM_INT);
@@ -184,7 +184,7 @@ class Database {
 
     public function editThemeTitle(int $theme_id, string $new_title): bool {
         // Préparer la requête pour mettre à jour le titre du thème
-        $query = "UPDATE themes SET theme_name = :new_title WHERE theme_id = :theme_id";
+        $query = "UPDATE themes SET theme_name = :new_title WHERE theme_id = :theme_id;";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':new_title', $new_title);
@@ -207,16 +207,15 @@ class Database {
         $stmt->execute();
 
         $themes = [];
-        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $value){
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $value) {
             $themes[] = (int) $value['theme_id'];
         }
-
         return $themes;
     }
 
     public function getTasks(int $theme_id): array|bool {
         $pdo = $this->sql_connect();
-        $query = "SELECT task_id, title, task_status FROM tasks WHERE theme_id = :theme_id";
+        $query = "SELECT task_id, title, task_status FROM tasks WHERE theme_id = :theme_id;";
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':theme_id', $theme_id, PDO::PARAM_INT);
 
@@ -242,5 +241,21 @@ class Database {
         }
     }
 
+    public function createTask(int $theme_id, string $task_name, int $task_author_id, bool $task_status = false): int|string {
+        $pdo = $this->sql_connect();
+        $query = "INSERT INTO tasks (title, user_id, theme_id, task_status) VALUES (:task_name, :author_id, :theme_id, :task_status);";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(":task_name", $task_name);
+        $stmt->bindParam(":author_id", $task_author_id, PDO::PARAM_INT);
+        $stmt->bindParam(":theme_id", $theme_id, PDO::PARAM_INT);
+        $stmt->bindParam(":task_status", $task_status, PDO::PARAM_BOOL);
+
+        try {
+            $stmt->execute();
+            return intval($pdo->lastInsertId());
+        } catch (PDOException $e) {
+            return "An unknown error has occurred. Please contact an administrator. (Error code : " .strval($e->errorInfo[1]). ")";
+        }
+    }
 
 }

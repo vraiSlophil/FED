@@ -94,25 +94,7 @@ class todoTheme {
         this.getContentNewTaskButton.addEventListener("click", () => {
             this.newTaskClick();
         });
-        this.contentTasksChildren.forEach((child) => {
-            const tdTask = new todoTask(child);
-
-            tdTask.getTaskEditButton.addEventListener("click", () => {
-                tdTask.editClick();
-            });
-
-            tdTask.getTaskValidateButton.addEventListener("click", () => {
-                tdTask.validateClick();
-            });
-
-            tdTask.getTaskDeleteButton.addEventListener("click", () => {
-                tdTask.deleteClick();
-            });
-
-            tdTask.getCheckbox.addEventListener("click", () => {
-                tdTask.checkboxClick();
-            });
-        });
+        this.contentTasksChildren.forEach((child) => {const tdTask = new todoTask(child, this);});
     }
 
     toggleContentClick() {
@@ -203,7 +185,10 @@ class todoTheme {
                 const newTitle = input.value;
                 fetch('script_php/edit_theme.php', {
                     method: 'POST',
-                    body: JSON.stringify({theme_id: this.id})
+                    body: JSON.stringify({
+                        theme_id: this.id,
+                        new_title: newTitle
+                    })
                 }).then((response) => {
                     const contentType = response.headers.get("content-type");
                     if(contentType && contentType.indexOf("application/json") !== -1) {
@@ -211,6 +196,10 @@ class todoTheme {
                             if (response.ok) {
                                 if (!json.done) {
                                     console.error(json.error);
+                                } else {
+                                    this.title.textContent = input.value;
+                                    this.titleString = this.title.textContent;
+                                    this.EDITING = false;
                                 }
                             }
                         });
@@ -218,9 +207,6 @@ class todoTheme {
                         console.error("Missing JSON header.");
                     }
                 });
-                this.title.textContent = input.value;
-                this.titleString = this.title.textContent;
-                this.EDITING = false;
             }
         } else if (this.INVITING) {
             const input = this.title.querySelector("input");
@@ -264,66 +250,70 @@ class todoTheme {
         const input = document.createElement("input");
         input.type = "text";
         input.placeholder = "Nom d\'utilisateur";
-        input.setAttribute("class", "addPeople");
         this.title.textContent = "";
         this.title.appendChild(input);
     }
 
     newTaskClick() {
         if (this.contentNewTaskInput.value.trim()) {
-            const parent = document.createElement("div");
-            parent.id = "main__card__content__tasks__task";
+            fetch('script_php/create_task.php', {
+                method: 'POST',
+                body: JSON.stringify({
+                    theme_id: this.id,
+                    task_name: this.contentNewTaskInput.value
+                })
+            }).then((response) => {
+                const contentType = response.headers.get("content-type");
+                if(contentType && contentType.indexOf("application/json") !== -1) {
+                    return response.json().then((json) => {
+                        if (response.ok) {
+                            if (!json.done) {
+                                console.error(json.error);
+                            } else {
+                                const parent = document.createElement("div");
+                                parent.id = "main__card__content__tasks__task";
 
-            const child = document.createElement("div");
+                                const child = document.createElement("div");
 
-            const p = document.createElement("p");
+                                const p = document.createElement("p");
 
-            p.textContent = this.contentNewTaskInput.value;
-            parent.appendChild(p);
-            parent.appendChild(child);
+                                p.textContent = this.contentNewTaskInput.value;
+                                parent.appendChild(p);
+                                parent.appendChild(child);
 
-            const input = document.createElement("input");
-            const editButton = document.createElement('button');
-            editButton.id = 'main__card__content__tasks__task__edit_button';
+                                const input = document.createElement("input");
+                                const editButton = document.createElement('button');
+                                editButton.id = 'main__card__content__tasks__task__edit_button';
 
-            editButton.innerHTML = '<img src="images/edit.png" alt="edit task content">';
-            const validateButton = document.createElement('button');
-            validateButton.id = 'main__card__content__tasks__task__validate_button';
-            validateButton.style.display = 'none';
+                                editButton.innerHTML = '<img src="images/edit.png" alt="edit task content">';
+                                const validateButton = document.createElement('button');
+                                validateButton.id = 'main__card__content__tasks__task__validate_button';
+                                validateButton.style.display = 'none';
 
-            validateButton.innerHTML = '<img src="images/check.png" alt="validate task">';
-            const deleteButton = document.createElement('button');
-            deleteButton.id = 'main__card__content__tasks__task__delete_button';
+                                validateButton.innerHTML = '<img src="images/check.png" alt="validate task">';
+                                const deleteButton = document.createElement('button');
+                                deleteButton.id = 'main__card__content__tasks__task__delete_button';
 
-            deleteButton.innerHTML = '<img src="images/poubelle.png" alt="delete task">';
+                                deleteButton.innerHTML = '<img src="images/poubelle.png" alt="delete task">';
 
-            input.type = "checkbox";
-            input.setAttribute("id", "main__card__content__tasks__task__checkbox");
+                                input.type = "checkbox";
+                                input.setAttribute("id", "main__card__content__tasks__task__checkbox");
 
-            child.appendChild(input);
-            child.appendChild(editButton);
-            child.appendChild(validateButton);
-            child.appendChild(deleteButton);
+                                child.appendChild(input);
+                                child.appendChild(editButton);
+                                child.appendChild(validateButton);
+                                child.appendChild(deleteButton);
 
-            this.contentTasksParent.appendChild(parent);
-            this.contentNewTaskInput.value = "";
+                                this.contentTasksParent.appendChild(parent);
+                                this.contentNewTaskInput.value = "";
 
-            const tdTask = new todoTask(parent);
-
-            tdTask.getTaskEditButton.addEventListener("click", () => {
-                tdTask.editClick();
-            });
-
-            tdTask.getTaskValidateButton.addEventListener("click", () => {
-                tdTask.validateClick();
-            });
-
-            tdTask.getTaskDeleteButton.addEventListener("click", () => {
-                tdTask.deleteClick();
-            });
-
-            tdTask.getCheckbox.addEventListener("click", () => {
-                tdTask.checkboxClick();
+                                const tdTask = new todoTask(parent, this);
+                            }
+                        }
+                    });
+                } else {
+                    console.error("Missing JSON header.");
+                }
             });
         }
     }
@@ -355,9 +345,10 @@ class todoTheme {
 }
 
 class todoTask {
-    constructor(task, id = null, title = null, done = false) {
+    constructor(task, parentTheme, id = null, title = null, done = false) {
         this.task = task;
 
+        this.parentTheme = parentTheme;
         this.checkbox = this.task.querySelector("#main__card__content__tasks__task__checkbox");
         this.taskTitle = this.task.querySelector("p");
         this.taskEditButton = this.task.querySelector("#main__card__content__tasks__task__edit_button");
@@ -366,6 +357,22 @@ class todoTask {
 
         this.taskTitleString = this.taskTitle.textContent;
         this.EDITING = false;
+
+        this.getTaskEditButton.addEventListener("click", () => {
+            this.editClick();
+        });
+
+        this.getTaskValidateButton.addEventListener("click", () => {
+            this.validateClick();
+        });
+
+        this.getTaskDeleteButton.addEventListener("click", () => {
+            this.deleteClick();
+        });
+
+        this.getCheckbox.addEventListener("click", () => {
+            this.checkboxClick();
+        });
     }
 
     editClick() {
@@ -438,34 +445,3 @@ class todoTask {
         return this.taskDeleteButton;
     }
 }
-
-// const todoThemes = document.querySelectorAll("#main__card");
-//
-// todoThemes.forEach((child) => {
-//
-//     const tdTheme = new todoTheme(child);
-//
-//     tdTheme.getToggleContentButton.addEventListener("click", () => {
-//         tdTheme.toggleContentClick();
-//     });
-//
-//     tdTheme.getAddPeopleButton.addEventListener("click", () => {
-//         tdTheme.invitePeopleClick();
-//     });
-//
-//     tdTheme.getDeleteButton.addEventListener("click", () => {
-//         tdTheme.deleteClick();
-//     });
-//
-//     tdTheme.getEditButton.addEventListener("click", () => {
-//         tdTheme.editClick();
-//     });
-//
-//     tdTheme.getValidateButton.addEventListener("click", () => {
-//         tdTheme.validateClick();
-//     });
-//
-//     tdTheme.getContentNewTaskButton.addEventListener("click", () => {
-//         tdTheme.newTaskClick();
-//     });
-// });
