@@ -52,29 +52,35 @@ class todoTheme {
             this.theme.id = this.id;
             this.theme.style.transform = `translate(${x}px, ${y}px)`;
 
-            // fetch('script_php/add_theme.php', {
-            //     method: 'POST',
-            //     body: JSON.stringify({theme_id: this.id})
-            //
-            // }).then((response) => {
-            //     const contentType = response.headers.get("content-type");
-            //     if(contentType && contentType.indexOf("application/json") !== -1) {
-            //         return response.json().then((json) => {
-            //             if (response.ok) {
-            //                 try {
-            //                     json.themes.forEach((theme) => {
-            //                         const themeId = theme.id;
-            //                         const themeTasks = theme.tasks;
-            //                     });
-            //                 } catch (error) {
-            //                     console.error(json.error);
-            //                 }
-            //             }
-            //         });
-            //     } else {
-            //         console.error("Missing JSON header.");
-            //     }
-            // });
+            fetch('script_php/get_tasks.php', {
+                method: 'POST',
+                body: JSON.stringify({theme_id: this.id})
+
+            }).then((response) => {
+                const contentType = response.headers.get("content-type");
+                if(contentType && contentType.indexOf("application/json") !== -1) {
+                    return response.json().then((json) => {
+                        if (response.ok) {
+                            try {
+                                json.tasks.forEach((task) => {
+                                    const taskId = task.id;
+                                    const taskTitle = task.title;
+                                    const taskStatus = task.status;
+
+                                    const child = createTaskHtml(taskTitle, taskId);
+                                    new todoTask(child, this, taskId, taskTitle, taskStatus);
+
+                                    this.contentTasksParent.appendChild(child);
+                                });
+                            } catch (error) {
+                                console.error(json.tasks.error);
+                            }
+                        }
+                    });
+                } else {
+                    console.error("Missing JSON header.");
+                }
+            });
         }
         this.getToggleContentButton.addEventListener("click", () => {
             this.toggleContentClick();
@@ -94,7 +100,7 @@ class todoTheme {
         this.getContentNewTaskButton.addEventListener("click", () => {
             this.newTaskClick();
         });
-        this.contentTasksChildren.forEach((child) => {const tdTask = new todoTask(child, this);});
+        // this.contentTasksChildren.forEach((child) => {const tdTask = new todoTask(child, this);});
     }
 
     toggleContentClick() {
@@ -196,10 +202,12 @@ class todoTheme {
                             if (response.ok) {
                                 if (!json.done) {
                                     console.error(json.error);
+                                    this.title.removeChild(input);
+                                    this.title.textContent = this.titleString;
                                 } else {
                                     this.title.textContent = input.value;
+                                    input.remove();
                                     this.titleString = this.title.textContent;
-                                    this.EDITING = false;
                                 }
                             }
                         });
@@ -207,6 +215,7 @@ class todoTheme {
                         console.error("Missing JSON header.");
                     }
                 });
+                this.EDITING = false;
             }
         } else if (this.INVITING) {
             const input = this.title.querySelector("input");
@@ -234,12 +243,10 @@ class todoTheme {
                         console.error("Missing JSON header.");
                     }
                 });
+                input.remove();
                 this.title.textContent = this.titleString;
                 this.INVITING = false;
             }
-        }
-        if (this.OPENED) {
-            this.toggleContentClick();
         }
     }
 
@@ -254,67 +261,41 @@ class todoTheme {
         this.title.appendChild(input);
     }
 
-    newTaskClick() {
-        if (this.contentNewTaskInput.value.trim()) {
-            fetch('script_php/create_task.php', {
-                method: 'POST',
-                body: JSON.stringify({
-                    theme_id: this.id,
-                    task_name: this.contentNewTaskInput.value
-                })
-            }).then((response) => {
-                const contentType = response.headers.get("content-type");
-                if(contentType && contentType.indexOf("application/json") !== -1) {
-                    return response.json().then((json) => {
-                        if (response.ok) {
-                            if (!json.done) {
-                                console.error(json.error);
-                            } else {
-                                const parent = document.createElement("div");
-                                parent.id = "main__card__content__tasks__task";
+    newTaskClick(bool = false, title = null, done = false, id = null) {
 
-                                const child = document.createElement("div");
+        if (bool && title != null && id != null) {
 
-                                const p = document.createElement("p");
+            const parent = createTaskHtml(title, id);
 
-                                p.textContent = this.contentNewTaskInput.value;
-                                parent.appendChild(p);
-                                parent.appendChild(child);
+        } else {
+            if (this.contentNewTaskInput.value.trim()) {
+                fetch('script_php/create_task.php', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        theme_id: this.id,
+                        task_name: this.contentNewTaskInput.value
+                    })
+                }).then((response) => {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        return response.json().then((json) => {
+                            if (response.ok) {
+                                if (!json.done) {
+                                    console.error(json.error);
+                                } else {
+                                    const child = createTaskHtml(this.contentNewTaskInput.value, json.id);
+                                    this.contentTasksParent.appendChild(child);
+                                    this.contentNewTaskInput.value = "";
 
-                                const input = document.createElement("input");
-                                const editButton = document.createElement('button');
-                                editButton.id = 'main__card__content__tasks__task__edit_button';
-
-                                editButton.innerHTML = '<img src="images/edit.png" alt="edit task content">';
-                                const validateButton = document.createElement('button');
-                                validateButton.id = 'main__card__content__tasks__task__validate_button';
-                                validateButton.style.display = 'none';
-
-                                validateButton.innerHTML = '<img src="images/check.png" alt="validate task">';
-                                const deleteButton = document.createElement('button');
-                                deleteButton.id = 'main__card__content__tasks__task__delete_button';
-
-                                deleteButton.innerHTML = '<img src="images/poubelle.png" alt="delete task">';
-
-                                input.type = "checkbox";
-                                input.setAttribute("id", "main__card__content__tasks__task__checkbox");
-
-                                child.appendChild(input);
-                                child.appendChild(editButton);
-                                child.appendChild(validateButton);
-                                child.appendChild(deleteButton);
-
-                                this.contentTasksParent.appendChild(parent);
-                                this.contentNewTaskInput.value = "";
-
-                                const tdTask = new todoTask(parent, this);
+                                    new todoTask(child, this, json.id, this.contentNewTaskInput.value);
+                                }
                             }
-                        }
-                    });
-                } else {
-                    console.error("Missing JSON header.");
-                }
-            });
+                        });
+                    } else {
+                        console.error("Missing JSON header.");
+                    }
+                });
+            }
         }
     }
 
@@ -345,10 +326,12 @@ class todoTheme {
 }
 
 class todoTask {
-    constructor(task, parentTheme, id = null, title = null, done = false) {
+    constructor(task, parentTheme, id = null, done = false) {
         this.task = task;
 
         this.parentTheme = parentTheme;
+        this.id = id;
+        this.status = done;
         this.checkbox = this.task.querySelector("#main__card__content__tasks__task__checkbox");
         this.taskTitle = this.task.querySelector("p");
         this.taskEditButton = this.task.querySelector("#main__card__content__tasks__task__edit_button");
@@ -373,6 +356,10 @@ class todoTask {
         this.getCheckbox.addEventListener("click", () => {
             this.checkboxClick();
         });
+
+        if (this.id == null) {
+            this.getTaskDeleteButton.click();
+        }
     }
 
     editClick() {
@@ -424,8 +411,10 @@ class todoTask {
     checkboxClick() {
         if (this.checkbox.checked) {
             this.taskTitle.style.textDecoration = "line-through";
+            this.status = true;
         } else {
             this.taskTitle.style.textDecoration = "none";
+            this.status = false;
         }
     }
 
@@ -444,4 +433,43 @@ class todoTask {
     get getTaskDeleteButton() {
         return this.taskDeleteButton;
     }
+}
+
+function createTaskHtml(title = "error", id = null) {
+    const parent = document.createElement("div");
+    parent.classList.add("main__card__content__tasks__task");
+    parent.id = id;
+
+    const child = document.createElement("div");
+
+    const p = document.createElement("p");
+
+    p.textContent = title;
+    parent.appendChild(p);
+    parent.appendChild(child);
+
+    const input = document.createElement("input");
+    const editButton = document.createElement('button');
+    editButton.id = 'main__card__content__tasks__task__edit_button';
+
+    editButton.innerHTML = '<img src="images/edit.png" alt="edit task content">';
+    const validateButton = document.createElement('button');
+    validateButton.id = 'main__card__content__tasks__task__validate_button';
+    validateButton.style.display = 'none';
+
+    validateButton.innerHTML = '<img src="images/check.png" alt="validate task">';
+    const deleteButton = document.createElement('button');
+    deleteButton.id = 'main__card__content__tasks__task__delete_button';
+
+    deleteButton.innerHTML = '<img src="images/poubelle.png" alt="delete task">';
+
+    input.type = "checkbox";
+    input.setAttribute("id", "main__card__content__tasks__task__checkbox");
+
+    child.appendChild(input);
+    child.appendChild(editButton);
+    child.appendChild(validateButton);
+    child.appendChild(deleteButton);
+
+    return parent;
 }

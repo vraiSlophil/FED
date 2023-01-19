@@ -167,7 +167,9 @@ class Database {
     }
 
     public function deleteTheme(int $theme_id): bool {
-        $query = "DELETE FROM themes WHERE theme_id = :theme_id;";
+        $query = "DELETE FROM `themes` WHERE theme_id = :theme_id;
+                DELETE FROM `authorized_themes` WHERE theme_id = :theme_id;
+                DELETE FROM `tasks` WHERE theme_id = :theme_id;";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':theme_id', $theme_id, PDO::PARAM_INT);

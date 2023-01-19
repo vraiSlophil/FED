@@ -83,7 +83,7 @@ function toggleVisibilityEmailEdit() {
                             button.addEventListener("click", (event) => {
                                 const contextMenu = document.querySelector(".context-option");
                                 const element = (contextMenu.nodeName === "DIV" ? contextMenu.lastElementChild.cloneNode(true) : contextMenu.nextElementSibling.cloneNode(true));
-                                const tdTheme = new todoTheme(element, id = themeId, title = themeTitle);
+                                const tdTheme = new todoTheme(element, themeId, themeTitle);
 
                                 div.parentNode.removeChild(div);
                                 root.append(element);

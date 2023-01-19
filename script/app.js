@@ -24,6 +24,9 @@ window.addEventListener("click", function(event) {
 });
 
 window.addEventListener("mousedown", function(event) {
+    if (event.target.nodeName === "INPUT") {
+        return;
+    }
     selected = event.target.closest(".main__card");
     if (selected == null) {
         return;
