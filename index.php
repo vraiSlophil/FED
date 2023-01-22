@@ -38,8 +38,6 @@ if (!isset($_SESSION["login"])) {
     exit;
 }
 
-require_once "app/css.php";
-
 $login = $_SESSION["login"];
 ?>
 <head>
@@ -48,20 +46,7 @@ $login = $_SESSION["login"];
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/move.css">
     <link rel="stylesheet" href="style/chest.css">
-<!--    <link rel="stylesheet" href="style/header.css">-->
     <link rel="icon" href="images/fed-logo-white-background.png">
-    <style>
-        :root {
-            --light-background-color: <?php echo $_SESSION["lightBackgroundColor"];?>;
-            --background-color: <?php echo $_SESSION["backgroundColor"];?>;
-            --border-color: <?php echo $_SESSION["borderColor"];?>;
-            --font-color: <?php echo $_SESSION["fontColor"];?>;
-            --font-button-color: <?php echo $_SESSION["fontButtonColor"];?>;
-            --light-font-button-color: <?php echo $_SESSION["lightFontButtonColor"];?>;
-            --dark-font-button-color: <?php echo $_SESSION["darkFontButtonColor"];?>;
-            --image-white: <?php echo $_SESSION["imageWhite"];?>;
-        }
-    </style>
 </head>
 <body>
 <header id="header">

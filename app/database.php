@@ -141,7 +141,7 @@ class Database {
     }
 
     public function deleteTask(int $task_id): bool {
-        $query = "DELETE FROM tasks WHERE id = :task_id";
+        $query = "DELETE FROM tasks WHERE task_id = :task_id";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(":task_id", $task_id, PDO::PARAM_INT);

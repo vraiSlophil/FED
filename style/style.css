@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 
+:root {
+    --light-background-color: white !important;
+    --background-color: #F5F6F7 !important;
+    --border-color: #cecece !important;
+    --font-color: black !important;
+    --button-color: #144d87 !important;
+    --light-button-color: #1b76ae !important;
+    --dark-button-color: #11316d !important;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -13,13 +23,21 @@
     background: transparent !important;
 }
 
-input::selection {
-    background: royalblue !important;
+input[type=text]::selection,
+input[type=password]::selection,
+input[type=email]::selection {
+    background: var(--button-color) !important;
     color: white;
 }
 
-input {
+input[type=text],
+input[type=password],
+input[type=email] {
     cursor: text !important;
+}
+
+input[type=checkbox]{
+    cursor: pointer !important;
 }
 
 body {
@@ -52,7 +70,7 @@ img {
     border: 0.1em solid #F2F2F2;
     border-top: unset;
     background-color: #FFFFFF8A;
-    filter: drop-shadow(0.3em 0.3em 0.3em #00000030);
+    filter: drop-shadow(0 0 0.3em #00000030);
     border-radius: 0 0 1em 1em;
     padding: 1em;
     display: grid;
@@ -111,8 +129,10 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     flex-direction: column;
-    margin: 1em 0;
+    width: 100%;
+    height: 100%;
 }
 
 input:focus {
@@ -127,7 +147,7 @@ input:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 0 0.2em black;
+    filter: drop-shadow(0 0 0.3em #00000030);
     overflow: hidden;
 }
 
@@ -151,7 +171,7 @@ input:focus {
 #emailedit > form > input,
 #passwordedit > form > input,
 #passwordedit > form > #cancel {
-    background-color: var(--font-button-color);
+    background-color: var(--button-color);
     color: black;
 }
 
@@ -164,7 +184,7 @@ input:focus {
 #emailedit > form > input:hover,
 #passwordedit > form > input:hover,
 #passwordedit > form > #cancel:hover {
-    background-color: var(--light-font-button-color);
+    background-color: var(--light-button-color);
 }
 
 #main > #form > #button:active,
@@ -176,7 +196,7 @@ input:focus {
 #emailedit > form > input:active,
 #passwordedit > form > input:active,
 #passwordedit > form > #cancel:active {
-    background-color: var(--dark-font-button-color);
+    background-color: var(--dark-button-color);
 }
 
 
@@ -193,12 +213,12 @@ input:focus {
 #connectform > #form {
     background-color: var(--light-background-color);
     border-radius: 0.5em;
-    width: 40%;
+    width: max-content;
     flex-direction: column;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 0 0.2em black;
+    filter: drop-shadow(0 0 0.3em #00000030);
     overflow: hidden;
 }
 
@@ -252,7 +272,7 @@ input:focus {
     background-color: var(--light-background-color);
     border-radius: 0.5em;
     width: 40%;
-    box-shadow: 0 0 0.2em black;
+    filter: drop-shadow(0 0 0.3em #00000030);
     margin-bottom: 1em;
 }
 
@@ -268,7 +288,7 @@ input:focus {
     background-color: var(--light-background-color);
     border-radius: 0.5em;
     width: 40%;
-    box-shadow: 0 0 0.2em black;
+    filter: drop-shadow(0 0 0.3em #00000030);
     margin: 0 auto;
     display: flex;
     justify-content: center;
@@ -364,7 +384,7 @@ input:focus {
     justify-content: center;
     border-radius: 0.5em;
     width: 40%;
-    box-shadow: 0 0 0.2em black;
+    filter: drop-shadow(0 0 0.3em #00000030);
     flex-direction: column;
     overflow: hidden;
 }
@@ -412,7 +432,7 @@ input:focus {
 
 #register {
     width: max-content;
-    margin: 0 auto;
+    margin: 1em 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -422,6 +442,15 @@ input:focus {
     cursor: pointer;
     font-weight: bold;
     text-decoration: none;
+    color: var(--button-color);
+}
+
+#register > a:hover {
+    color: var(--light-button-color);
+}
+
+#register > a:active {
+    color: var(--dark-button-color);
 }
 
 .main__card {
@@ -597,7 +626,7 @@ input:focus {
     transition: 0.7s ease-in-out;
     border: 0.1em solid #F2F2F2;
     background-color: #FFFFFF8A;
-    filter: drop-shadow(0.3em 0.3em 0.3em #00000030);
+    filter: drop-shadow(0 0 0.3em #00000030);
 }
 
 

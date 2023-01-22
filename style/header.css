@@ -1,7 +1,0 @@
-#header {
-    position: static !important;
-}
-
-#header__head {
-    grid-column: 2 !important;
-}
