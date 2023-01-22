@@ -100,7 +100,6 @@ class todoTheme {
         this.getContentNewTaskButton.addEventListener("click", () => {
             this.newTaskClick();
         });
-        // this.contentTasksChildren.forEach((child) => {const tdTask = new todoTask(child, this);});
     }
 
     toggleContentClick() {
@@ -141,6 +140,7 @@ class todoTheme {
                             } else {
                                 this.theme.parentNode.removeChild(this.theme);
 
+                                delete this.id;
                                 delete this.theme;
                                 delete this.editButton;
                                 delete this.validateButton;
@@ -202,7 +202,7 @@ class todoTheme {
                             if (response.ok) {
                                 if (!json.done) {
                                     console.error(json.error);
-                                    this.title.removeChild(input);
+                                    input.remove();
                                     this.title.textContent = this.titleString;
                                 } else {
                                     this.title.textContent = input.value;
@@ -323,6 +323,10 @@ class todoTheme {
         return this.contentNewTaskButton;
     }
 
+    get getId() {
+        return this.id;
+    }
+
 }
 
 class todoTask {
@@ -377,16 +381,34 @@ class todoTask {
     validateClick() {
         if (this.EDITING) {
             const input = this.taskTitle.querySelector("input");
-            this.taskTitle.textContent = input.value;
-            this.taskTitleString = input.value;
-            // $.ajax({
-            //     url: "edit_task.php",
-            //     type: "POST",
-            //     data: {title: this.taskTitleString},
-            //     success: function(response) {
-            //         //todo
-            //     }
-            // });
+            const newTitle = input.value;
+
+            fetch('script_php/edit_task.php', {
+                method: 'POST',
+                body: JSON.stringify({
+                    task_id: this.id,
+                    new_title: newTitle
+                })
+            }).then((response) => {
+                const contentType = response.headers.get("content-type");
+                if(contentType && contentType.indexOf("application/json") !== -1) {
+                    return response.json().then((json) => {
+                        if (response.ok) {
+                            if (!json.done) {
+                                console.error(json.error);
+                                input.remove();
+                                this.taskTitle.textContent = this.titleString;
+                            } else {
+                                this.taskTitle.textContent = input.value;
+                                this.taskTitleString = input.value;
+                                input.remove();
+                            }
+                        }
+                    });
+                } else {
+                    console.error("Missing JSON header.");
+                }
+            });
             this.taskValidateButton.style.display = "none";
             this.taskEditButton.style.display = "flex";
             this.checkbox.style.display = "flex";
@@ -396,25 +418,91 @@ class todoTask {
 
     deleteClick() {
 
-        this.task.parentNode.removeChild(this.task);
+        fetch('script_php/delete_task.php', {
+            method: 'POST',
+            body: JSON.stringify({task_id: this.id})
+        })
+            .then((response) => {
+                const contentType = response.headers.get("content-type");
+                if(contentType && contentType.indexOf("application/json") !== -1) {
+                    return response.json().then((json) =>{
+                        if (response.ok) {
+                            if (!json.done) {
+                                console.error(json.error);
+                            } else {
+                                this.task.remove();
 
-        delete this.task;
-        delete this.taskTitle;
-        delete this.taskEditButton;
-        delete this.taskValidateButton;
-        delete this.taskDeleteButton;
-        delete this.taskTitleString;
-        delete this.EDITING;
-        delete this;
+                                delete this.task;
+                                delete this.parentTheme;
+                                delete this.id;
+                                delete this.status;
+                                delete this.checkbox;
+                                delete this.taskTitle;
+                                delete this.taskEditButton;
+                                delete this.taskValidateButton;
+                                delete this.taskDeleteButton;
+                                delete this.taskTitleString;
+                                delete this.EDITING;
+                            }
+                        }
+                    });
+                } else {
+                    console.error("Missing JSON header.");
+                }
+            });
     }
 
     checkboxClick() {
         if (this.checkbox.checked) {
-            this.taskTitle.style.textDecoration = "line-through";
             this.status = true;
+            fetch('script_php/task_state.php', {
+                method: 'POST',
+                body: JSON.stringify({
+                    task_id: this.id,
+                    task_status: this.status
+                })
+            })
+                .then((response) => {
+                    const contentType = response.headers.get("content-type");
+                    if(contentType && contentType.indexOf("application/json") !== -1) {
+                        return response.json().then((json) =>{
+                            if (response.ok) {
+                                if (!json.done) {
+                                    console.error(json.error);
+                                } else {
+                                    this.taskTitle.style.textDecoration = "line-through";
+                                }
+                            }
+                        });
+                    } else {
+                        console.error("Missing JSON header.");
+                    }
+                });
         } else {
-            this.taskTitle.style.textDecoration = "none";
             this.status = false;
+            fetch('script_php/task_state.php', {
+                method: 'POST',
+                body: JSON.stringify({
+                    task_id: this.id,
+                    task_status: this.status
+                })
+            })
+                .then((response) => {
+                    const contentType = response.headers.get("content-type");
+                    if(contentType && contentType.indexOf("application/json") !== -1) {
+                        return response.json().then((json) =>{
+                            if (response.ok) {
+                                if (!json.done) {
+                                    console.error(json.error);
+                                } else {
+                                    this.taskTitle.style.textDecoration = "none";
+                                }
+                            }
+                        });
+                    } else {
+                        console.error("Missing JSON header.");
+                    }
+                });
         }
     }
 

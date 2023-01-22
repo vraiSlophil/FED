@@ -121,7 +121,7 @@ class Database {
         }
     }
 
-    function editTaskName(int $taskId, string $newTaskName) {
+    function editTask(int $taskId, string $newTaskName) {
         // Connecter à la base de données
         $pdo = $this->sql_connect();
 
@@ -132,6 +132,33 @@ class Database {
         $stmt->bindValue(':taskId', $taskId);
 
         // Exécuter la requête
+        try {
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function deleteTask(int $task_id): bool {
+        $query = "DELETE FROM tasks WHERE id = :task_id";
+        $pdo = $this->sql_connect();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(":task_id", $task_id, PDO::PARAM_INT);
+        try {
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function updateTaskStatus(int $task_id, bool $status): bool {
+        $query = "UPDATE tasks SET task_status=:status WHERE task_id=:task_id";
+        $pdo = $this->sql_connect();
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(":task_id", $task_id, PDO::PARAM_INT);
+        $stmt->bindValue(":status", $status, PDO::PARAM_BOOL);
         try {
             $stmt->execute();
             return true;
