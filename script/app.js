@@ -45,14 +45,13 @@ window.addEventListener("mouseup", () => {
 });
 
 window.addEventListener("mousemove", (event) => {
+    event.stopPropagation();
     if (selected === null) {
         return;
     }
-    event.stopPropagation();
     const x = (event.clientX - selectedX);
     const y = (event.clientY - selectedY);
     selected.style.transform = `translate(${x}px, ${y}px)`;
-
 });
 
 optionNew.addEventListener("click", (event) => {
