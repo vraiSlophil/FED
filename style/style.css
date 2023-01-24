@@ -622,7 +622,8 @@ input:focus {
     width: 20em;
     border-radius: 1em;
     z-index: 10001;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
     transition: 0.7s ease-in-out;
     border: 0.1em solid #F2F2F2;
     background-color: #FFFFFF8A;

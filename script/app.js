@@ -1,21 +1,19 @@
 const root = document.querySelector("#root");
 const contextMenu = document.querySelector("#context-menu");
 const optionNew = document.querySelector("#new");
-const uuids = [];
-const blocks = {}
 
 let selected = null;
 let selectedX = 0;
 let selectedY = 0;
 
-window.addEventListener("contextmenu", function(event) {
+window.addEventListener("contextmenu", (event) => {
     event.preventDefault();
     contextMenu.style.display = "flex";
     contextMenu.style.left = `${event.clientX}px`;
     contextMenu.style.top = `${event.clientY}px`;
 });
 
-window.addEventListener("click", function(event) {
+window.addEventListener("click", (event) => {
     if (event.target.closest(".context-menu") == null) {
         if (contextMenu.style.display === "flex") {
             contextMenu.style.display = "none";
@@ -23,7 +21,7 @@ window.addEventListener("click", function(event) {
     }
 });
 
-window.addEventListener("mousedown", function(event) {
+window.addEventListener("mousedown", (event) => {
     if (event.target.nodeName === "INPUT") {
         return;
     }
@@ -39,22 +37,25 @@ window.addEventListener("mousedown", function(event) {
     }
 })
 
-window.addEventListener("mouseup", function() {
+window.addEventListener("mouseup", () => {
     if (selected != null) {
         selected.style.filter = "unset";
         selected = null;
     }
 });
 
-window.addEventListener("mousemove", function(event) {
-    if (selected) {
-        const x = (event.clientX - selectedX);
-        const y = (event.clientY - selectedY);
-        selected.style.transform = `translate(${x}px, ${y}px)`;
+window.addEventListener("mousemove", (event) => {
+    if (selected === null) {
+        return;
     }
+    event.stopPropagation();
+    const x = (event.clientX - selectedX);
+    const y = (event.clientY - selectedY);
+    selected.style.transform = `translate(${x}px, ${y}px)`;
+
 });
 
-optionNew.addEventListener("click", function(event) {
+optionNew.addEventListener("click", (event) => {
     contextMenu.style.display = "none";
     const element = (event.target.nodeName === "DIV" ? event.target.lastElementChild.cloneNode(true) : event.target.nextElementSibling.cloneNode(true));
     const tdTheme = new todoTheme(element, null);
