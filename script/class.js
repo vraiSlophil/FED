@@ -5,6 +5,7 @@ class todoTheme {
 
     constructor(theme, id = null, title = null) {
         this.theme = theme;
+        this.putInButton = this.theme.querySelector("#main__card__header__put_int_button");
         this.editButton = this.theme.querySelector("#main__card__header__edit_button");
         this.validateButton = this.theme.querySelector("#main__card__header__validate_button");
         this.addPeopleButton = this.theme.querySelector("#main__card__header__add_people_button");
@@ -105,6 +106,9 @@ class todoTheme {
                 }
             });
         }
+        this.getPutInButton.addEventListener("click", () => {
+            this.putInClick();
+        });
         this.getToggleContentButton.addEventListener("click", () => {
             this.toggleContentClick();
         });
@@ -126,6 +130,11 @@ class todoTheme {
 
         todoThemeDict[this.id] = this;
 
+    }
+
+    putInClick() {
+        createListThemeHtml(this.id, this.titleString);
+        this.deleteClick(true);
     }
 
     toggleContentClick() {
@@ -150,35 +159,36 @@ class todoTheme {
         }
     }
 
-    deleteClick(bool = false) {
+    deleteClick(keepInDatabase = false) {
 
-         function del() {
-            this.theme.remove();
+         function del(th) {
+             th.theme.remove();
 
-             delete todoThemeDict[this.id];
-             delete this.id;
-             delete this.theme;
-             delete this.editButton;
-             delete this.validateButton;
-             delete this.addPeopleButton;
-             delete this.toggleContentButton;
-             delete this.deleteButton;
-             delete this.title;
-             delete this.content;
-             delete this.contentTasksParent;
-             delete this.contentTasksChildren;
-             delete this.contentButtons;
-             delete this.contentNewTaskInput;
-             delete this.contentNewTaskButton;
-             delete this.titleString;
-             delete this.OPENED;
-             delete this.EDITING;
-             delete this.INVITING;
-             delete this;
+             delete todoThemeDict[th.id];
+             delete th.id;
+             delete th.theme;
+             delete th.putInButton;
+             delete th.editButton;
+             delete th.validateButton;
+             delete th.addPeopleButton;
+             delete th.toggleContentButton;
+             delete th.deleteButton;
+             delete th.title;
+             delete th.content;
+             delete th.contentTasksParent;
+             delete th.contentTasksChildren;
+             delete th.contentButtons;
+             delete th.contentNewTaskInput;
+             delete th.contentNewTaskButton;
+             delete th.titleString;
+             delete th.OPENED;
+             delete th.EDITING;
+             delete th.INVITING;
         }
 
-        if (bool) {
-            del();
+        if (keepInDatabase) {
+            del(this);
+            delete this;
             return;
         }
 
@@ -194,7 +204,8 @@ class todoTheme {
                         if (!json.done) {
                             console.error(json.error);
                         } else {
-                            del();
+                            del(this);
+                            delete this;
                         }
                     }
                 });
@@ -335,6 +346,10 @@ class todoTheme {
         }
     }
 
+    get getPutInButton() {
+        return this.putInButton;
+    }
+
     get getEditButton() {
         return this.editButton;
     }
@@ -459,27 +474,28 @@ class todoTask {
         }
     }
 
-    deleteClick(bool = false) {
+    deleteClick(keepInDatabase = false) {
 
-        function del() {
-            this.task.remove();
+        function del(th) {
+            th.task.remove();
 
-            delete todoTaskDict[this.id];
-            delete this.task;
-            delete this.parentTheme;
-            delete this.id;
-            delete this.status;
-            delete this.checkbox;
-            delete this.taskTitle;
-            delete this.taskEditButton;
-            delete this.taskValidateButton;
-            delete this.taskDeleteButton;
-            delete this.taskTitleString;
-            delete this.EDITING;
+            delete todoTaskDict[th.id];
+            delete th.task;
+            delete th.parentTheme;
+            delete th.id;
+            delete th.status;
+            delete th.checkbox;
+            delete th.taskTitle;
+            delete th.taskEditButton;
+            delete th.taskValidateButton;
+            delete th.taskDeleteButton;
+            delete th.taskTitleString;
+            delete th.EDITING;
         }
 
-        if (bool) {
-            del();
+        if (keepInDatabase) {
+            del(this);
+            delete this;
             return;
         }
 
@@ -495,7 +511,8 @@ class todoTask {
                             if (!json.done) {
                                 console.error(json.error);
                             } else {
-                                del();
+                                del(this);
+                                delete this;
                             }
                         }
                     });

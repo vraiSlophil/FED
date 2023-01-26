@@ -87,6 +87,7 @@ $login = $_SESSION["login"];
                 <div id="main__card__header">
                     <h3 id="main__card__header__title">Une erreur est survenue.</h3>
                     <div>
+                        <button id="main__card__header__put_int_button"><img src="images/put-in.png" alt="put in box"></button>
                         <button id="main__card__header__add_people_button"><img src="images/add-group.png" alt="add people"></button>
                         <button id="main__card__header__edit_button" style="display: none;"><img src="images/edit.png" alt="edit task title"></button>
                         <button id="main__card__header__validate_button" style="display: none;"><img src="images/check.png" alt="validate edits"></button>

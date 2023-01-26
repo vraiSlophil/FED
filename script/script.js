@@ -19,6 +19,37 @@ chest.addEventListener("click", (event) => {
     }
 });
 
+function createListThemeHtml(id, title) {
+    const themeId = id;
+    const themeTitle = title;
+
+    const div = document.createElement("div");
+    const button = document.createElement("button");
+    const p = document.createElement("p");
+
+    div.classList.add("main__theme_list__theme");
+    div.id = themeId;
+
+    button.innerHTML = "<img src='images/add.png' alt='add'>";
+    button.id = "main__theme_list__theme__button"
+
+    p.textContent = themeTitle;
+
+    div.appendChild(p);
+    div.appendChild(button);
+
+    themeList.appendChild(div);
+
+    button.addEventListener("click", (event) => {
+        const contextMenu = document.querySelector(".context-option");
+        const element = (contextMenu.nodeName === "DIV" ? contextMenu.lastElementChild.cloneNode(true) : contextMenu.nextElementSibling.cloneNode(true));
+        const tdTheme = new todoTheme(element, themeId, themeTitle);
+
+        div.remove();
+        root.append(element);
+    });
+}
+
 function toggleVisibilityNicknameEdit(){
     const element = document.getElementById("nicknameedit");
 
@@ -74,104 +105,3 @@ function toggleVisibilityEmailEdit() {
         })
     }
 )();
-
-// window.addEventListener("mousemove", () => {});
-
-themeList.addEventListener("dragover", (event) => {
-    event.preventDefault();
-    if (selected === null) {
-        console.log("pas selected");
-        return;
-    }
-    if (OVERTHEMELIST) {
-        return;
-    }
-    OVERTHEMELIST = true;
-    console.log("selected");
-
-    const selId = selected.id;
-
-    for (let key in todoThemeDict) {
-        if (key == selId) {
-            OVERTHEMELISTCHILDID = selId;
-            const title = todoThemeDict[key].getTitle;
-            createListThemeHtml(selId, title);
-        }
-    }
-});
-
-themeList.addEventListener("drop", (event) => {
-    event.preventDefault();
-    themeList.appendChild(document.getElementById(selected));
-    if (OVERTHEMELIST && selected != null) {
-        themeList.getElementById(OVERTHEMELISTCHILDID.toString()).remove();
-        OVERTHEMELIST = false;
-        OVERTHEMELISTCHILDID = null;
-    }
-});
-
-// themeList.addEventListener("mousemove", (event) => {
-//
-//     if (selected === null) {
-//         console.log("pas selected");
-//         return;
-//     }
-//
-//     if (OVERTHEMELIST) {
-//         return;
-//     }
-//
-//     OVERTHEMELIST = true;
-//     console.log("selected");
-//
-//     const selId = selected.id;
-//
-//     for (let key in todoThemeDict) {
-//
-//         if (key == selId) {
-//             OVERTHEMELISTCHILDID = selId;
-//             const title = todoThemeDict[key].getTitle;
-//             createListThemeHtml(selId, title);
-//         }
-//     }
-// });
-
-// themeList.addEventListener("mouseout", () => {
-//     // console.log("mouseout")
-//     if (OVERTHEMELIST && selected != null) {
-//         themeList.getElementById(OVERTHEMELISTCHILDID.toString()).remove();
-//         OVERTHEMELIST = false;
-//         OVERTHEMELISTCHILDID = null;
-//     }
-// });
-
-function createListThemeHtml(id, title) {
-    const themeId = id;
-    const themeTitle = title;
-
-    const div = document.createElement("div");
-    const button = document.createElement("button");
-    const p = document.createElement("p");
-
-    div.classList.add("main__theme_list__theme");
-    div.id = themeId;
-
-    button.innerHTML = "<img src='images/add.png' alt='add'>";
-    button.id = "main__theme_list__theme__button"
-
-    p.textContent = themeTitle;
-
-    div.appendChild(p);
-    div.appendChild(button);
-
-    themeList.appendChild(div);
-
-    button.addEventListener("click", (event) => {
-        const contextMenu = document.querySelector(".context-option");
-        const element = (contextMenu.nodeName === "DIV" ? contextMenu.lastElementChild.cloneNode(true) : contextMenu.nextElementSibling.cloneNode(true));
-        const tdTheme = new todoTheme(element, themeId, themeTitle);
-
-        div.remove();
-        root.append(element);
-    });
-}
