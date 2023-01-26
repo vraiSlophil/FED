@@ -630,7 +630,6 @@ input:focus {
     filter: drop-shadow(0 0 0.3em #00000030);
 }
 
-
 .main__theme_list__theme {
     display: flex;
     justify-content: space-between;

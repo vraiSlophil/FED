@@ -43,7 +43,6 @@ function toggleVisibilityPasswordEdit(){
     }
 
 }
-
 function toggleVisibilityEmailEdit() {
     const element = document.getElementById("emailedit");
 
@@ -78,8 +77,8 @@ function toggleVisibilityEmailEdit() {
 
 // window.addEventListener("mousemove", () => {});
 
-themeList.addEventListener("mousemove", (event) => {
-
+themeList.addEventListener("dragover", (event) => {
+    event.preventDefault();
     if (selected === null) {
         console.log("pas selected");
         return;
@@ -95,7 +94,6 @@ themeList.addEventListener("mousemove", (event) => {
     const selId = selected.id;
 
     for (let key in todoThemeDict) {
-
         if (key == selId) {
             OVERTHEMELISTCHILDID = selId;
             const title = todoThemeDict[key].getTitle;
@@ -104,15 +102,50 @@ themeList.addEventListener("mousemove", (event) => {
     }
 });
 
-themeList.addEventListener("mouseout", () => {
-    // console.log("mouseout")
+themeList.addEventListener("drop", (event) => {
+    event.preventDefault();
+    themeList.appendChild(document.getElementById(selected));
     if (OVERTHEMELIST && selected != null) {
         themeList.getElementById(OVERTHEMELISTCHILDID.toString()).remove();
         OVERTHEMELIST = false;
         OVERTHEMELISTCHILDID = null;
     }
-
 });
+
+// themeList.addEventListener("mousemove", (event) => {
+//
+//     if (selected === null) {
+//         console.log("pas selected");
+//         return;
+//     }
+//
+//     if (OVERTHEMELIST) {
+//         return;
+//     }
+//
+//     OVERTHEMELIST = true;
+//     console.log("selected");
+//
+//     const selId = selected.id;
+//
+//     for (let key in todoThemeDict) {
+//
+//         if (key == selId) {
+//             OVERTHEMELISTCHILDID = selId;
+//             const title = todoThemeDict[key].getTitle;
+//             createListThemeHtml(selId, title);
+//         }
+//     }
+// });
+
+// themeList.addEventListener("mouseout", () => {
+//     // console.log("mouseout")
+//     if (OVERTHEMELIST && selected != null) {
+//         themeList.getElementById(OVERTHEMELISTCHILDID.toString()).remove();
+//         OVERTHEMELIST = false;
+//         OVERTHEMELISTCHILDID = null;
+//     }
+// });
 
 function createListThemeHtml(id, title) {
     const themeId = id;
