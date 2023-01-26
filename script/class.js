@@ -24,6 +24,26 @@ class todoTheme {
         this.EDITING = false;
         this.INVITING = false;
 
+        // this.theme.setAttribute("draggable", true);
+        //
+        // this.theme.addEventListener("dragend", (event) => {
+        //     if (selected != null) {
+        //         this.theme.style.display = "flex";
+        //         const x = (event.clientX - selectedX);
+        //         const y = (event.clientY - selectedY);
+        //         this.theme.style.transform = `translate(${x}px, ${y}px)`;
+        //         this.theme.style.filter = "unset";
+        //         selected = null;
+        //     }
+        // });
+        //
+        // this.theme.addEventListener("dragstart", (event) => {
+        //     // this.theme.style.display = "none";
+        //     let img = new Image();
+        //     img.src = selected.src;
+        //     event.dataTransfer.setDragImage(img, 0, 0);
+        // });
+
         this.id = id;
         if (this.id == null) {
             fetch('script_php/create_theme.php', {}).then((response) => {

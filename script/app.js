@@ -35,7 +35,8 @@ window.addEventListener("mousedown", (event) => {
         selectedY = event.pageY - off.top;
         selected.style.filter = "drop-shadow(0.3em 0.3em 0.3em #00000030)";
     }
-})
+});
+
 
 window.addEventListener("mouseup", () => {
     if (selected != null) {
@@ -45,13 +46,14 @@ window.addEventListener("mouseup", () => {
 });
 
 window.addEventListener("mousemove", (event) => {
-    event.stopPropagation();
     if (selected === null) {
         return;
     }
+    event.stopPropagation();
     const x = (event.clientX - selectedX);
     const y = (event.clientY - selectedY);
     selected.style.transform = `translate(${x}px, ${y}px)`;
+
 });
 
 optionNew.addEventListener("click", (event) => {
