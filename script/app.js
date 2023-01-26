@@ -35,25 +35,26 @@ window.addEventListener("mousedown", (event) => {
         selectedY = event.pageY - off.top;
         selected.style.filter = "drop-shadow(0.3em 0.3em 0.3em #00000030)";
     }
-})
-//
-// window.addEventListener("mouseup", () => {
-//     if (selected != null) {
-//         selected.style.filter = "unset";
-//         selected = null;
-//     }
-// });
-//
-// window.addEventListener("mousemove", (event) => {
-//     if (selected === null) {
-//         return;
-//     }
-//     event.stopPropagation();
-//     const x = (event.clientX - selectedX);
-//     const y = (event.clientY - selectedY);
-//     selected.style.transform = `translate(${x}px, ${y}px)`;
-//
-// });
+});
+
+
+window.addEventListener("mouseup", () => {
+    if (selected != null) {
+        selected.style.filter = "unset";
+        selected = null;
+    }
+});
+
+window.addEventListener("mousemove", (event) => {
+    if (selected === null) {
+        return;
+    }
+    event.stopPropagation();
+    const x = (event.clientX - selectedX);
+    const y = (event.clientY - selectedY);
+    selected.style.transform = `translate(${x}px, ${y}px)`;
+
+});
 
 optionNew.addEventListener("click", (event) => {
     contextMenu.style.display = "none";
