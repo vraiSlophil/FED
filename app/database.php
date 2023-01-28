@@ -184,6 +184,35 @@ class Database {
         return $result['theme_name'];
     }
 
+    public function getThemeColor(int $theme_id): string {
+        $query = "SELECT theme_color FROM themes WHERE theme_id=:theme_id";
+        $stmt = $this->sql_connect()->prepare($query);
+        $stmt->bindParam(":theme_id", $theme_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result['theme_color'];
+    }
+
+    public function editThemeColor(int $theme_id, string $color): bool {
+        // Vérifie si la couleur est dans le bon format
+        if (!preg_match("/#[a-fA-F0-9]{6}/", $color)) {
+            return false;
+        }
+        // Prépare la requête SQL
+        $query = "UPDATE themes SET theme_color = :color WHERE theme_id = :theme_id";
+        $stmt = $this->sql_connect()->prepare($query);
+        $stmt->bindParam(":color", $color);
+        $stmt->bindParam(":theme_id", $theme_id, PDO::PARAM_INT);
+        // Exécute la requête
+        try {
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+
     public function getThemeAuthor(int $theme_id): int {
         $query = "SELECT author_id FROM themes WHERE theme_id = :theme_id;";
         $pdo = $this->sql_connect();

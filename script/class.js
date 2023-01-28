@@ -3,10 +3,12 @@ let todoTaskDict = {};
 
 class todoTheme {
 
-    constructor(theme, id = null, title = null) {
+    constructor(theme, id = null, title = null, themeColor = "#FFFFFF") {
         this.theme = theme;
+        this.header = this.theme.querySelector("#main__card__header");
         this.putInButton = this.theme.querySelector("#main__card__header__put_int_button");
         this.editButton = this.theme.querySelector("#main__card__header__edit_button");
+        this.editColorButton = this.theme.querySelector("#main__card__header__edit_color_button");
         this.validateButton = this.theme.querySelector("#main__card__header__validate_button");
         this.addPeopleButton = this.theme.querySelector("#main__card__header__add_people_button");
         this.toggleContentButton = this.theme.querySelector("#main__card__header__toggle_content_button");
@@ -19,31 +21,14 @@ class todoTheme {
         this.contentNewTaskInput = this.contentButtons.querySelector("#main__card__content__interactive__input");
         this.contentNewTaskButton = this.contentButtons.querySelector("#main__card__content__interactive__add_task_button");
 
+        this.headerBackgroundColor = this.header.style.backgroundColor = themeColor;
+        this.editColorButton.value = this.headerBackgroundColor;
+
         this.titleString = this.title.textContent;
 
         this.OPENED = false;
         this.EDITING = false;
         this.INVITING = false;
-
-        // this.theme.setAttribute("draggable", true);
-        //
-        // this.theme.addEventListener("dragend", (event) => {
-        //     if (selected != null) {
-        //         this.theme.style.display = "flex";
-        //         const x = (event.clientX - selectedX);
-        //         const y = (event.clientY - selectedY);
-        //         this.theme.style.transform = `translate(${x}px, ${y}px)`;
-        //         this.theme.style.filter = "unset";
-        //         selected = null;
-        //     }
-        // });
-        //
-        // this.theme.addEventListener("dragstart", (event) => {
-        //     // this.theme.style.display = "none";
-        //     let img = new Image();
-        //     img.src = selected.src;
-        //     event.dataTransfer.setDragImage(img, 0, 0);
-        // });
 
         this.id = id;
         if (this.id == null) {
@@ -67,8 +52,8 @@ class todoTheme {
                 }
             });
         } else if (title != null && id != null) {
-            const x = document.querySelector("body").clientWidth / 2 - (document.querySelector("body").clientWidth / 2 % 20);
-            const y = document.querySelector("body").clientHeight / 2 - (document.querySelector("body").clientHeight / 2 % 20);
+            const x = Math.floor((window.innerWidth - this.theme.offsetWidth) / 2);
+            const y = Math.floor((window.innerHeight - this.theme.offsetHeight) / 2);
 
             this.title.textContent = title;
             this.titleString = title;
@@ -79,7 +64,6 @@ class todoTheme {
             fetch('script_php/get_tasks.php', {
                 method: 'POST',
                 body: JSON.stringify({theme_id: this.id})
-
             }).then((response) => {
                 const contentType = response.headers.get("content-type");
                 if(contentType && contentType.indexOf("application/json") !== -1) {
@@ -89,7 +73,7 @@ class todoTheme {
                                 json.tasks.forEach((task) => {
                                     const taskId = task.id;
                                     const taskTitle = task.title;
-                                    const taskStatus = task.status;
+                                    const taskStatus = (task.status !== 0);
 
                                     const child = createTaskHtml(taskTitle, taskId);
                                     new todoTask(child, this, taskId, taskTitle, taskStatus);
@@ -133,7 +117,7 @@ class todoTheme {
     }
 
     putInClick() {
-        createListThemeHtml(this.id, this.titleString);
+        createListThemeHtml(this.id, this.titleString, this.headerBackgroundColor);
         this.deleteClick(true);
     }
 
@@ -146,6 +130,7 @@ class todoTheme {
                 return;
             }
             this.editButton.style.display = "none";
+            this.putInButton.style.display = "flex";
             this.addPeopleButton.style.display = "flex";
         } else {
             this.OPENED = true;
@@ -155,18 +140,21 @@ class todoTheme {
                 return;
             }
             this.editButton.style.display = "flex";
+            this.putInButton.style.display = "none";
             this.addPeopleButton.style.display = "none";
         }
     }
 
     deleteClick(keepInDatabase = false) {
-
          function del(th) {
              th.theme.remove();
 
              delete todoThemeDict[th.id];
              delete th.id;
              delete th.theme;
+             delete th.header;
+             delete th.backgroundColor;
+             delete th.editColorButton;
              delete th.putInButton;
              delete th.editButton;
              delete th.validateButton;
@@ -218,6 +206,7 @@ class todoTheme {
     editClick() {
         this.EDITING = true;
         this.editButton.style.display = "none";
+        this.editColorButton.style.display = "flex";
         this.validateButton.style.display = "flex";
 
         const input = document.createElement("input");
@@ -233,14 +222,13 @@ class todoTheme {
         if (this.EDITING) {
             const input = this.title.querySelector("input");
             if (input.value.trim()) {
-                this.validateButton.style.display = "none";
-                this.editButton.style.display = "flex";
                 const newTitle = input.value;
                 fetch('script_php/edit_theme.php', {
                     method: 'POST',
                     body: JSON.stringify({
                         theme_id: this.id,
-                        new_title: newTitle
+                        new_title: newTitle,
+                        new_color: this.editColorButton.value
                     })
                 }).then((response) => {
                     const contentType = response.headers.get("content-type");
@@ -249,12 +237,15 @@ class todoTheme {
                             if (response.ok) {
                                 if (!json.done) {
                                     console.error(json.error);
-                                    input.remove();
-                                    this.title.textContent = this.titleString;
                                 } else {
+                                    this.validateButton.style.display = "none";
+                                    this.editColorButton.style.display = "none";
+                                    this.editButton.style.display = "flex";
                                     this.title.textContent = input.value;
+                                    this.headerBackgroundColor = this.header.style.backgroundColor = this.editColorButton.value;
                                     input.remove();
                                     this.titleString = this.title.textContent;
+                                    this.EDITING = false;
                                 }
                             }
                         });
@@ -262,13 +253,10 @@ class todoTheme {
                         console.error("Missing JSON header.");
                     }
                 });
-                this.EDITING = false;
             }
         } else if (this.INVITING) {
             const input = this.title.querySelector("input");
             if (input.value.trim()) {
-                this.validateButton.style.display = "none";
-                this.addPeopleButton.style.display = "flex";
                 const username = input.value;
                 fetch('script_php/add_people.php', {
                     method: 'POST',
@@ -283,6 +271,13 @@ class todoTheme {
                             if (response.ok) {
                                 if (!json.done) {
                                     console.error(json.error);
+                                } else {
+                                    this.validateButton.style.display = "none";
+                                    this.editColorButton.style.display = "none";
+                                    this.addPeopleButton.style.display = "flex";
+                                    input.remove();
+                                    this.title.textContent = this.titleString;
+                                    this.INVITING = false;
                                 }
                             }
                         });
@@ -290,9 +285,6 @@ class todoTheme {
                         console.error("Missing JSON header.");
                     }
                 });
-                input.remove();
-                this.title.textContent = this.titleString;
-                this.INVITING = false;
             }
         }
     }
@@ -354,6 +346,10 @@ class todoTheme {
         return this.editButton;
     }
 
+    get getEditColorButton() {
+        return this.editColorButton;
+    }
+
     get getValidateButton() {
         return this.validateButton;
     }
@@ -382,6 +378,10 @@ class todoTheme {
         return this.title.textContent;
     }
 
+    get getColor() {
+        return this.headerBackgroundColor;
+    }
+
 }
 
 class todoTask {
@@ -398,6 +398,10 @@ class todoTask {
         this.taskDeleteButton = this.task.querySelector("#main__card__content__tasks__task__delete_button");
 
         this.taskTitleString = this.taskTitle.textContent;
+        this.checkbox.checked = this.status;
+        if (this.status) {
+            this.checkboxClick(false);
+        }
         this.EDITING = false;
 
         this.getTaskEditButton.addEventListener("click", () => {
@@ -522,7 +526,11 @@ class todoTask {
             });
     }
 
-    checkboxClick() {
+    checkboxClick(changeDatabase = true) {
+        if (!changeDatabase) {
+            this.taskTitle.style.textDecoration = "line-through";
+            return;
+        }
         if (this.checkbox.checked) {
             this.status = true;
             fetch('script_php/task_state.php', {

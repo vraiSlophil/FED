@@ -7,7 +7,6 @@ session_start();
 require_once "app/database.php";
 $database = new Database();
 
-
 if (isset($_POST["register_name"]) && isset($_POST["register_email"]) && isset($_POST["register_password"])) {
     $create = $database->createUser($_POST["register_name"], $_POST["register_password"], $_POST["register_email"]);
     if (is_string($create)) {
@@ -89,6 +88,8 @@ $login = $_SESSION["login"];
                     <div>
                         <button id="main__card__header__put_int_button"><img src="images/put-in.png" alt="put in box"></button>
                         <button id="main__card__header__add_people_button"><img src="images/add-group.png" alt="add people"></button>
+<!--                        <button id="main__card__header__edit_color_button" style="display: none;"><img src="images/color-picker.png" alt="edit task color"></button>-->
+                        <input id="main__card__header__edit_color_button" type="color" style="display: none;">
                         <button id="main__card__header__edit_button" style="display: none;"><img src="images/edit.png" alt="edit task title"></button>
                         <button id="main__card__header__validate_button" style="display: none;"><img src="images/check.png" alt="validate edits"></button>
                         <button id="main__card__header__toggle_content_button"><img src="images/show-more.png" alt="⯆"></button>

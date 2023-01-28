@@ -10,19 +10,20 @@ if  (!isset($_SESSION["login"])) {
 require_once "../app/database.php";
 $database = new Database();
 
-$id = $database->getThemes($_SESSION["login"]);
+$query = $database->getThemes($_SESSION["login"]);
 
-if (count($id) > 0) {
+if (count($query) > 0) {
     $response = [];
-    foreach ($id as $value) {
+    foreach ($query as $value) {
         $response[] = array(
             "id" => $value,
-            "title" => $database->getThemeTitle($value)
+            "title" => $database->getThemeTitle($value),
+            "color" => $database->getThemeColor($value)
         );
     }
 } else {
     $response = array(
-        "error" => $id
+        "error" => $query
     );
 }
 

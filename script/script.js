@@ -19,9 +19,10 @@ chest.addEventListener("click", (event) => {
     }
 });
 
-function createListThemeHtml(id, title) {
+function createListThemeHtml(id, title, color) {
     const themeId = id;
     const themeTitle = title;
+    const themeColor = color;
 
     const div = document.createElement("div");
     const button = document.createElement("button");
@@ -29,6 +30,7 @@ function createListThemeHtml(id, title) {
 
     div.classList.add("main__theme_list__theme");
     div.id = themeId;
+    div.style.backgroundColor = themeColor;
 
     button.innerHTML = "<img src='images/add.png' alt='add'>";
     button.id = "main__theme_list__theme__button"
@@ -43,7 +45,7 @@ function createListThemeHtml(id, title) {
     button.addEventListener("click", (event) => {
         const contextMenu = document.querySelector(".context-option");
         const element = (contextMenu.nodeName === "DIV" ? contextMenu.lastElementChild.cloneNode(true) : contextMenu.nextElementSibling.cloneNode(true));
-        const tdTheme = new todoTheme(element, themeId, themeTitle);
+        const tdTheme = new todoTheme(element, themeId, themeTitle, themeColor);
 
         div.remove();
         root.append(element);
@@ -87,21 +89,22 @@ function toggleVisibilityEmailEdit() {
 }
 
 (async function loadThemes() {
-        await fetch('script_php/get_themes.php', {}).then((response) => {
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
-                return response.json().then((json) => {
-                    if (response.ok) {
-                        json.themes.forEach((theme) => {
-                            const themeId = theme.id;
-                            const themeTitle = theme.title;
-                            createListThemeHtml(themeId, themeTitle);
-                        });
-                    }
-                });
-            } else {
-                console.error("Missing JSON header.");
-            }
-        })
-    }
+    await fetch('script_php/get_themes.php', {}).then((response) => {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            return response.json().then((json) => {
+                if (response.ok) {
+                    json.themes.forEach((theme) => {
+                        const themeId = theme.id;
+                        const themeTitle = theme.title;
+                        const themeColor = theme.color;
+                        createListThemeHtml(themeId, themeTitle, themeColor);
+                    });
+                }
+            });
+        } else {
+            console.error("Missing JSON header.");
+        }
+    });
+}
 )();
