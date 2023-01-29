@@ -316,4 +316,16 @@ class Database {
         }
     }
 
+    public function deleteAuthorizedUser(int $user_id, string $theme_id): bool {
+        $query = "DELETE FROM authorized_themes WHERE user_id = :user_id AND theme_id=:theme_id";
+        $stmt = $this->sql_connect()->prepare($query);
+        $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(":theme_id", $theme_id);
+        try {
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }

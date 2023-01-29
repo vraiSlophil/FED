@@ -73,10 +73,10 @@ class todoTheme {
                                 json.tasks.forEach((task) => {
                                     const taskId = task.id;
                                     const taskTitle = task.title;
-                                    const taskStatus = (task.status !== 0);
+                                    const taskStatus = Boolean(task.status);
 
                                     const child = createTaskHtml(taskTitle, taskId);
-                                    new todoTask(child, this, taskId, taskTitle, taskStatus);
+                                    new todoTask(child, this, taskId, taskStatus);
 
                                     this.contentTasksParent.appendChild(child);
                                 });
@@ -399,9 +399,12 @@ class todoTask {
 
         this.taskTitleString = this.taskTitle.textContent;
         this.checkbox.checked = this.status;
+
         if (this.status) {
+            this.checkbox.checked = true;
             this.checkboxClick(false);
         }
+
         this.EDITING = false;
 
         this.getTaskEditButton.addEventListener("click", () => {
