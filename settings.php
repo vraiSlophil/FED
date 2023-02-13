@@ -1,34 +1,59 @@
 <html lang="fr">
 <?php
-    session_start();
-//    include "app/css.php";
-//    include "app/database.php";
+session_start();
+
+if (!isset($_SESSION["login"])) {
+    header("Location: login.php");
+    exit;
+}
+
+include "app/database.php";
+$database = new Database();
+
+
+if (isset($_POST['submit_image'])) {
+    // Récupérer l'image téléchargée
+    $image = $_FILES['image'];
+    $image_name = $image['name'];
+    $image_tmp = $image['tmp_name'];
+    $image_size = $image['size'];
+    $image_error = $image['error'];
+
+    // Vérifier si l'image a été téléchargée correctement
+    if ($image_error == 0) {
+        // Lire les données de l'image
+        $image = imagecreatefromstring(file_get_contents($image_tmp));
+
+        // Redimensionner l'image
+        $thumbnail = imagecreatetruecolor(128, 128);
+        imagecopyresampled($thumbnail, $image, 0, 0, 0, 0, 128, 128, imagesx($image), imagesy($image));
+
+        // Enregistrer l'image
+        imagejpeg($thumbnail, './images/profile_picture/' . $_SESSION["login"] . '.jpg');
+
+        // Libérer la mémoire utilisée pour l'image
+        imagedestroy($image);
+        imagedestroy($thumbnail);
+
+        $database->updateProfilePicture($_SESSION["login"]);
+        header("Location: settings.php");
+        exit();
+    }
+}
 
 ?>
 <head>
     <meta charset="UTF-8">
     <title>FED - Paramètres</title>
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/settings.css">
     <link rel="icon" href="images/fed-logo-white-background.png">
-    <script src="script/script.js"></script>
-    <style>
-        :root {
-            --light-background-color: <?php echo $_SESSION["lightBackgroundColor"];?>;
-            --background-color: <?php echo $_SESSION["backgroundColor"];?>;
-            --border-color: <?php echo $_SESSION["borderColor"];?>;
-            --font-color: <?php echo $_SESSION["fontColor"];?>;
-            --font-button-color: <?php echo $_SESSION["fontButtonColor"];?>;
-            --light-font-button-color: <?php echo $_SESSION["lightFontButtonColor"];?>;
-            --dark-font-button-color: <?php echo $_SESSION["darkFontButtonColor"];?>;
-            --image-white: <?php echo $_SESSION["imageWhite"];?>;
-        }
-    </style>
 </head>
 <body>
 <header id="header">
     <div id="headercontent">
         <div id="leave">
-            <a href="home.php"><img src="images/horizontalarrow.png" alt="logout"></a>
+            <a href="index.php"><img src="images/horizontalarrow.png" alt="logout"></a>
         </div>
     </div>
     <div id="header__head">
@@ -44,20 +69,40 @@
         }
     ?>
 </main>
-<section id="parameters">
-    <div id="pseudo">
-        <p><?php echo $nickname;?></p>
-        <img src="images/edit.png" alt="edit" onclick="toggleVisibilityNicknameEdit();">
-    </div>
-    <div id="password">
-        <p>●●●●●●●●●</p>
-        <img src="images/edit.png" alt="edit" onclick="toggleVisibilityPasswordEdit();">
-    </div>
-    <div id="email">
-        <p><?php echo $email;?></p>
-        <img src="images/edit.png" alt="edit" onclick="toggleVisibilityEmailEdit();">
-    </div>
-    <a href="login.php" id="logout">Se déconnecter</a>
+<section id="settings_container">
+    <div id="settings_container__settings">
+        <div id="settings_container__settings__profile_picture">
+            <img src="<?php echo $database->getProfilePictureUrl($_SESSION["login"]); ?>" alt="profile picture">
+            <form action="settings.php" method="post" enctype="multipart/form-data">
+                <input type="file" name="image" id="image" hidden>
+                <label for="image">Choisir une image</label>
+                <input type="submit" name="submit_image" value="Modifier">
+            </form>
+        </div>
+        <div id="settings_container__settings__texts">
+            <div id="settings_container__settings__username">
+                <p><?php echo htmlspecialchars($database->getName($_SESSION["login"]));?></p>
+                <img src="images/edit.png" alt="edit">
+            </div>
+            <div id="settings_container__settings__password">
+                <p>●●●●●●●●●</p>
+                <img src="images/edit.png" alt="edit">
+            </div>
+            <div id="settings_container__settings__email">
+                <p><?php echo htmlspecialchars($database->getEmail($_SESSION["login"]));?></p>
+                <img src="images/edit.png" alt="edit">
+            </div>
+            <div id="settings_container__settings__first_name">
+                <p><?php echo htmlspecialchars($database->getFirstName($_SESSION["login"]));?></p>
+                <img src="images/edit.png" alt="edit">
+            </div>
+            <div id="settings_container__settings__last_name">
+                <p><?php echo htmlspecialchars($database->getLastName($_SESSION["login"]));?></p>
+                <img src="images/edit.png" alt="edit">
+            </div>
+            <a href="login.php" id="settings_container__settings__logout">Se déconnecter</a>
+            </div>
+        </div>
 </section>
 
 <!-- menus de modification -->
@@ -69,7 +114,7 @@
             <input type="password" name="password" placeholder="Mot de passe">
         </div>
         <div id="newnickname">
-            <img src="images/identifier.png">
+            <img src="images/profile_picture/identifier.png">
             <input type="text" name="newnickname" placeholder="Nouveau pseudo">
         </div>
         <input type="submit" value="Valider">
@@ -103,9 +148,9 @@
             <input type="email" name="newemail" placeholder="Nouvelle adresse email">
         </div>
         <input type="submit" value="Valider">
-        <div onclick="toggleVisibilityEmailEdit();" id="cancel">Annuler</div>
+        <button onclick="toggleVisibilityEmailEdit();" id="cancel">Annuler</button>
     </form>
 </section>
-
+<script src="script/script.js"></script>
 </body>
 </html>

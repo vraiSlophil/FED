@@ -28,7 +28,7 @@ if (isset($_SESSION["login"])) unset($_SESSION["login"]);
         <?php } ?>
         <form action="index.php" method="post" id="form">
             <div id="pseudo">
-                <img src="images/identifier.png">
+                <img src="images/profile_picture/identifier.png">
                 <input type="text" name="login_name" placeholder="Votre nom d'utilisateur">
             </div>
             <div id="password">

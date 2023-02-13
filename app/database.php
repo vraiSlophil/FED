@@ -121,7 +121,20 @@ class Database {
         }
     }
 
-    function editTask(int $taskId, string $newTaskName) {
+    public function getEmail(int $id_user): ?string {
+        $query = "SELECT email FROM users WHERE user_id = :id_user";
+        $stmt = $this->sql_connect()->prepare($query);
+        $stmt->bindParam(":id_user", $id_user, PDO::PARAM_INT);
+        try {
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['email'];
+        } catch (PDOException $e) {
+            return "";
+        }
+    }
+
+    function editTask(int $taskId, string $newTaskName): bool {
         // Connecter à la base de données
         $pdo = $this->sql_connect();
 
@@ -328,4 +341,31 @@ class Database {
             return false;
         }
     }
+
+    public function updateProfilePicture(int $userId): bool {
+        $query = "UPDATE users SET profile_picture_url = (CONCAT('images/profile_picture/', :userId, '.jpg')) WHERE user_id = :userId";
+        $stmt = $this->sql_connect()->prepare($query);
+        $stmt->bindParam(":userId", $userId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function getFirstName(int $userId): string {
+        $query = "SELECT first_name FROM users WHERE user_id = :userId";
+        $stmt = $this->sql_connect()->prepare($query);
+        $stmt->bindParam(":userId", $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result['first_name'] ?: "";
+    }
+
+    public function getLastName(int $userId) : string {
+        $query = "SELECT last_name FROM users WHERE user_id = :userId";
+        $stmt = $this->sql_connect()->prepare($query);
+        $stmt->bindParam(":userId", $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result['last_name'] ?: "";
+    }
+
+
 }

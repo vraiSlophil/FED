@@ -52,9 +52,9 @@ button {
     cursor: pointer;
 }
 
-img {
+img,
+input[type=image]{
     height: 1.5em;
-    filter: invert(var(--image-white));
 }
 
 #header {
@@ -74,7 +74,8 @@ img {
     grid-template-rows: max-content;
 }
 
-#header__profile {
+#header__profile,
+#headercontent {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -121,7 +122,8 @@ img {
     position: relative;
 }
 
-#connectform {
+#connectform,
+#settings_container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -159,39 +161,18 @@ input:focus {
 }
 
 #main > #form > #button,
-#connectform > #form > #button,
-#parameters > #logout,
-#nicknameedit > form > input,
-#nicknameedit > form > #cancel,
-#emailedit > form > #cancel,
-#emailedit > form > input,
-#passwordedit > form > input,
-#passwordedit > form > #cancel {
+#connectform > #form > #button {
     background-color: var(--button-color);
     color: black;
 }
 
 #main > #form > #button:hover,
-#connectform > #form > #button:hover,
-#parameters > #logout:hover,
-#nicknameedit > form > input:hover,
-#nicknameedit > form > #cancel:hover,
-#emailedit > form > #cancel:hover,
-#emailedit > form > input:hover,
-#passwordedit > form > input:hover,
-#passwordedit > form > #cancel:hover {
+#connectform > #form > #button:hover {
     background-color: var(--light-button-color);
 }
 
 #main > #form > #button:active,
-#connectform > #form > #button:active,
-#parameters > #logout:active,
-#nicknameedit > form > input:active,
-#nicknameedit > form > #cancel:active,
-#emailedit > form > #cancel:active,
-#emailedit > form > input:active,
-#passwordedit > form > input:active,
-#passwordedit > form > #cancel:active {
+#connectform > #form > #button:active {
     background-color: var(--dark-button-color);
 }
 
@@ -259,7 +240,8 @@ input:focus {
     filter: invert(var(--image-white));
 }
 
-#main > p, #connectform > p {
+#main > p,
+#connectform > p {
     color: red;
     height: 3em;
     display: flex;
@@ -270,160 +252,6 @@ input:focus {
     width: 40%;
     filter: drop-shadow(0 0 0.3em #00000030);
     margin-bottom: 1em;
-}
-
-#leave > a > img:hover {
-    transform: scale(1.1);
-}
-
-#leave > a > img:active {
-    transform: scale(0.9);
-}
-
-#parameters {
-    background-color: var(--light-background-color);
-    border-radius: 0.5em;
-    width: 40%;
-    filter: drop-shadow(0 0 0.3em #00000030);
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-#parameters > #pseudo,
-#parameters > #password,
-#parameters > #email,
-#parameters > #logout {
-    padding: 1em;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-}
-
-#parameters > #pseudo > p,
-#parameters > #email > p,
-#parameters > #password > p {
-    background-color: var(--background-color);
-    border-radius: 0.25em;
-    padding: 0.125em 0.5em;
-}
-
-#parameters > #password,
-#parameters > #email,
-#parameters > #logout {
-    border-top: 2px solid var(--border-color);
-    position: relative;
-}
-
-#parameters > #pseudo > img:hover,
-#parameters > #email > img:hover,
-#parameters > #password > img:hover {
-    transform: scale(1.1);
-}
-
-#parameters > #pseudo > img:active,
-#parameters > #email > img:active,
-#parameters > #password > img:active {
-    transform: scale(0.9);
-}
-
-#parameters > #logout {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#parameters > #logout {
-    text-decoration: none;
-    font-weight: bold;
-}
-
-#nicknameedit.hide,
-#emailedit.hide,
-#passwordedit.hide {
-    display: none;
-}
-
-#nicknameedit.show, 
-#emailedit.show, 
-#passwordedit.show {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    background-color: #000000AA;
-    z-index: 500;
-}
-
-#nicknameedit.show > form, 
-#emailedit.show > form, 
-#passwordedit.show > form {
-    animation: spawnmenu 0.15s forwards cubic-bezier(0,0,.66,1.59);
-}
-
-
-#nicknameedit > form,
-#emailedit > form,
-#passwordedit > form {
-    background-color: var(--light-background-color);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0.5em;
-    width: 40%;
-    filter: drop-shadow(0 0 0.3em #00000030);
-    flex-direction: column;
-    overflow: hidden;
-}
-
-#nicknameedit > form > div > input,
-#emailedit > form > div > input,
-#passwordedit > form > div > input {
-    width: 100%;
-    padding-left: 1em;
-}
-
-#nicknameedit > form > input,
-#nicknameedit > form > div,
-#emailedit > form > input,
-#emailedit > form > div,
-#passwordedit > form > input,
-#passwordedit > form > div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 3em;
-    width: 100%;
-}
-
-#nicknameedit > form > div > img,
-#emailedit > form > div > img,
-#passwordedit > form > div > img {
-    padding-left: 1em;
-}
-
-#nicknameedit > form > #newnickname,
-#nicknameedit > form > input,
-#nicknameedit > form > #cancel,
-#emailedit > form > #newemail,
-#emailedit > form > input,
-#emailedit > form > #cancel,
-#passwordedit > form > #newpassword,
-#passwordedit > form > #cancel,
-#passwordedit > form > input {
-    border-top: 2px solid var(--border-color);
-    cursor: pointer;
-    font-weight: bold;
-
 }
 
 #register {
@@ -644,4 +472,9 @@ input:focus {
     background-color: #FFFFFF8A;
     width: 100%;
     padding: 0.6em 1em;
+}
+
+span#note {
+    width: 30em;
+    text-align: justify;
 }
