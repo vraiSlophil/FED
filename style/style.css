@@ -5,9 +5,13 @@
     --background-color: #F5F6F7 !important;
     --border-color: #cecece !important;
     --font-color: black !important;
+    --light-button-font-color: white !important;
     --button-color: #144d87 !important;
     --light-button-color: #1b76ae !important;
     --dark-button-color: #11316d !important;
+    --invert-button-color: #EBB177 !important;
+    --invert-light-button-color: #EECE92 !important;
+    --invert-dark-button-color: #E48951 !important;
 }
 
 * {
@@ -94,6 +98,7 @@ input[type=image]{
 #header__profile > a > img {
     height: 2em;
     width: 2em;
+    border-radius: 50%;
 }
 
 #header__head {
@@ -237,7 +242,7 @@ input:focus {
 
 #header__profile > a > #image {
     height: 1.25em;
-    filter: invert(var(--image-white));
+    /*filter: invert(var(--image-white));*/
 }
 
 #main > p,

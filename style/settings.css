@@ -30,9 +30,43 @@
     padding: 6em;
 }
 
-#settings_container__settings__profile_picture > form > label {
+#settings_container__settings__profile_picture > img {
+    height: 8em;
+    width: 8em;
+    border-radius: 50%;
+    margin-bottom: 2em;
+}
+
+/*#settings_container__settings__profile_picture > form > input[type=file] {*/
+/*    opacity: 0;*/
+/*    position: absolute;*/
+/*    z-index: -1;*/
+/*}*/
+
+/*#settings_container__settings__profile_picture > form > input[type=submit] {*/
+/*    display: none;*/
+/*}*/
+
+#settings_container__settings__profile_picture > form > label,
+#settings_container__settings__profile_picture > form > input[type=submit] {
     cursor: pointer;
-    background-color: rebeccapurple;
+    background-color: var(--button-color);
+    padding: 0.5em 2em;
+    border-radius: 2em;
+    color: var(--light-button-font-color);
+    margin: 0.5em;
+}
+
+#settings_container__settings__profile_picture > form > label:hover,
+#settings_container__settings__profile_picture > form > input[type=submit]:hover,
+#settings_container__settings__texts > div > button:hover {
+    background-color: var(--light-button-color);
+}
+
+#settings_container__settings__profile_picture > form > label:active,
+#settings_container__settings__profile_picture > form > input[type=submit]:active,
+#settings_container__settings__texts > div > button:active {
+    background-color: var(--dark-button-color);
 }
 
 #settings_container__settings__profile_picture > form {
@@ -44,7 +78,7 @@
 
 #settings_container__settings__profile_picture {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     flex-direction: column;
 
@@ -54,8 +88,37 @@
 
 }
 
-#settings_container__settings__texts {
-    /*background-color: yellow;*/
-    /*grid-column-start: 2;*/
-    /*grid-column-end: 3;*/
+/*#settings_container__settings__texts {*/
+/*    width: max-content;*/
+/*}*/
+
+#settings_container__settings__texts > div > button > img {
+    filter: invert(1);
+    height: 1.2em;
+    width: 1.2em;
+}
+
+#settings_container__settings__texts > div > button {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--button-color);
+    height: 2em;
+    width: 2em;
+    /*margin-left: 4em;*/
+    border-radius: 50%;
+}
+
+#settings_container__settings__texts > div > p,
+#settings_container__settings__texts > div > input[type=text] {
+    width: 16em;
+}
+
+#settings_container__settings__texts > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    margin: 1em 0;
 }

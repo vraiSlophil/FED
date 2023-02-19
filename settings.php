@@ -74,6 +74,7 @@ if (isset($_POST['submit_image'])) {
         <div id="settings_container__settings__profile_picture">
             <img src="<?php echo $database->getProfilePictureUrl($_SESSION["login"]); ?>" alt="profile picture">
             <form action="settings.php" method="post" enctype="multipart/form-data">
+<!--                <input type="file" name="image" id="image">-->
                 <input type="file" name="image" id="image" hidden>
                 <label for="image">Choisir une image</label>
                 <input type="submit" name="submit_image" value="Modifier">
@@ -82,23 +83,33 @@ if (isset($_POST['submit_image'])) {
         <div id="settings_container__settings__texts">
             <div id="settings_container__settings__username">
                 <p><?php echo htmlspecialchars($database->getName($_SESSION["login"]));?></p>
-                <img src="images/edit.png" alt="edit">
+                <button id="settings_container__settings__username__button">
+                    <img src="images/edit.png" alt="edit">
+                </button>
             </div>
             <div id="settings_container__settings__password">
                 <p>●●●●●●●●●</p>
-                <img src="images/edit.png" alt="edit">
+                <button id="settings_container__settings__password__button">
+                    <img src="images/edit.png" alt="edit">
+                </button>
             </div>
             <div id="settings_container__settings__email">
                 <p><?php echo htmlspecialchars($database->getEmail($_SESSION["login"]));?></p>
-                <img src="images/edit.png" alt="edit">
+                <button id="settings_container__settings__email__button">
+                    <img src="images/edit.png" alt="edit">
+                </button>
             </div>
             <div id="settings_container__settings__first_name">
                 <p><?php echo htmlspecialchars($database->getFirstName($_SESSION["login"]));?></p>
-                <img src="images/edit.png" alt="edit">
+                <button id="settings_container__settings__first_name__button">
+                    <img src="images/edit.png" alt="edit">
+                </button>
             </div>
             <div id="settings_container__settings__last_name">
                 <p><?php echo htmlspecialchars($database->getLastName($_SESSION["login"]));?></p>
-                <img src="images/edit.png" alt="edit">
+                <button id="settings_container__settings__last_name__button">
+                    <img src="images/edit.png" alt="edit">
+                </button>
             </div>
             <a href="login.php" id="settings_container__settings__logout">Se déconnecter</a>
             </div>
