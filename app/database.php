@@ -1,24 +1,26 @@
 <?php
 require_once "database_info.php";
 
-class Database {
-    private function sql_connect() {
+class Database
+{
+    private function sql_connect()
+    {
         global $db;
         global $pt;
         global $ue;
         global $pd;
 
         try {
-            $sch='mysql:host=localhost;dbname='.(string)$db.';port='.(string)$pt;
-            $bdd = new PDO($sch , $ue, $pd);
-        }
-        catch(Exception $e) {
-            die('Erreur : '.$e->getMessage());
+            $sch = 'mysql:host=localhost;dbname=' . $db . ';port=' . $pt;
+            $bdd = new PDO($sch, $ue, $pd);
+        } catch (Exception $e) {
+            die('Erreur : ' . $e->getMessage());
         }
         return $bdd;
     }
 
-    public function createUser(string $username, string $password, string $email, string $firstName = null, string $lastName = null, string $profilePictureUrl = "images/identifier.png"): int|string {
+    public function createUser(string $username, string $password, string $email, string $firstName = null, string $lastName = null, string $profilePictureUrl = "images/identifier.png"): int|string
+    {
         $salt = uniqid();
         $hashed_password = hash('sha256', $password . $salt);
         $query = "INSERT INTO users (username, password, salt, email, first_name, last_name, profile_picture_url) VALUES (:username, :password, :salt, :email, :first_name, :last_name, :profile_picture_url);";
@@ -46,31 +48,34 @@ class Database {
             } else if ($e->errorInfo[1] == 1406) {
                 return "Error, a form value is invalid.";
             } else {
-                return "An unknown error has occurred.";
+                return "An unknown error has occurred. Please contact an administrator. (Error code : " . $e->errorInfo[1] . ")";
             }
         }
     }
 
-    public function createTheme(int $authorId, string $themeName): bool|string {
+    public function createTheme(int $authorId, string $themeName): array
+    {
         $pdo = $this->sql_connect();
 
         $stmt = $pdo->prepare("INSERT INTO themes (author_id, theme_name) VALUES (:author_id, :theme_name);");
         $stmt->bindParam(":author_id", $authorId);
         $stmt->bindParam(":theme_name", $themeName);
 
+
         try {
             $stmt->execute();
-            return intval($pdo->lastInsertId());
+            return ["id" => intval($pdo->lastInsertId()), "title" => $themeName];
         } catch (PDOException $e) {
-             if ($e->errorInfo[1] == 1452) {
-                return "Error, the specified color is invalid.";
+            if ($e->errorInfo[1] == 1452) {
+                return ["error" => "Error, the specified color is invalid."];
             } else {
-                return "An unknown error has occurred. Please contact an administrator. (Error code : " .strval($e->errorInfo[1]). ")";
+                return ["error" => "An unknown error has occurred. Please contact an administrator. (Error code : " . $e->errorInfo[1] . ")"];
             }
         }
     }
 
-    public function login(string $username, string $password) {
+    public function login(string $username, string $password)
+    {
         // Connexion à la base de données
         $pdo = $this->sql_connect();
 
@@ -97,7 +102,8 @@ class Database {
         return intval($user['user_id']);
     }
 
-    public function getProfilePictureUrl(int $id): string {
+    public function getProfilePictureUrl(int $id): string
+    {
         $pdo = $this->sql_connect();
         $query = "SELECT profile_picture_url FROM users WHERE user_id = :id;";
         $stmt = $pdo->prepare($query);
@@ -107,7 +113,8 @@ class Database {
         return $result['profile_picture_url'];
     }
 
-    public function getName(int $id) {
+    public function getName(int $id)
+    {
         $pdo = $this->sql_connect();
         $query = "SELECT username, first_name, last_name FROM users WHERE user_id = :id;";
         $stmt = $pdo->prepare($query);
@@ -121,7 +128,8 @@ class Database {
         }
     }
 
-    public function getEmail(int $id_user): ?string {
+    public function getEmail(int $id_user): ?string
+    {
         $query = "SELECT email FROM users WHERE user_id = :id_user";
         $stmt = $this->sql_connect()->prepare($query);
         $stmt->bindParam(":id_user", $id_user, PDO::PARAM_INT);
@@ -134,7 +142,8 @@ class Database {
         }
     }
 
-    function editTask(int $taskId, string $newTaskName): bool {
+    function editTask(int $taskId, string $newTaskName): bool
+    {
         // Connecter à la base de données
         $pdo = $this->sql_connect();
 
@@ -153,7 +162,8 @@ class Database {
         }
     }
 
-    public function deleteTask(int $task_id): bool {
+    public function deleteTask(int $task_id): bool
+    {
         $query = "DELETE FROM tasks WHERE task_id = :task_id";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
@@ -166,7 +176,8 @@ class Database {
         }
     }
 
-    public function updateTaskStatus(int $task_id, bool $status): bool {
+    public function updateTaskStatus(int $task_id, bool $status): bool
+    {
         $query = "UPDATE tasks SET task_status=:status WHERE task_id=:task_id";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
@@ -180,7 +191,8 @@ class Database {
         }
     }
 
-    public function getThemeTitle(int $id): string {
+    public function getThemeTitle(int $id): string
+    {
         // Établir la connexion à la base de données
         $pdo = $this->sql_connect();
 
@@ -197,7 +209,8 @@ class Database {
         return $result['theme_name'];
     }
 
-    public function getThemeColor(int $theme_id): string {
+    public function getThemeColor(int $theme_id): string
+    {
         $query = "SELECT theme_color FROM themes WHERE theme_id=:theme_id";
         $stmt = $this->sql_connect()->prepare($query);
         $stmt->bindParam(":theme_id", $theme_id, PDO::PARAM_INT);
@@ -206,7 +219,8 @@ class Database {
         return $result['theme_color'];
     }
 
-    public function editThemeColor(int $theme_id, string $color): bool {
+    public function editThemeColor(int $theme_id, string $color): bool
+    {
         // Vérifie si la couleur est dans le bon format
         if (!preg_match("/#[a-fA-F0-9]{6}/", $color)) {
             return false;
@@ -226,7 +240,8 @@ class Database {
     }
 
 
-    public function getThemeAuthor(int $theme_id): int {
+    public function getThemeAuthor(int $theme_id): int
+    {
         $query = "SELECT author_id FROM themes WHERE theme_id = :theme_id;";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
@@ -235,7 +250,8 @@ class Database {
         return $stmt->fetchColumn();
     }
 
-    public function deleteTheme(int $theme_id): bool {
+    public function deleteTheme(int $theme_id): array|bool
+    {
         $query = "DELETE FROM `themes` WHERE theme_id = :theme_id;
                 DELETE FROM `authorized_themes` WHERE theme_id = :theme_id;
                 DELETE FROM `tasks` WHERE theme_id = :theme_id;";
@@ -249,11 +265,12 @@ class Database {
             return true;
         } catch (PDOException $e) {
             // Si une erreur est survenue lors de l'exécution de la requête, retourner false
-            return false;
+            return [false, "An unknown error has occurred. Please contact an administrator. (Error code : " . $e->errorInfo[1] . ")"];
         }
     }
 
-    public function editThemeTitle(int $theme_id, string $new_title): bool {
+    public function editThemeTitle(int $theme_id, string $new_title): bool
+    {
         // Préparer la requête pour mettre à jour le titre du thème
         $query = "UPDATE themes SET theme_name = :new_title WHERE theme_id = :theme_id;";
         $pdo = $this->sql_connect();
@@ -270,7 +287,8 @@ class Database {
         }
     }
 
-    public function getThemes(int $id_user): array {
+    public function getThemes(int $id_user): array
+    {
         $query = "SELECT t.theme_id FROM themes t LEFT JOIN authorized_themes a ON a.theme_id = t.theme_id WHERE t.author_id = :id_user OR a.user_id = :id_user;";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
@@ -279,12 +297,13 @@ class Database {
 
         $themes = [];
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $value) {
-            $themes[] = (int) $value['theme_id'];
+            $themes[] = (int)$value['theme_id'];
         }
         return $themes;
     }
 
-    public function getTasks(int $theme_id): array|bool {
+    public function getTasks(int $theme_id): array|bool
+    {
         $pdo = $this->sql_connect();
         $query = "SELECT task_id, title, task_status FROM tasks WHERE theme_id = :theme_id;";
         $stmt = $pdo->prepare($query);
@@ -298,7 +317,8 @@ class Database {
         }
     }
 
-    public function addAuthorizedUser(string $username, int $theme_id): bool {
+    public function addAuthorizedUser(string $username, int $theme_id): bool
+    {
         $query = "INSERT INTO authorized_themes (user_id, theme_id) SELECT users.user_id, themes.theme_id FROM users INNER JOIN themes ON users.username = :username AND themes.theme_id = :theme_id;";
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
@@ -312,7 +332,8 @@ class Database {
         }
     }
 
-    public function createTask(int $theme_id, string $task_name, int $task_author_id, bool $task_status = false): int|string {
+    public function createTask(int $theme_id, string $task_name, int $task_author_id, bool $task_status = false): int|string
+    {
         $pdo = $this->sql_connect();
         $query = "INSERT INTO tasks (title, user_id, theme_id, task_status) VALUES (:task_name, :author_id, :theme_id, :task_status);";
         $stmt = $pdo->prepare($query);
@@ -325,11 +346,12 @@ class Database {
             $stmt->execute();
             return intval($pdo->lastInsertId());
         } catch (PDOException $e) {
-            return "An unknown error has occurred. Please contact an administrator. (Error code : " .strval($e->errorInfo[1]). ")";
+            return "An unknown error has occurred. Please contact an administrator. (Error code : " . $e->errorInfo[1] . ")";
         }
     }
 
-    public function deleteAuthorizedUser(int $user_id, string $theme_id): bool {
+    public function deleteAuthorizedUser(int $user_id, string $theme_id): bool
+    {
         $query = "DELETE FROM authorized_themes WHERE user_id = :user_id AND theme_id=:theme_id";
         $stmt = $this->sql_connect()->prepare($query);
         $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
@@ -342,14 +364,16 @@ class Database {
         }
     }
 
-    public function updateProfilePicture(int $userId): bool {
+    public function updateProfilePicture(int $userId): bool
+    {
         $query = "UPDATE users SET profile_picture_url = (CONCAT('images/profile_picture/', :userId, '.jpg')) WHERE user_id = :userId";
         $stmt = $this->sql_connect()->prepare($query);
         $stmt->bindParam(":userId", $userId, PDO::PARAM_INT);
         return $stmt->execute();
     }
 
-    public function getFirstName(int $userId): string {
+    public function getFirstName(int $userId): string
+    {
         $query = "SELECT first_name FROM users WHERE user_id = :userId";
         $stmt = $this->sql_connect()->prepare($query);
         $stmt->bindParam(":userId", $userId, PDO::PARAM_INT);
@@ -358,7 +382,8 @@ class Database {
         return $result['first_name'] ?: "";
     }
 
-    public function getLastName(int $userId) : string {
+    public function getLastName(int $userId): string
+    {
         $query = "SELECT last_name FROM users WHERE user_id = :userId";
         $stmt = $this->sql_connect()->prepare($query);
         $stmt->bindParam(":userId", $userId, PDO::PARAM_INT);

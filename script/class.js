@@ -3,7 +3,7 @@ let todoTaskDict = {};
 
 class todoTheme {
 
-    constructor(theme, id = null, title = null, themeColor = "#FFFFFF") {
+    constructor(theme, id = null, title = null, themeColor = "#DDDDDD") {
         this.theme = theme;
         this.header = this.theme.querySelector("#main__card__header");
         this.putInButton = this.theme.querySelector("#main__card__header__put_int_button");
@@ -52,8 +52,8 @@ class todoTheme {
                 }
             });
         } else if (title != null && id != null) {
-            const x = Math.floor((window.innerWidth - this.theme.offsetWidth) / 2);
-            const y = Math.floor((window.innerHeight - this.theme.offsetHeight) / 2);
+            const x = Math.floor((window.innerWidth / 3));
+            const y = Math.floor((window.innerHeight / 3));
 
             this.title.textContent = title;
             this.titleString = title;

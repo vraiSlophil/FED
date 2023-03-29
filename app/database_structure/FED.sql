@@ -9,7 +9,7 @@
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "+01:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -21,17 +21,19 @@ SET time_zone = "+00:00";
 -- Base de données : `FED`
 --
 
+CREATE DATABASE IF NOT EXISTS `FED` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
 -- --------------------------------------------------------
 
 --
 -- Structure de la table `authorized_themes`
 --
 
-CREATE TABLE `authorized_themes` (
+CREATE TABLE IF NOT EXISTS `authorized_themes` (
                                      `authorized_theme_id` int(11) NOT NULL,
                                      `theme_id` int(11) NOT NULL,
                                      `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -39,13 +41,13 @@ CREATE TABLE `authorized_themes` (
 -- Structure de la table `tasks`
 --
 
-CREATE TABLE `tasks` (
+CREATE TABLE IF NOT EXISTS `tasks` (
                          `task_id` int(11) NOT NULL,
                          `title` varchar(255) NOT NULL,
                          `user_id` int(11) NOT NULL,
                          `theme_id` int(11) NOT NULL,
                          `task_status` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -53,12 +55,12 @@ CREATE TABLE `tasks` (
 -- Structure de la table `themes`
 --
 
-CREATE TABLE `themes` (
+CREATE TABLE IF NOT EXISTS `themes` (
                           `theme_id` int(11) NOT NULL,
                           `author_id` int(11) DEFAULT NULL,
-                          `theme_name` varchar(255) NOT NULL,
-                          `theme_color` char(7) NOT NULL DEFAULT '#FAEAB1' CHECK (`theme_color` regexp '^#[a-fA-F0-9]{6}$')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+                          `theme_name` varchar(255) NOT NULL DEFAULT 'Nouveau thème',
+                          `theme_color` char(7) NOT NULL DEFAULT '#DDDDDD' CHECK (`theme_color` regexp '^#[a-fA-F0-9]{6}$')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -66,7 +68,7 @@ CREATE TABLE `themes` (
 -- Structure de la table `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
                          `user_id` int(11) NOT NULL,
                          `username` varchar(24) NOT NULL,
                          `password` varchar(64) NOT NULL,
@@ -75,7 +77,7 @@ CREATE TABLE `users` (
                          `first_name` varchar(32) DEFAULT NULL,
                          `last_name` varchar(32) DEFAULT NULL,
                          `profile_picture_url` text DEFAULT 'images/profile_picture/identifier.png' NOT NULL
-) ;
+);
 
 --
 -- Index pour les tables déchargées

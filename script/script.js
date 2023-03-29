@@ -72,7 +72,7 @@ function createListThemeHtml(id, title, color) {
     button.addEventListener("click", (event) => {
         const contextMenu = document.querySelector(".context-option");
         const element = (contextMenu.nodeName === "DIV" ? contextMenu.lastElementChild.cloneNode(true) : contextMenu.nextElementSibling.cloneNode(true));
-        const tdTheme = new todoTheme(element, themeId, themeTitle, themeColor);
+        new todoTheme(element, themeId, themeTitle, themeColor);
 
         div.remove();
         root.append(element);

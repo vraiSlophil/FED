@@ -7,8 +7,7 @@ if (!isset($_SESSION["login"])) {
     require_once "../app/database.php";
     $database = new Database();
 
-    $id = (int) $database->createTheme($_SESSION["login"], "Nouveau thème");
-    $response = ($id > 0) ? ["id" => $id, "title" => $database->getThemeTitle($id)] : ["error" => $id];
+    $response = $database->createTheme($_SESSION["login"], "Nouveau thème");
 }
 
 header('Content-Type: application/json');

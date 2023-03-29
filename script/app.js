@@ -59,7 +59,7 @@ window.addEventListener("mousemove", (event) => {
 optionNew.addEventListener("click", (event) => {
     contextMenu.style.display = "none";
     const element = (event.target.nodeName === "DIV" ? event.target.lastElementChild.cloneNode(true) : event.target.nextElementSibling.cloneNode(true));
-    const tdTheme = new todoTheme(element, null);
+    new todoTheme(element, null);
     const x = event.clientX;
     const y = event.clientY;
     element.style.transform = `translate(${x}px, ${y}px)`;

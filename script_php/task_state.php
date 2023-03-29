@@ -14,6 +14,9 @@ $data = json_decode(file_get_contents('php://input'), true);
 $task_id = intval($data["task_id"]);
 $task_status = boolval($data["task_status"]);
 
+print_r($task_id);
+print_r($task_status);
+
 $action = $database->updateTaskStatus($task_id, $task_status);
 $response = ($action) ? ["done" => true] : ["error" => "An unexpected and unknown error has occurred. Please contact an administrator for assistance.", "done" => false];
 

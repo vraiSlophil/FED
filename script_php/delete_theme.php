@@ -23,7 +23,7 @@ if (!$theme_author || $_SESSION["login"] != $theme_author) {
 
 } else {
     $action = $database->deleteTheme($theme_id);
-    $response = (!$action) ? ["error" => "An unexpected and unknown error has occurred. Please contact an administrator for assistance.", "done" => false] : ["done" => true];
+    $response = (is_bool($action)) ? ["done" => $action] : ["error" => $action[1], "done" => $action[0]];
 }
 
 header('Content-Type: application/json');
