@@ -483,3 +483,14 @@ span#note {
     width: 30em;
     text-align: justify;
 }
+
+#main__discret_message {
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translateX(-50%) translateY(-50%);
+
+    font-weight: normal;
+    color: #A4A4A4;
+    cursor: default;
+}

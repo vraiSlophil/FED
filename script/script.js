@@ -1,13 +1,16 @@
 const chest = document.querySelector("#header__chest");
 const headerHeight = document.querySelector("#header").clientHeight;
 const themeList = document.querySelector("#main__theme_list");
-const profilePictureInput = document.querySelector("#settings_container__settings__profile_picture > form > input[type=file]");
-const profilePictureSubmitButton = document.querySelector("#settings_container__settings__profile_picture > form > input[type=submit]");
-const usernameEditButton = document.querySelectorAll("#settings_container__settings__username__button")[0];
-const passwordEditButton = document.querySelectorAll("#settings_container__settings__password__button")[0];
-const emailEditButton = document.querySelectorAll("#settings_container__settings__email__button")[0];
-const firstnameEditButton = document.querySelectorAll("#settings_container__settings__first_name__button")[0];
-const lastnameEditButton = document.querySelectorAll("#settings_container__settings__last_name__button")[0];
+try {
+    const settingsSection = new Settings();
+} catch (error) {
+    console.warn("Settings class not found. Ignoring it.")
+}
+
+let nods = document.getElementsByClassName('NO-CACHE');
+for (let i = 0; i < nods.length; i++) {
+    nods[i].attributes['src'].value += "?a=" + Math.random();
+}
 
 if  (themeList !== null) {
     themeList.style.top = "calc(" + headerHeight + "px + 1em)";
@@ -79,22 +82,3 @@ function createListThemeHtml(id, title, color) {
     });
 }
 
-if (profilePictureInput !== null) {
-    profilePictureInput.addEventListener("change", () => {
-        console.log("change event");
-        if (profilePictureSubmitButton.style.display === "none") {
-            profilePictureSubmitButton.style.display = "block";
-        }
-    });
-
-    usernameEditButton.addEventListener("click", () => {
-        const usernameTemp = usernameEditButton.parentElement.querySelector("p").textContent;
-        const usernameP = usernameEditButton.parentElement.querySelector("p");
-        // usernameEditButton.parentElement.querySelector("p").remove();
-        const input = document.createElement("input");
-        input.type = "text";
-        usernameP.innerHTML = "";
-        usernameP.appendChild(input)
-
-    });
-}

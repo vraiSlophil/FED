@@ -19,11 +19,15 @@ class Database
         return $bdd;
     }
 
-    public function createUser(string $username, string $password, string $email, string $firstName = null, string $lastName = null, string $profilePictureUrl = "images/identifier.png"): int|string
+    public function createUser(string $username, string $password, string $email, string $firstName = null, string $lastName = null, string $profilePictureUrl = null): int|string
     {
         $salt = uniqid();
         $hashed_password = hash('sha256', $password . $salt);
-        $query = "INSERT INTO users (username, password, salt, email, first_name, last_name, profile_picture_url) VALUES (:username, :password, :salt, :email, :first_name, :last_name, :profile_picture_url);";
+        if ($profilePictureUrl == null) {
+            $query = "INSERT INTO users (username, password, salt, email, first_name, last_name) VALUES (:username, :password, :salt, :email, :first_name, :last_name);";
+        } else {
+            $query = "INSERT INTO users (username, password, salt, email, first_name, last_name, profile_picture_url) VALUES (:username, :password, :salt, :email, :first_name, :last_name, :profile_picture_url);";
+        }
         $pdo = $this->sql_connect();
         $stmt = $pdo->prepare($query);
         $stmt->bindValue(':username', $username);
@@ -32,7 +36,9 @@ class Database
         $stmt->bindValue(':email', $email);
         $stmt->bindValue(':first_name', $firstName);
         $stmt->bindValue(':last_name', $lastName);
-        $stmt->bindValue(':profile_picture_url', $profilePictureUrl);
+        if ($profilePictureUrl != null) {
+            $stmt->bindValue(':profile_picture_url', $profilePictureUrl);
+        }
 
         // Exécuter la requête
         try {

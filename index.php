@@ -51,7 +51,7 @@ $login = $_SESSION["login"];
 <header id="header">
     <div id="header__profile">
         <a href="settings.php">
-            <img src="<?php echo $database->getProfilePictureUrl($login); ?>" alt="profile picture">
+            <img src="<?php echo $database->getProfilePictureUrl($login); ?>" alt="profile picture" class="NO-CACHE">
         </a>
         <p><?php echo $database->getName($login); ?></p>
     </div>
@@ -107,7 +107,9 @@ $login = $_SESSION["login"];
             </div>
         </div>
     </div>
-    <div id="root"></div>
+    <div id="root">
+    </div>
+    <h4 id="main__discret_message">Faites un clic droit pour créer un nouveau thème !</h4>
 </main>
 <script src="script/class.js"></script>
 <script src="script/script.js"></script>

@@ -72,17 +72,16 @@ if (isset($_POST['submit_image'])) {
 <section id="settings_container">
     <div id="settings_container__settings">
         <div id="settings_container__settings__profile_picture">
-            <img src="<?php echo $database->getProfilePictureUrl($_SESSION["login"]); ?>" alt="profile picture">
+            <img src="<?=$database->getProfilePictureUrl($_SESSION["login"])?>" alt="profile picture" class="NO-CACHE">
             <form action="settings.php" method="post" enctype="multipart/form-data">
-<!--                <input type="file" name="image" id="image">-->
-                <input type="file" name="image" id="image" hidden>
+                <input type="file" name="image" id="image" accept="image/*" hidden>
                 <label for="image">Choisir une image</label>
-                <input type="submit" name="submit_image" value="Modifier">
+                <input type="submit" name="submit_image" value="Valider">
             </form>
         </div>
         <div id="settings_container__settings__texts">
             <div id="settings_container__settings__username">
-                <p><?php echo htmlspecialchars($database->getName($_SESSION["login"]));?></p>
+                <p><?=htmlspecialchars($database->getName($_SESSION["login"]))?></p>
                 <button id="settings_container__settings__username__button">
                     <img src="images/edit.png" alt="edit">
                 </button>
@@ -94,19 +93,19 @@ if (isset($_POST['submit_image'])) {
                 </button>
             </div>
             <div id="settings_container__settings__email">
-                <p><?php echo htmlspecialchars($database->getEmail($_SESSION["login"]));?></p>
+                <p><?=htmlspecialchars($database->getEmail($_SESSION["login"]))?></p>
                 <button id="settings_container__settings__email__button">
                     <img src="images/edit.png" alt="edit">
                 </button>
             </div>
             <div id="settings_container__settings__first_name">
-                <p><?php echo htmlspecialchars($database->getFirstName($_SESSION["login"]));?></p>
+                <p><?=htmlspecialchars($database->getFirstName($_SESSION["login"]))?></p>
                 <button id="settings_container__settings__first_name__button">
                     <img src="images/edit.png" alt="edit">
                 </button>
             </div>
             <div id="settings_container__settings__last_name">
-                <p><?php echo htmlspecialchars($database->getLastName($_SESSION["login"]));?></p>
+                <p><?=htmlspecialchars($database->getLastName($_SESSION["login"]))?></p>
                 <button id="settings_container__settings__last_name__button">
                     <img src="images/edit.png" alt="edit">
                 </button>
@@ -117,51 +116,52 @@ if (isset($_POST['submit_image'])) {
 </section>
 
 <!-- menus de modification -->
-
-<section class="hide" id="nicknameedit">
-    <form action="script_php/temponicknameedit.php" method="post">
-        <div id="password">
-            <img src="images/lock.png">
-            <input type="password" name="password" placeholder="Mot de passe">
-        </div>
-        <div id="newnickname">
-            <img src="images/profile_picture/identifier.png">
-            <input type="text" name="newnickname" placeholder="Nouveau pseudo">
-        </div>
-        <input type="submit" value="Valider">
-        <div onclick="toggleVisibilityNicknameEdit();" id="cancel">Annuler</div>
-    </form>
-</section>
-
-<section class="hide" id="passwordedit">
-    <form action="script_php/tempopasswordedit.php" method="post">
-        <div id="lastpassword">
-            <img src="images/lock.png">
-            <input type="password" name="lastpassword" placeholder="Ancien mot de passe">
-        </div>
-        <div id="newpassword">
-            <img src="images/lock.png">
-            <input type="password" name="newpassword" placeholder="Nouveau mot de passe">
-        </div>
-        <input type="submit" value="Valider">
-        <div onclick="toggleVisibilityPasswordEdit();" id="cancel">Annuler</div>
-    </form>
-</section>
-
-<section class="hide" id="emailedit">
-    <form action="script_php/tempoemailedit.php" method="post">
-        <div id="password">
-            <img src="images/lock.png">
-            <input type="password" name="password" placeholder="Mot de passe">
-        </div>
-        <div id="newemail">
-            <img src="images/email.png">
-            <input type="email" name="newemail" placeholder="Nouvelle adresse email">
-        </div>
-        <input type="submit" value="Valider">
-        <button onclick="toggleVisibilityEmailEdit();" id="cancel">Annuler</button>
-    </form>
-</section>
+<!---->
+<!--<section class="hide" id="nicknameedit">-->
+<!--    <form action="script_php/temponicknameedit.php" method="post">-->
+<!--        <div id="password">-->
+<!--            <img src="images/lock.png">-->
+<!--            <input type="password" name="password" placeholder="Mot de passe">-->
+<!--        </div>-->
+<!--        <div id="newnickname">-->
+<!--            <img src="images/profile_picture/identifier.png">-->
+<!--            <input type="text" name="newnickname" placeholder="Nouveau pseudo">-->
+<!--        </div>-->
+<!--        <input type="submit" value="Valider">-->
+<!--        <div onclick="toggleVisibilityNicknameEdit();" id="cancel">Annuler</div>-->
+<!--    </form>-->
+<!--</section>-->
+<!---->
+<!--<section class="hide" id="passwordedit">-->
+<!--    <form action="script_php/tempopasswordedit.php" method="post">-->
+<!--        <div id="lastpassword">-->
+<!--            <img src="images/lock.png">-->
+<!--            <input type="password" name="lastpassword" placeholder="Ancien mot de passe">-->
+<!--        </div>-->
+<!--        <div id="newpassword">-->
+<!--            <img src="images/lock.png">-->
+<!--            <input type="password" name="newpassword" placeholder="Nouveau mot de passe">-->
+<!--        </div>-->
+<!--        <input type="submit" value="Valider">-->
+<!--        <div onclick="toggleVisibilityPasswordEdit();" id="cancel">Annuler</div>-->
+<!--    </form>-->
+<!--</section>-->
+<!---->
+<!--<section class="hide" id="emailedit">-->
+<!--    <form action="script_php/tempoemailedit.php" method="post">-->
+<!--        <div id="password">-->
+<!--            <img src="images/lock.png">-->
+<!--            <input type="password" name="password" placeholder="Mot de passe">-->
+<!--        </div>-->
+<!--        <div id="newemail">-->
+<!--            <img src="images/email.png">-->
+<!--            <input type="email" name="newemail" placeholder="Nouvelle adresse email">-->
+<!--        </div>-->
+<!--        <input type="submit" value="Valider">-->
+<!--        <button onclick="toggleVisibilityEmailEdit();" id="cancel">Annuler</button>-->
+<!--    </form>-->
+<!--</section>-->
+<script src="script/settingsSection.js"></script>
 <script src="script/script.js"></script>
 </body>
 </html>

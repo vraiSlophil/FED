@@ -43,9 +43,9 @@
 /*    z-index: -1;*/
 /*}*/
 
-/*#settings_container__settings__profile_picture > form > input[type=submit] {*/
-/*    display: none;*/
-/*}*/
+#settings_container__settings__profile_picture > form > input[type=submit] {
+    display: none;
+}
 
 #settings_container__settings__profile_picture > form > label,
 #settings_container__settings__profile_picture > form > input[type=submit] {
