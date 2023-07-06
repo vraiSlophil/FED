@@ -109,7 +109,11 @@ $login = $_SESSION["login"];
     </div>
     <div id="root">
     </div>
-    <h4 id="main__discret_message">Faites un clic droit pour créer un nouveau thème !</h4>
+    <h4 id="main__discret_message">
+        Faites un clic droit pour créer un nouveau thème !
+        <br>
+        Retrouvez vos thèmes dans la card box en haut à droite ↗
+    </h4>
 </main>
 <script src="script/class.js"></script>
 <script src="script/script.js"></script>

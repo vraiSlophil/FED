@@ -42,13 +42,6 @@ if (isset($_POST['submit_image'])) {
 }
 
 ?>
-<head>
-    <meta charset="UTF-8">
-    <title>FED - Paramètres</title>
-    <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/settings.css">
-    <link rel="icon" href="images/fed-logo-white-background.png">
-</head>
 <body>
 <header id="header">
     <div id="headercontent">
@@ -62,11 +55,11 @@ if (isset($_POST['submit_image'])) {
     </div>
 </header>
 <main id="main">
-    <?php 
-        if(isset($_SESSION["errorMessage"])) {
-            echo "<p>".$_SESSION["errorMessage"]."</p>";
-            unset($_SESSION["errorMessage"]);
-        }
+    <?php
+    if(isset($_SESSION["errorMessage"])) {
+        echo "<p>".$_SESSION["errorMessage"]."</p>";
+        unset($_SESSION["errorMessage"]);
+    }
     ?>
 </main>
 <section id="settings_container">
@@ -82,37 +75,52 @@ if (isset($_POST['submit_image'])) {
         <div id="settings_container__settings__texts">
             <div id="settings_container__settings__username">
                 <p><?=htmlspecialchars($database->getName($_SESSION["login"]))?></p>
-                <button id="settings_container__settings__username__button">
+                <button id="settings_container__settings__username__validate_button" style="display: none;">
+                    <img src="images/check.png" alt="validate">
+                </button>
+                <button id="settings_container__settings__username__edit_button">
                     <img src="images/edit.png" alt="edit">
                 </button>
             </div>
             <div id="settings_container__settings__password">
                 <p>●●●●●●●●●</p>
-                <button id="settings_container__settings__password__button">
+                <button id="settings_container__settings__password__validate_button" style="display: none;">
+                    <img src="images/check.png" alt="validate">
+                </button>
+                <button id="settings_container__settings__password__edit_button">
                     <img src="images/edit.png" alt="edit">
                 </button>
             </div>
             <div id="settings_container__settings__email">
                 <p><?=htmlspecialchars($database->getEmail($_SESSION["login"]))?></p>
-                <button id="settings_container__settings__email__button">
+                <button id="settings_container__settings__email__validate_button" style="display: none;">
+                    <img src="images/check.png" alt="validate">
+                </button>
+                <button id="settings_container__settings__email__edit_button">
                     <img src="images/edit.png" alt="edit">
                 </button>
             </div>
             <div id="settings_container__settings__first_name">
                 <p><?=htmlspecialchars($database->getFirstName($_SESSION["login"]))?></p>
-                <button id="settings_container__settings__first_name__button">
+                <button id="settings_container__settings__first_name__validate_button" style="display: none;">
+                    <img src="images/check.png" alt="validate">
+                </button>
+                <button id="settings_container__settings__first_name__edit_button">
                     <img src="images/edit.png" alt="edit">
                 </button>
             </div>
             <div id="settings_container__settings__last_name">
                 <p><?=htmlspecialchars($database->getLastName($_SESSION["login"]))?></p>
-                <button id="settings_container__settings__last_name__button">
+                <button id="settings_container__settings__last_name__validate_button" style="display: none;">
+                    <img src="images/check.png" alt="validate">
+                </button>
+                <button id="settings_container__settings__last_name__edit_button">
                     <img src="images/edit.png" alt="edit">
                 </button>
             </div>
             <a href="login.php" id="settings_container__settings__logout">Se déconnecter</a>
-            </div>
         </div>
+    </div>
 </section>
 
 <!-- menus de modification -->
@@ -132,20 +140,23 @@ if (isset($_POST['submit_image'])) {
 <!--    </form>-->
 <!--</section>-->
 <!---->
-<!--<section class="hide" id="passwordedit">-->
-<!--    <form action="script_php/tempopasswordedit.php" method="post">-->
-<!--        <div id="lastpassword">-->
-<!--            <img src="images/lock.png">-->
-<!--            <input type="password" name="lastpassword" placeholder="Ancien mot de passe">-->
-<!--        </div>-->
-<!--        <div id="newpassword">-->
-<!--            <img src="images/lock.png">-->
-<!--            <input type="password" name="newpassword" placeholder="Nouveau mot de passe">-->
-<!--        </div>-->
-<!--        <input type="submit" value="Valider">-->
-<!--        <div onclick="toggleVisibilityPasswordEdit();" id="cancel">Annuler</div>-->
-<!--    </form>-->
-<!--</section>-->
+<dialog id="password_dialog">
+    <div id="password_dialog__form">
+        <div id="password_dialog__form__actual_password">
+            <img src="images/lock.png">
+            <input type="password" name="actual_password" placeholder="Ancien mot de passe">
+        </div>
+        <div id="password_dialog__form__new_password">
+            <img src="images/lock.png">
+            <input type="password" name="new_password" placeholder="Nouveau mot de passe">
+        </div>
+        <div id="password_dialog__form__button_container">
+            <button id="password_dialog__form__submit_button" type="submit">Valider</button>
+            <button id="password_dialog__form__cancel_button" type="reset">Annuler</button>
+        </div>
+    </div>
+</dialog>
+
 <!---->
 <!--<section class="hide" id="emailedit">-->
 <!--    <form action="script_php/tempoemailedit.php" method="post">-->
@@ -164,4 +175,11 @@ if (isset($_POST['submit_image'])) {
 <script src="script/settingsSection.js"></script>
 <script src="script/script.js"></script>
 </body>
+<head>
+    <meta charset="UTF-8">
+    <title>FED - Paramètres</title>
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/settings.css">
+    <link rel="icon" href="images/fed-logo-white-background.png">
+</head>
 </html>
