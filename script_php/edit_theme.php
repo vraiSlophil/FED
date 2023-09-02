@@ -24,9 +24,9 @@ if (!$theme_author || $_SESSION["login"] != $theme_author) {
     );
 } else {
     $action = $database->editThemeTitle($theme_id, $new_title);
-    $response = ($action) ? ["done" => true] : ["done" => false];
+    $response = ["done" => $action];
     $action = $database->editThemeColor($theme_id, $new_color);
-    $response = ($action) ? ["done" => true] : ["done" => false];
+    $response = ["done" => $action];
 }
 
 header('Content-Type: application/json');
