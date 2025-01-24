@@ -1,0 +1,12 @@
+<FilesMatch ".gitignore">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+<FilesMatch ".gitignore">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+RewriteEngine On
+RewriteRule ^app/ - [F,L]

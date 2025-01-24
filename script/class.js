@@ -44,11 +44,14 @@ class todoTheme {
                                 this.theme.id = this.id;
                             } catch (error) {
                                 console.error(json.error);
+                                createNotification("Une erreur est survenue", "error");
+
                             }
                         }
                     });
                 } else {
                     console.error("Missing JSON header.");
+                    createNotification("Une erreur est survenue", "error");
                 }
             });
         } else if (title != null && id != null) {
@@ -69,18 +72,23 @@ class todoTheme {
                     return response.json().then((json) => {
                         if (response.ok) {
                             try {
-                                json.tasks.forEach((task) => {
-                                    const taskId = task.id;
-                                    const taskTitle = task.title;
-                                    const taskStatus = (task.status == 1);
+                                // si le tableau n'est pas vide :
+                                if (json.tasks.length > 0) {
+                                    json.tasks.forEach((task) => {
+                                        const taskId = task.id;
+                                        const taskTitle = task.title;
+                                        const taskStatus = (task.status == 1);
 
-                                    const child = createTaskHtml(taskTitle, taskId);
-                                    new todoTask(child, this, taskId, taskStatus);
+                                        const child = createTaskHtml(taskTitle, taskId);
+                                        new todoTask(child, this, taskId, taskStatus);
 
-                                    this.contentTasksParent.appendChild(child);
-                                });
+                                        this.contentTasksParent.appendChild(child);
+                                    });
+                                }
                             } catch (error) {
                                 console.error(json.tasks.error);
+                                createNotification("Une erreur est survenue", "error");
+
                             }
                         }
                     });
@@ -233,14 +241,19 @@ class todoTheme {
                         if (response.ok) {
                             if (!json.done) {
                                 console.error(json.error);
+                                createNotification("Une erreur est survenue", "error");
+
                             } else {
                                 del(this);
                                 delete this;
+                                createNotification("Thème supprimé avec succès", "success");
                             }
                         }
                     });
                 } else {
                     console.error("Missing JSON header.");
+                    createNotification("Une erreur est survenue", "error");
+
                 }
             });
     }
@@ -276,6 +289,8 @@ class todoTheme {
                             if (response.ok) {
                                 if (!json.done) {
                                     console.error(json.error);
+                                    createNotification("Une erreur est survenue", "error");
+
                                 } else {
                                     this.validateButton.style.display = "none";
                                     this.editColorButton.style.display = "none";
@@ -285,11 +300,13 @@ class todoTheme {
                                     input.remove();
                                     this.titleString = this.title.textContent;
                                     this.EDITING = false;
+                                    createNotification("Thème modifié avec succès", "success");
                                 }
                             }
                         });
                     } else {
                         console.error("Missing JSON header.");
+                        createNotification("Une erreur est survenue", "error");
                     }
                 });
             }
@@ -308,6 +325,8 @@ class todoTheme {
                             if (response.ok) {
                                 if (!json.done) {
                                     console.error(json.error);
+                                    createNotification("Une erreur est survenue", "error");
+
                                 } else {
                                     this.validateButton.style.display = "none";
                                     this.editColorButton.style.display = "none";
@@ -315,11 +334,13 @@ class todoTheme {
                                     input.remove();
                                     this.title.textContent = this.titleString;
                                     this.INVITING = false;
+                                    createNotification("Utilisateur ajouté avec succès", "success");
                                 }
                             }
                         });
                     } else {
                         console.error("Missing JSON header.");
+                        createNotification("Une erreur est survenue", "error");
                     }
                 });
             }
@@ -356,17 +377,21 @@ class todoTheme {
                             if (response.ok) {
                                 if (!json.done) {
                                     console.error(json.error);
+                                    createNotification("Une erreur est survenue", "error");
+
                                 } else {
                                     const child = createTaskHtml(this.contentNewTaskInput.value, json.id);
                                     this.contentTasksParent.appendChild(child);
                                     this.contentNewTaskInput.value = "";
 
                                     new todoTask(child, this, json.id, this.contentNewTaskInput.value);
+                                    createNotification("Tâche créée avec succès", "success");
                                 }
                             }
                         });
                     } else {
                         console.error("Missing JSON header.");
+                        createNotification("Une erreur est survenue", "error");
                     }
                 });
             }
@@ -466,17 +491,22 @@ class todoTask {
                         if (response.ok) {
                             if (!json.done) {
                                 console.error(json.error);
+                                createNotification("Une erreur est survenue", "error");
+
                                 input.remove();
                                 this.taskTitle.textContent = this.titleString;
                             } else {
                                 this.taskTitle.textContent = input.value;
                                 this.taskTitleString = input.value;
                                 input.remove();
+                                createNotification("Tâche modifiée avec succès", "success");
                             }
                         }
                     });
                 } else {
                     console.error("Missing JSON header.");
+                    createNotification("Une erreur est survenue", "error");
+
                 }
             });
             this.taskValidateButton.style.display = "none";
@@ -521,14 +551,18 @@ class todoTask {
                         if (response.ok) {
                             if (!json.done) {
                                 console.error(json.error);
+                                createNotification("Une erreur est survenue", "error");
+
                             } else {
                                 del(this);
                                 delete this;
+                                createNotification("Tâche supprimée avec succès", "success");
                             }
                         }
                     });
                 } else {
                     console.error("Missing JSON header.");
+                    createNotification("Une erreur est survenue", "error");
                 }
             });
     }
@@ -552,6 +586,8 @@ class todoTask {
                             if (response.ok) {
                                 if (!json.done) {
                                     console.error(json.error);
+                                    createNotification("Une erreur est survenue", "error");
+
                                 } else {
                                     this.taskTitle.style.textDecoration = "line-through";
                                 }
@@ -559,6 +595,7 @@ class todoTask {
                         });
                     } else {
                         console.error("Missing JSON header.");
+                        createNotification("Une erreur est survenue", "error");
                     }
                 });
         } else {
@@ -575,6 +612,8 @@ class todoTask {
                             if (response.ok) {
                                 if (!json.done) {
                                     console.error(json.error);
+                                    createNotification("Une erreur est survenue", "error");
+
                                 } else {
                                     this.taskTitle.style.textDecoration = "none";
                                 }
@@ -582,6 +621,7 @@ class todoTask {
                         });
                     } else {
                         console.error("Missing JSON header.");
+                        createNotification("Une erreur est survenue", "error");
                     }
                 });
         }

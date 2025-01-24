@@ -45,6 +45,7 @@ $login = $_SESSION["login"];
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/move.css">
     <link rel="stylesheet" href="style/chest.css">
+    <link rel="stylesheet" href="style/notification.css">
     <link rel="icon" href="images/fed-logo-white-background.png">
 </head>
 <body>
@@ -115,8 +116,9 @@ $login = $_SESSION["login"];
         Retrouvez vos thèmes dans la card box en haut à droite ↗
     </h4>
 </main>
-<script src="script/class.js"></script>
-<script src="script/script.js"></script>
-<script src="script/app.js"></script>
+<script src="script/class.js" defer></script>
+<script src="script/script.js" defer></script>
+<script src="script/app.js" defer></script>
+<script src="script/notifications.js" defer></script>
 </body>
 </html>

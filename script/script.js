@@ -43,6 +43,7 @@ if  (themeList !== null) {
                     });
                 } else {
                     console.error("Missing JSON header.");
+                    createNotification("Une erreur est survenue lors du chargement des thèmes.", "error");
                 }
             });
         }
